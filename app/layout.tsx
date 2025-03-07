@@ -1,8 +1,6 @@
 import "./globals.css"
 import { Inter } from "next/font/google"
-import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
-import FloatingContactButton from "@/components/FloatingContactButton"
 import type React from "react"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -22,7 +20,6 @@ export default function RootLayout({
       <body className={inter.className}>
         {children}
         <Footer />
-        <FloatingContactButton />
       </body>
     </html>
   )
