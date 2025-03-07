@@ -41,7 +41,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="py-20 bg-gradient-to-b from-white to-green-50">
+    <section id="contact" className="py-20 bg-[#293B36] from-white to-green-50">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl sm:text-4xl font-bold text-center mb-8 text-green-800">Grow Your Project with Us</h2>
         <p className="text-center text-lg mb-16 text-green-700">

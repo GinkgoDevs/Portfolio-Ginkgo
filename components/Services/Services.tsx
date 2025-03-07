@@ -144,7 +144,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative pt-32 pb-20 md:pb-32 bg-[#293B36] overflow-x-hidden"
+      className="relative -mt-32 pt-32 pb-20 md:pb-32 bg-[#293B36] overflow-x-hidden"
       style={{
         background: "linear-gradient(180deg, #293B36 0%, #293B36 100%)",
       }}
