@@ -1,5 +1,5 @@
 import Tools from "@/components/Tools"
-import Projects from "@/components/Projects"
+import Projects from "@/components/Projects/Projects"
 import Testimonials from "@/components/Testimonials"
 import Contact from "@/components/Contact"
 import Hero from "@/components/Hero/Hero"
