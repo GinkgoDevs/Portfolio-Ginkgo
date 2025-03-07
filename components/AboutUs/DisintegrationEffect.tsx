@@ -28,12 +28,29 @@ export default function DisintegrationEffect({
   const imageRef = useRef<HTMLImageElement>(null)
   const [canvasElements, setCanvasElements] = useState<HTMLCanvasElement[]>([])
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
-  const COUNT = 75
-  const REPEAT_COUNT = 3
+  // Detectar dispositivo móvil
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
+  // Ajustar parámetros según el dispositivo
+  const COUNT = isMobile ? 50 : 75
+  const REPEAT_COUNT = isMobile ? 2 : 3
 
   useEffect(() => {
     if (!imageLoaded || !imageRef.current || !containerRef.current) return
+
+    // Si estamos en móvil y no se requiere la animación de scroll, simplemente mostramos la imagen
+    if (isMobile && !scrollTriggerEnabled) {
+      return
+    }
 
     const createCanvases = async () => {
       const img = imageRef.current
@@ -90,18 +107,23 @@ export default function DisintegrationEffect({
     }
 
     createCanvases()
-  }, [imageLoaded, COUNT, REPEAT_COUNT])
+  }, [imageLoaded, COUNT, REPEAT_COUNT, isMobile, scrollTriggerEnabled])
 
   useEffect(() => {
     if (canvasElements.length === 0) return
+
+    // Si no se requiere la animación de scroll, no configuramos el ScrollTrigger
+    if (!scrollTriggerEnabled) {
+      return
+    }
 
     const timeline = gsap.timeline({
       scrollTrigger: scrollTriggerEnabled
         ? {
             trigger: containerRef.current,
-            start: "top center",
-            end: "bottom center",
-            scrub: 1,
+            start: "top 20%", // Comienza cuando la imagen está más arriba en la pantalla
+            end: "bottom top", // Termina cuando la imagen sale por arriba
+            scrub: 1.5, // Suavizado
             onComplete: () => onComplete?.(),
           }
         : null,
@@ -121,7 +143,7 @@ export default function DisintegrationEffect({
           opacity: 0,
           delay: (i / canvasElements.length) * 2,
         },
-        index * 0.2,
+        index * 0.2 + 0.5, // Añadido retraso adicional
       )
     })
 
@@ -146,8 +168,9 @@ export default function DisintegrationEffect({
         alt={altText}
         width={300}
         height={300}
-        className="object-cover w-full h-full rounded-full"
+        className={`object-cover w-full h-full rounded-full ${isMobile && !scrollTriggerEnabled ? "opacity-100" : "opacity-0"}`}
         onLoad={() => setImageLoaded(true)}
+        priority
       />
     </div>
   )

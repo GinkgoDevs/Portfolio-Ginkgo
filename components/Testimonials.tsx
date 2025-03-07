@@ -38,7 +38,7 @@ export default function Testimonials() {
   }, [])
 
   return (
-    <section className="py-20 bg-green-50 overflow-hidden">
+    <section className="py-20 bg-[#293B36] overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-16 text-green-800">What Our Clients Say</h2>
         <div ref={sliderRef} className="relative">

@@ -1,0 +1,184 @@
+/* Añadir estilos más claros para el cursor de arrastre */
+.cursor-grab {
+  cursor: grab !important;
+}
+
+.cursor-grabbing {
+  cursor: grabbing !important;
+}
+
+/* Mejorar los estilos del carrusel para una experiencia más fluida */
+.carousel-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: auto;
+  padding-bottom: 2rem;
+  position: relative;
+  will-change: transform, scroll-position; /* Optimización de rendimiento */
+  overscroll-behavior-x: none; /* Prevenir scroll del navegador en móviles */
+}
+
+/* Ocultar la barra de desplazamiento */
+.carousel-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Estilos mejorados para los cursores */
+.carousel-container {
+  cursor: grab;
+  transition: cursor 0.2s ease;
+}
+
+.carousel-container:active {
+  cursor: grabbing !important;
+}
+
+/* Añadir un indicador visual de que se puede arrastrar */
+.carousel-container::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  background: rgba(212, 245, 122, 0.1);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translateY(-50%) scale(0.95);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-50%) scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-50%) scale(0.95);
+    opacity: 0.5;
+  }
+}
+
+.carousel-container:hover::after {
+  opacity: 1;
+}
+
+/* Mejorar la apariencia del carrusel */
+/* .carousel {
+  -ms-overflow-style: none; IE and Edge 
+  scrollbar-width: none; Firefox 
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 2rem;
+  position: relative;
+} */
+
+/* Añadir un indicador visual de que se puede arrastrar */
+/* .carousel::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  background: rgba(212, 245, 122, 0.1);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.carousel:hover::after {
+  opacity: 1;
+} */
+
+/* Mejorar la apariencia de las cards */
+.card {
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  will-change: transform, opacity; /* Optimización de rendimiento */
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Añadir efecto de brillo al pasar el cursor */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card:hover::before {
+  transform: translateX(100%);
+}
+
+/* Mejorar el efecto de scroll para el pin */
+.pin-spacer {
+  transition: all 0.1s ease-out;
+}
+
+/* Optimizar el rendimiento de animaciones */
+.scroll-animation {
+  will-change: transform, opacity;
+}
+
+/* Mejorar la visualización del indicador de scroll */
+@keyframes slide {
+  0% {
+    left: -100%;
+    opacity: 0.7;
+  }
+  100% {
+    left: 100%;
+    opacity: 0.9;
+  }
+}
+
+/* Añadir un indicador de scroll más visible */
+.scroll-indicator {
+  position: relative;
+  width: 50px;
+  height: 3px;
+  background: rgba(212, 245, 122, 0.2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.scroll-indicator::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: rgba(212, 245, 122, 0.8);
+  border-radius: 3px;
+  animation: slide 2s infinite;
+}
+

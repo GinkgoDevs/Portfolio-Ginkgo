@@ -5,6 +5,7 @@ import RotatingText from "./RotatingText"
 import FallingLeaves from "./FallingLeaves"
 import Navbar from "./Navbar"
 import Magnet from "./Magnet"
+import ScrollAnimation from "../ScrollAnimation"
 import { useEffect, useState } from "react"
 
 export default function Hero() {
@@ -28,33 +29,15 @@ export default function Hero() {
     controls.start("visible")
   }
 
-  const variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-      },
-    },
-  }
-
   const ButtonWrapper = isMobile ? "div" : Magnet
 
   return (
-    <div id="home" className="relative h-screen bg-[#293B36] overflow-hidden">
+    <div id="home" className="relative min-h-screen bg-[#293B36] pb-32 overflow-x-hidden">
       <FallingLeaves />
       <Navbar />
 
       <div className="relative z-10 flex flex-col justify-start md:justify-center items-center min-h-screen px-2 sm:px-4 md:px-16 lg:px-24 pt-16 md:pt-0">
-        <motion.div
-          ref={ref}
-          initial="hidden"
-          animate={controls}
-          variants={variants}
-          className="w-full max-w-7xl mt-20 md:mt-0"
-        >
+        <ScrollAnimation className="w-full max-w-7xl mt-20 md:mt-0">
           <div className="text-center">
             <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-7xl font-bold text-white font-delight leading-tight mb-2 md:mb-4">
               <span className="block mb-2 md:mb-0">Construimos experiencias</span>
@@ -89,8 +72,11 @@ export default function Hero() {
               </motion.button>
             </ButtonWrapper>
           </div>
-        </motion.div>
+        </ScrollAnimation>
       </div>
+
+      {/* Add a gradient transition at the bottom */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#293B36] pointer-events-none" />
     </div>
   )
 }
