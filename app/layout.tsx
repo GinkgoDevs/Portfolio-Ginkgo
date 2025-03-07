@@ -10,17 +10,15 @@ export const metadata = {
   description: "Web development duo transforming ideas into functional and attractive solutions",
 }
 
+
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        {children}
-        <Footer />
-      </body>
+      <body className="overflow-x-hidden bg-[#293B36]">{children}</body>
     </html>
   )
 }

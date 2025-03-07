@@ -29,7 +29,7 @@ export default function Projects() {
     : projects
 
   return (
-    <section id="projects" className="py-20 relative">
+    <section id="projects" className="py-20 relative bg-[#293B36]">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl sm:text-4xl font-bold text-center mb-16 text-green-800">Our Projects</h2>
 
