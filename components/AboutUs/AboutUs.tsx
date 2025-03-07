@@ -192,7 +192,7 @@ export default function AboutUs() {
 
       <div className="container mx-auto px-4 relative z-10 min-h-[80vh] flex flex-col justify-center">
         <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold text-[#D4F57A] text-center mb-16">
-          Detrás del código, hay personas apasionadas por la tecnología 
+          Meet Our Team
         </h2>
 
         {/* Team Members Grid */}
