@@ -1,30 +1,42 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import type React from "react"
+
+import { useState, useEffect, createContext, useContext } from "react"
 import Link from "next/link"
-import { Facebook, Youtube, Instagram, Linkedin } from "lucide-react"
+import { Facebook, Youtube, Instagram, Linkedin, Github } from "lucide-react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
+import { useTranslation } from "@/contexts/TranslationContext"
 
-const menuItems = [
-  { name: "Projects", href: "#projects" },
-  { name: "Agency", href: "#agency" },
-  { name: "Our Work", href: "#work" },
-  { name: "Careers", href: "#careers" },
-  { name: "Top Expertise", href: "#expertise" },
-  { name: "Contact", href: "#contact" },
-]
+// Crear un contexto para el estado del menú
+export const MenuContext = createContext<{ isMenuOpen: boolean }>({ isMenuOpen: false })
 
-const socialLinks = [
-  { name: "Facebook", icon: Facebook, href: "#" },
-  { name: "Youtube", icon: Youtube, href: "#" },
-  { name: "Instagram", icon: Instagram, href: "#" },
-  { name: "Linkedin", icon: Linkedin, href: "#" },
-]
+// Hook personalizado para usar el contexto del menú
+export const useMenuState = () => useContext(MenuContext)
 
-const Navbar = () => {
+export default function Navbar() {
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const { locale } = useTranslation()
+
+  // Define menu items with translations
+  const menuItems = [
+    { name: t("home.navbar.services"), href: "#services" },
+    { name: t("home.navbar.about"), href: "#about-us" },
+    { name: t("home.navbar.tools"), href: "#tools" },
+    { name: t("home.navbar.projects"), href: "#projects" },
+    { name: t("home.navbar.contact"), href: "#contact" },
+  ]
+
+  const socialLinks = [
+    { name: "Facebook", icon: Facebook, href: "#" },
+    { name: "Youtube", icon: Youtube, href: "#" },
+    { name: "Instagram", icon: Instagram, href: "#" },
+    { name: "Linkedin", icon: Linkedin, href: "#" },
+    { name: "Github", icon: Github, href: "#" },
+  ]
 
   // Handle scroll effect
   useEffect(() => {
@@ -100,8 +112,52 @@ const Navbar = () => {
     },
   }
 
+  // Función para manejar el scroll suave a las secciones
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+
+    // Extraer el ID de la sección del href
+    const targetId = href.startsWith("#") ? href.substring(1) : href
+    const targetElement = document.getElementById(targetId)
+
+    if (targetElement) {
+      // Calcular offset para tener en cuenta la altura de la barra de navegación
+      const navHeight = 80 // Altura aproximada de la barra de navegación
+      const elementPosition = targetElement.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - navHeight
+
+      // Scroll suave a la sección con offset
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      })
+
+      // Actualizar la URL sin recargar la página
+      window.history.pushState(null, "", href)
+
+      // Cerrar el menú si está abierto
+      if (isOpen) {
+        setIsOpen(false)
+      }
+    }
+  }
+
+  // Modificar la función para abrir el menú
+  const openMenu = () => {
+    setIsOpen(true)
+    // Disparar un evento personalizado cuando el menú se abre
+    document.dispatchEvent(new CustomEvent("menuStateChange", { detail: { isOpen: true } }))
+  }
+
+  // Modificar la función para cerrar el menú
+  const closeMenu = () => {
+    setIsOpen(false)
+    // Disparar un evento personalizado cuando el menú se cierra
+    document.dispatchEvent(new CustomEvent("menuStateChange", { detail: { isOpen: false } }))
+  }
+
   return (
-    <>
+    <MenuContext.Provider value={{ isMenuOpen: isOpen }}>
       {/* Main Navbar */}
       <nav
         className={`fixed w-full z-40 transition-all duration-300 ${
@@ -115,25 +171,27 @@ const Navbar = () => {
           <div className="flex items-center justify-between h-16 md:h-24">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/descarga-BNlNhb9dAxkJ2cjd8OiX1bfCcJiRqu.png"
-                alt="Ginkgo Devs Logo"
-                width={200}
-                height={129}
-                priority
-                className="w-32 sm:w-40 md:w-[250px]"
-              />
+              <Link href={`/${locale}`}>
+                <Image
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/descarga-BNlNhb9dAxkJ2cjd8OiX1bfCcJiRqu.png"
+                  alt="Ginkgo Devs Logo"
+                  width={200}
+                  height={129}
+                  priority
+                  className="w-32 sm:w-40 md:w-[250px]"
+                />
+              </Link>
             </div>
 
             {/* Menu Button */}
             <motion.button
-              onClick={() => setIsOpen(true)}
+              onClick={openMenu}
               variants={buttonVariants}
               whileHover="hover"
               whileTap="tap"
               className="relative z-40 px-4 py-2 rounded-full bg-[#D4F57A] text-[#293B36] hover:bg-[#D4F57A]/90 transition-colors"
             >
-              <span className="text-sm font-medium">MENU</span>
+              <span className="text-sm font-medium">{t("home.navbar.menuButton")}</span>
             </motion.button>
           </div>
         </div>
@@ -150,7 +208,7 @@ const Navbar = () => {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
-              onClick={() => setIsOpen(false)}
+              onClick={closeMenu}
             />
 
             {/* Menu Panel */}
@@ -168,13 +226,13 @@ const Navbar = () => {
               <div className="h-full flex flex-col p-5">
                 {/* Close Button */}
                 <motion.button
-                  onClick={() => setIsOpen(false)}
+                  onClick={closeMenu}
                   variants={buttonVariants}
                   whileHover="hover"
                   whileTap="tap"
                   className="self-end px-4 py-2 rounded-full bg-black text-[#D4F57A] text-xs mb-6"
                 >
-                  <span className="font-medium">CLOSE</span>
+                  <span className="font-medium">{t("home.navbar.closeButton")}</span>
                 </motion.button>
 
                 {/* Navigation Items */}
@@ -184,7 +242,7 @@ const Navbar = () => {
                       <motion.li key={item.name} variants={menuItemVariants} className="w-full">
                         <Link
                           href={item.href}
-                          onClick={() => setIsOpen(false)}
+                          onClick={(e) => handleSmoothScroll(e, item.href)}
                           className="text-[#293B36] text-xl font-medium hover:text-[#293B36]/70 transition-colors block w-full whitespace-nowrap"
                         >
                           {item.name}
@@ -214,9 +272,7 @@ const Navbar = () => {
           </>
         )}
       </AnimatePresence>
-    </>
+    </MenuContext.Provider>
   )
 }
-
-export default Navbar
 
