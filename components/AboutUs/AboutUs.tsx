@@ -1,10 +1,13 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import type React from "react"
+import { useRef, useState, useEffect, useMemo } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import DisintegrationEffect from "./DisintegrationEffect"
 import { ShieldCheck, Users, RefreshCw, BookOpen, Sparkles, Smile } from "lucide-react"
+import { useTranslation } from "@/contexts/TranslationContext"
+import LazyLoad from "@/components/LazyLoad"
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
@@ -15,59 +18,17 @@ const teamMembers = [
   {
     name: "Nicolas Alonso",
     role: "Full Stack Developer",
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/Nico.jpeg?height=400&width=400", // Cambiado a placeholder mientras no exista la imagen
   },
   {
     name: "Federico Valle",
     role: "Full Stack Developer",
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/Fede.jpg?height=400&width=400",
   },
 ]
-
-const values = [
-  {
-    title: "Creatividad",
-    description: "Diseñamos experiencias únicas y diferenciadoras.",
-    icon: <Sparkles className="w-12 h-12" />,
-  },
-  {
-    title: "Diversión",
-    description: "Porque mientras creamos, nos divertimos y disfrutamos de nuestro trabajo.",
-    icon: <Smile className="w-12 h-12" />,
-  },
-  {
-    title: "Colaboración",
-    description:
-      "Tanto con los clientes como en el equipo, trabajamos 'codo a codo' para garantizar que el resultado sea perfecto.",
-    icon: <Users className="w-12 h-12" />,
-  },
-  {
-    title: "Responsabilidad",
-    description: "Nos comprometemos con cada proyecto y cumplimos nuestras promesas.",
-    icon: <ShieldCheck className="w-12 h-12" />,
-  },
-  {
-    title: "Adaptabilidad",
-    description: "Nos adaptamos rápidamente a nuevas tecnologías y necesidades.",
-    icon: <RefreshCw className="w-12 h-12" />,
-  },
-  {
-    title: "Aprendizaje Continuo",
-    description: "Nunca dejamos de aprender y mejorar nuestras habilidades.",
-    icon: <BookOpen className="w-12 h-12" />,
-  },
-]
-
-const ScrollIndicator = () => (
-  <div className="flex items-center gap-2 text-[#D4F57A]">
-    <span className="text-sm">Desliza para ver más</span>
-    <div className="w-12 h-1 bg-[#D4F57A]/30 rounded-full relative overflow-hidden">
-      <div className="absolute inset-y-0 left-0 w-3 bg-[#D4F57A] rounded-full animate-[slide_2s_infinite]"></div>
-    </div>
-  </div>
-)
 
 export default function AboutUs() {
+  const { t } = useTranslation()
   const [showValues, setShowValues] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const sectionRef = useRef<HTMLElement>(null)
@@ -87,6 +48,48 @@ export default function AboutUs() {
     lastTimestamp: 0,
     momentumID: null as number | null,
   })
+
+  const values = [
+    {
+      title: t("home.about.values.creativity"),
+      description: t("home.about.values.creativityDesc"),
+      icon: <Sparkles className="w-12 h-12" />,
+    },
+    {
+      title: t("home.about.values.fun"),
+      description: t("home.about.values.funDesc"),
+      icon: <Smile className="w-12 h-12" />,
+    },
+    {
+      title: t("home.about.values.collaboration"),
+      description: t("home.about.values.collaborationDesc"),
+      icon: <Users className="w-12 h-12" />,
+    },
+    {
+      title: t("home.about.values.responsibility"),
+      description: t("home.about.values.responsibilityDesc"),
+      icon: <ShieldCheck className="w-12 h-12" />,
+    },
+    {
+      title: t("home.about.values.adaptability"),
+      description: t("home.about.values.adaptabilityDesc"),
+      icon: <RefreshCw className="w-12 h-12" />,
+    },
+    {
+      title: t("home.about.values.learning"),
+      description: t("home.about.values.learningDesc"),
+      icon: <BookOpen className="w-12 h-12" />,
+    },
+  ]
+
+  const ScrollIndicator = () => (
+    <div className="flex items-center gap-2 text-[#D4F57A]">
+      <span className="text-sm">{t("home.about.scroll")}</span>
+      <div className="w-12 h-1 bg-[#D4F57A]/30 rounded-full relative overflow-hidden">
+        <div className="absolute inset-y-0 left-0 w-3 bg-[#D4F57A] rounded-full animate-[slide_2s_infinite]"></div>
+      </div>
+    </div>
+  )
 
   // Detect mobile devices
   useEffect(() => {
@@ -118,8 +121,8 @@ export default function AboutUs() {
       scrollTrigger: {
         trigger: sectionRef.current,
         start: "top top", // Adjusted to start a bit higher
-        end: "bottom top",    // Reduced for smoother transition
-        scrub: 0.5,        // Reduced for less delay and smoother animation
+        end: "bottom top", // Reduced for smoother transition
+        scrub: 0.5, // Reduced for less delay and smoother animation
         pin: true,
         pinSpacing: true,
         anticipatePin: 1,
@@ -182,9 +185,8 @@ export default function AboutUs() {
     }
   }, [isMobile])
 
-  // Función para renderizar las tarjetas de valores en un orden infinito
-  const renderValueCards = () => {
-    // Renderizamos las tarjetas de valores
+  // Memoize value cards to avoid unnecessary re-renders
+  const valueCards = useMemo(() => {
     return values.map((value, index) => (
       <div
         key={`value-${index}`}
@@ -196,7 +198,7 @@ export default function AboutUs() {
         <p className="text-[#F5F2EB]/80 text-lg">{value.description}</p>
       </div>
     ))
-  }
+  }, [])
 
   // Configurar el carrusel infinito para desktop
   useEffect(() => {
@@ -433,7 +435,7 @@ export default function AboutUs() {
       }
 
       carouselElement.scrollLeft += scrollAmount
-    }, 16) // Aproximadamente 60fps para un movimiento más suave
+    }, 16)
 
     setAutoScrollInterval(interval)
 
@@ -508,6 +510,23 @@ export default function AboutUs() {
     }
   }, [isMobile])
 
+  // Añadir manejo de teclado para el carrusel
+  const handleKeyDown = (e: React.KeyboardEvent, carouselElement: HTMLDivElement | null) => {
+    if (!carouselElement) return
+
+    if (e.key === "ArrowLeft") {
+      if (carouselElement) {
+        carouselElement.scrollLeft -= 300 // Ancho aproximado de una card
+      }
+      e.preventDefault()
+    } else if (e.key === "ArrowRight") {
+      if (carouselElement) {
+        carouselElement.scrollLeft += 300 // Ancho aproximado de una card
+      }
+      e.preventDefault()
+    }
+  }
+
   return (
     <section id="about-us" ref={sectionRef} className="relative bg-[#293B36] min-h-screen -mt-1 md:mt-0">
       {/* Aseguramos que el fondo sea consistente */}
@@ -516,7 +535,7 @@ export default function AboutUs() {
       <div className="relative z-10 container mx-auto px-4 py-16 md:py-12 min-h-screen flex flex-col justify-center">
         {/* Title */}
         <h2 ref={titleRef} className="text-4xl md:text-5xl font-bold text-[#F5F2EB] text-center mb-12">
-          Detrás del código, hay personas apasionadas por la tecnología
+          {t("home.about.title")}
         </h2>
 
         {/* Team Members Grid */}
@@ -525,12 +544,14 @@ export default function AboutUs() {
             <div key={index} className="flex flex-col items-center">
               <div className="relative mb-6">
                 <div className="w-[300px] h-[300px] rounded-full border-4 border-[#D4F57A] overflow-hidden">
-                  <DisintegrationEffect
-                    imageSrc={member.image}
-                    altText={member.name}
-                    index={index}
-                    scrollTriggerEnabled={!isMobile}
-                  />
+                  <LazyLoad>
+                    <DisintegrationEffect
+                      imageSrc={member.image}
+                      altText={member.name}
+                      index={index}
+                      scrollTriggerEnabled={!isMobile}
+                    />
+                  </LazyLoad>
                 </div>
               </div>
               <h3 className="text-2xl font-bold text-white mb-2">{member.name}</h3>
@@ -551,12 +572,10 @@ export default function AboutUs() {
               {/* Left side - Title */}
               <div className="md:w-1/3">
                 <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                  Nuestros <span className="text-[#D4F57A]">valores</span>
+                  <span className="text-[#D4F57A]">{t("home.about.values.title")}</span>
                 </h2>
                 <div className="w-16 h-1.5 bg-[#D4F57A] rounded-full mb-8"></div>
-                <p className="text-[#F5F2EB]/80 text-lg mb-6">
-                  Estos principios guían nuestro trabajo y definen nuestra cultura como equipo.
-                </p>
+                <p className="text-[#F5F2EB]/80 text-lg mb-6">{t("home.about.values.subtitle")}</p>
                 <div className="hidden md:flex items-center gap-2">
                   <ScrollIndicator />
                 </div>
@@ -580,56 +599,68 @@ export default function AboutUs() {
                   onMouseUp={() => handleMouseUp(carouselRef.current)}
                   onMouseMove={(e) => handleMouseMove(e, carouselRef.current)}
                   onMouseLeave={() => handleMouseLeave(carouselRef.current)}
+                  onKeyDown={(e) => handleKeyDown(e, carouselRef.current)}
+                  tabIndex={0}
+                  role="region"
+                  aria-label="Carrusel de valores"
                 >
-                  {renderValueCards()}
+                  {valueCards}
                 </div>
-                <div className="hidden md:flex justify-end mt-4 gap-3">
-                  <button
-                    className="p-2 rounded-full bg-[#D4F57A]/10 hover:bg-[#D4F57A]/20 transition-colors"
-                    onClick={() => {
-                      if (carouselRef.current) {
-                        carouselRef.current.scrollLeft -= 300 // Ancho aproximado de una card
-                      }
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-[#D4F57A]"
+                <div className="hidden md:flex justify-between mt-4 gap-3">
+                  <div className="text-white/80 text-sm">
+                    <span className="sr-only">Instrucciones de accesibilidad: </span>
+                    Usa las teclas de flecha izquierda y derecha para navegar por el carrusel
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      className="p-2 rounded-full bg-[#D4F57A]/10 hover:bg-[#D4F57A]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:ring-offset-2 focus:ring-offset-[#293B36]"
+                      onClick={() => {
+                        if (carouselRef.current) {
+                          carouselRef.current.scrollLeft -= 300 // Ancho aproximado de una card
+                        }
+                      }}
+                      aria-label="Desplazar a la izquierda"
                     >
-                      <path d="m15 18-6-6 6-6" />
-                    </svg>
-                  </button>
-                  <button
-                    className="p-2 rounded-full bg-[#D4F57A]/10 hover:bg-[#D4F57A]/20 transition-colors"
-                    onClick={() => {
-                      if (carouselRef.current) {
-                        carouselRef.current.scrollLeft += 300 // Ancho aproximado de una card
-                      }
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-[#D4F57A]"
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-[#D4F57A]"
+                      >
+                        <path d="m15 18-6-6 6-6" />
+                      </svg>
+                    </button>
+                    <button
+                      className="p-2 rounded-full bg-[#D4F57A]/10 hover:bg-[#D4F57A]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:ring-offset-2 focus:ring-offset-[#293B36]"
+                      onClick={() => {
+                        if (carouselRef.current) {
+                          carouselRef.current.scrollLeft += 300 // Ancho aproximado de una card
+                        }
+                      }}
+                      aria-label="Desplazar a la derecha"
                     >
-                      <path d="m9 18 6-6-6-6" />
-                    </svg>
-                  </button>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="text-[#D4F57A]"
+                      >
+                        <path d="m9 18 6-6-6-6" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -640,12 +671,10 @@ export default function AboutUs() {
         {isMobile && (
           <div className="mt-24 mb-12">
             <h2 className="text-4xl font-bold text-white mb-4 text-center">
-              Nuestros <span className="text-[#D4F57A]">valores</span>
+              <span className="text-[#D4F57A]">{t("home.about.values.title")}</span>
             </h2>
             <div className="w-16 h-1.5 bg-[#D4F57A] rounded-full mb-8 mx-auto"></div>
-            <p className="text-[#F5F2EB]/80 text-lg mb-6 text-center px-4">
-              Estos principios guían nuestro trabajo y definen nuestra cultura como equipo.
-            </p>
+            <p className="text-[#F5F2EB]/80 text-lg mb-6 text-center px-4">{t("home.about.values.subtitle")}</p>
 
             <div className="overflow-hidden">
               <div
@@ -671,7 +700,7 @@ export default function AboutUs() {
                   }
                 }}
               >
-                {renderValueCards()}
+                {valueCards}
               </div>
 
               {/* Indicador de scroll */}
@@ -685,3 +714,4 @@ export default function AboutUs() {
     </section>
   )
 }
+

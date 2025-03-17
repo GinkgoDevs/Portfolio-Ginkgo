@@ -1,0 +1,106 @@
+{
+  "accessibility": {
+    "skipToContent": "Saltar al contenido principal",
+    "options": "Opciones de accesibilidad",
+    "highContrast": "Alto contraste",
+    "fontSize": "Tamaño de texto",
+    "reset": "Restablecer",
+    "reduceMotion": "Reducir movimiento"
+  },
+  "home": {
+    "navbar": {
+      "services": "Servicios",
+      "about": "Nosotros",
+      "tools": "Herramientas",
+      "projects": "Proyectos",
+      "contact": "Contacto",
+      "menuButton": "MENÚ",
+      "closeButton": "CERRAR"
+    },
+    "services": {
+      "title": "Soluciones digitales que transforman negocios",
+      "subtitle": "Creamos experiencias digitales que impulsan el crecimiento de tu empresa",
+      "webDevelopment": "Desarrollo Web",
+      "webDevelopmentDesc": "Sitios web escalables, rápidos y optimizados.",
+      "optimization": "Optimización y Mantenimiento",
+      "optimizationDesc": "Mejoramos tu web para que rinda al máximo.",
+      "strategies": "Estrategias Digitales",
+      "strategiesDesc": "Maximizamos tu presencia online con soluciones inteligentes.",
+      "quoteButton": "Cotiza tu proyecto",
+      "portfolioButton": "Ver portafolio"
+    },
+    "hero": {
+      "title": "Construimos experiencias",
+      "titleSuffix": "digitales con",
+      "rotatingTexts": "propósito,calidad,consciencia",
+      "subtitle": "Soluciones a medida para negocios que buscan impacto y escalabilidad",
+      "ctaButton": "Hablemos de tu proyecto",
+      "ctaButtonAriaLabel": "Contactar para hablar sobre tu proyecto"
+    },
+    "about": {
+      "title": "Detrás del código, hay personas apasionadas por la tecnología",
+      "values": {
+        "title": "Nuestros valores",
+        "subtitle": "Estos principios guían nuestro trabajo y definen nuestra cultura como equipo.",
+        "creativity": "Creatividad",
+        "creativityDesc": "Diseñamos experiencias únicas y diferenciadoras.",
+        "fun": "Diversión",
+        "funDesc": "Porque mientras creamos, nos divertimos y disfrutamos de nuestro trabajo.",
+        "collaboration": "Colaboración",
+        "collaborationDesc": "Tanto con los clientes como en el equipo, trabajamos 'codo a codo' para garantizar que el resultado sea perfecto.",
+        "responsibility": "Responsabilidad",
+        "responsibilityDesc": "Nos comprometemos con cada proyecto y cumplimos nuestras promesas.",
+        "adaptability": "Adaptabilidad",
+        "adaptabilityDesc": "Nos adaptamos rápidamente a nuevas tecnologías y necesidades.",
+        "learning": "Aprendizaje Continuo",
+        "learningDesc": "Nunca dejamos de aprender y mejorar nuestras habilidades."
+      },
+      "scroll": "Desliza para ver más"
+    },
+    "tools": {
+      "title": "Las herramientas correctas",
+      "subtitle": "Dominamos un amplio espectro de tecnologías para ofrecer las mejores soluciones a cada proyecto",
+      "categories": {
+        "frontend": "Frontend",
+        "styles": "Estilos & UI",
+        "backend": "Backend",
+        "databases": "Bases de Datos",
+        "cms": "CMS & E-commerce",
+        "devops": "DevOps & Deployment"
+      },
+      "scrollInstructions": "Desliza o usa las flechas del teclado para navegar entre categorías"
+    },
+    "projects": {
+      "title": "Nuestros Proyectos",
+      "scrollInstructions": "Desliza o arrastra para navegar por los proyectos"
+    },
+    "contact": {
+      "title": "Haz crecer tu proyecto con nosotros",
+      "subtitle": "¿Listo para nutrir tus ideas y convertirlas en soluciones digitales prósperas? ¡Cultivemos el éxito juntos!",
+      "name": "Nombre",
+      "email": "Correo electrónico",
+      "message": "Mensaje",
+      "send": "Enviar mensaje",
+      "sending": "Enviando...",
+      "success": "¡Mensaje enviado!",
+      "successDesc": "Nos pondremos en contacto contigo lo antes posible."
+    }
+  },
+  "footer": {
+    "description": "Transformando ideas en soluciones web funcionales y atractivas",
+    "quickLinks": "Enlaces rápidos",
+    "home": "Inicio",
+    "about": "Nosotros",
+    "projects": "Proyectos",
+    "contact": "Contacto",
+    "contactInfo": "Información de contacto",
+    "rights": "Todos los derechos reservados."
+  },
+  "notFound": {
+    "title": "404",
+    "heading": "Página no encontrada",
+    "description": "Lo sentimos, la página que estás buscando no existe o ha sido movida.",
+    "backHome": "Volver al inicio"
+  }
+}
+

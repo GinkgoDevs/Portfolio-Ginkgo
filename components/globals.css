@@ -182,3 +182,8 @@
   animation: slide 2s infinite;
 }
 
+/* Añadir clase para tamaño de texto 150% */
+html.text-size-150 {
+  font-size: 150% !important;
+}
+

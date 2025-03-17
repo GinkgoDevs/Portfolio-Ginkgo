@@ -1,0 +1,106 @@
+{
+  "accessibility": {
+    "skipToContent": "Skip to main content",
+    "options": "Accessibility options",
+    "highContrast": "High contrast",
+    "fontSize": "Text size",
+    "reset": "Reset",
+    "reduceMotion": "Reduce motion"
+  },
+  "home": {
+    "navbar": {
+      "services": "Services",
+      "about": "About",
+      "tools": "Tools",
+      "projects": "Projects",
+      "contact": "Contact",
+      "menuButton": "MENU",
+      "closeButton": "CLOSE"
+    },
+    "services": {
+      "title": "Digital solutions that transform businesses",
+      "subtitle": "We create digital experiences that drive your company's growth",
+      "webDevelopment": "Web Development",
+      "webDevelopmentDesc": "Scalable, fast, and optimized websites.",
+      "optimization": "Optimization and Maintenance",
+      "optimizationDesc": "We improve your website to perform at its best.",
+      "strategies": "Digital Strategies",
+      "strategiesDesc": "We maximize your online presence with intelligent solutions.",
+      "quoteButton": "Quote your project",
+      "portfolioButton": "View portfolio"
+    },
+    "hero": {
+      "title": "We build experiences",
+      "titleSuffix": "digital with",
+      "rotatingTexts": "purpose,quality,consciousness",
+      "subtitle": "Custom solutions for businesses seeking impact and scalability",
+      "ctaButton": "Let's talk about your project",
+      "ctaButtonAriaLabel": "Contact to talk about your project"
+    },
+    "about": {
+      "title": "Behind the code, there are people passionate about technology",
+      "values": {
+        "title": "Our values",
+        "subtitle": "These principles guide our work and define our culture as a team.",
+        "creativity": "Creativity",
+        "creativityDesc": "We design unique and differentiating experiences.",
+        "fun": "Fun",
+        "funDesc": "Because while we create, we have fun and enjoy our work.",
+        "collaboration": "Collaboration",
+        "collaborationDesc": "Both with clients and within the team, we work 'side by side' to ensure the result is perfect.",
+        "responsibility": "Responsibility",
+        "responsibilityDesc": "We commit to each project and fulfill our promises.",
+        "adaptability": "Adaptability",
+        "adaptabilityDesc": "We quickly adapt to new technologies and needs.",
+        "learning": "Continuous Learning",
+        "learningDesc": "We never stop learning and improving our skills."
+      },
+      "scroll": "Scroll to see more"
+    },
+    "tools": {
+      "title": "The right tools",
+      "subtitle": "We master a wide spectrum of technologies to offer the best solutions for each project",
+      "categories": {
+        "frontend": "Frontend",
+        "styles": "Styles & UI",
+        "backend": "Backend",
+        "databases": "Databases",
+        "cms": "CMS & E-commerce",
+        "devops": "DevOps & Deployment"
+      },
+      "scrollInstructions": "Swipe or use keyboard arrows to navigate between categories"
+    },
+    "projects": {
+      "title": "Our Projects",
+      "scrollInstructions": "Swipe or drag to navigate through projects"
+    },
+    "contact": {
+      "title": "Grow Your Project with Us",
+      "subtitle": "Ready to nurture your ideas into thriving digital solutions? Let's cultivate success together!",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent!",
+      "successDesc": "We'll get back to you as soon as possible."
+    }
+  },
+  "footer": {
+    "description": "Transforming ideas into functional and attractive web solutions",
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "contact": "Contact",
+    "contactInfo": "Contact Info",
+    "rights": "All rights reserved."
+  },
+  "notFound": {
+    "title": "404",
+    "heading": "Page not found",
+    "description": "Sorry, the page you are looking for doesn't exist or has been moved.",
+    "backHome": "Back to home"
+  }
+}
+
