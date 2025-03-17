@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useAccessibility } from "../AccessibilityProvider"
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger)
@@ -29,6 +30,7 @@ export default function DisintegrationEffect({
   const [canvasElements, setCanvasElements] = useState<HTMLCanvasElement[]>([])
   const [imageLoaded, setImageLoaded] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const { highContrast } = useAccessibility()
 
   // Detectar dispositivo móvil
   useEffect(() => {
@@ -49,6 +51,14 @@ export default function DisintegrationEffect({
 
     // Si estamos en móvil y no se requiere la animación de scroll, simplemente mostramos la imagen
     if (isMobile && !scrollTriggerEnabled) {
+      return
+    }
+
+    // Si está en modo de alto contraste, no aplicar el efecto de desintegración
+    if (highContrast) {
+      if (imageRef.current) {
+        imageRef.current.style.opacity = "1"
+      }
       return
     }
 
@@ -107,10 +117,13 @@ export default function DisintegrationEffect({
     }
 
     createCanvases()
-  }, [imageLoaded, COUNT, REPEAT_COUNT, isMobile, scrollTriggerEnabled])
+  }, [imageLoaded, COUNT, REPEAT_COUNT, isMobile, scrollTriggerEnabled, highContrast])
 
   useEffect(() => {
     if (canvasElements.length === 0) return
+
+    // Si está en modo de alto contraste, no aplicar el efecto de desintegración
+    if (highContrast) return
 
     // Si no se requiere la animación de scroll, no configuramos el ScrollTrigger
     if (!scrollTriggerEnabled) {
@@ -124,10 +137,9 @@ export default function DisintegrationEffect({
             start: "top 20%", // Comienza cuando la imagen está más arriba en la pantalla
             end: "bottom top", // Termina cuando la imagen sale por arriba
             scrub: 1.5, // Suavizado
-            onComplete: () => onComplete?.(),
           }
         : null,
-      onComplete: !scrollTriggerEnabled ? () => onComplete?.() : undefined,
+      onComplete: () => onComplete?.(), // Moved onComplete to the timeline level
     })
 
     canvasElements.forEach((canvas, i) => {
@@ -158,17 +170,19 @@ export default function DisintegrationEffect({
         ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
       }
     }
-  }, [canvasElements, onComplete, index, scrollTriggerEnabled])
+  }, [canvasElements, onComplete, index, scrollTriggerEnabled, highContrast])
 
   return (
-    <div ref={containerRef} className="relative w-full h-full">
+    <div ref={containerRef} className="relative w-full h-full profile-image-container">
       <Image
         ref={imageRef as any}
         src={imageSrc || "/placeholder.svg"}
         alt={altText}
         width={300}
         height={300}
-        className={`object-cover w-full h-full rounded-full ${isMobile && !scrollTriggerEnabled ? "opacity-100" : "opacity-0"}`}
+        className={`object-cover w-full h-full rounded-full ${
+          (isMobile && !scrollTriggerEnabled) || highContrast ? "opacity-100" : "opacity-0"
+        }`}
         onLoad={() => setImageLoaded(true)}
         priority
       />

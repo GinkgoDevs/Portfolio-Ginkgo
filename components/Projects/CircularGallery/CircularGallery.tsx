@@ -111,6 +111,7 @@ class Media {
     textColor,
     borderRadius = 0,
     font,
+    id,
   }) {
     this.extra = 0
     this.geometry = geometry
@@ -127,6 +128,7 @@ class Media {
     this.textColor = textColor
     this.borderRadius = borderRadius
     this.font = font
+    this.id = id
     this.createShader()
     this.createMesh()
     this.createTitle()
@@ -283,11 +285,15 @@ class Media {
 }
 
 class App {
-  constructor(container, { items, bend, textColor = "#ffffff", borderRadius = 0, font = "bold 30px DM Sans" } = {}) {
+  constructor(
+    container,
+    { items, bend, textColor = "#ffffff", borderRadius = 0, font = "bold 30px DM Sans", onItemClick } = {},
+  ) {
     document.documentElement.classList.remove("no-js")
     this.container = container
     this.scroll = { ease: 0.05, current: 0, target: 0, last: 0 }
     this.onCheckDebounce = debounce(this.onCheck, 200)
+    this.onItemClick = onItemClick
     this.createRenderer()
     this.createCamera()
     this.createScene()
@@ -297,26 +303,31 @@ class App {
     this.update()
     this.addEventListeners()
   }
+
   createRenderer() {
     this.renderer = new Renderer({ alpha: true })
     this.gl = this.renderer.gl
     this.gl.clearColor(0, 0, 0, 0)
     this.container.appendChild(this.gl.canvas)
   }
+
   createCamera() {
     this.camera = new Camera(this.gl)
     this.camera.fov = 45
     this.camera.position.z = 20
   }
+
   createScene() {
     this.scene = new Transform()
   }
+
   createGeometry() {
     this.planeGeometry = new Plane(this.gl, {
       heightSegments: 50,
       widthSegments: 100,
     })
   }
+
   createMedias(items, bend = 1, textColor, borderRadius, font) {
     const defaultItems = [
       { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: "Bridge" },
@@ -350,28 +361,65 @@ class App {
         textColor,
         borderRadius,
         font,
+        id: data.id,
       })
     })
   }
+
+  handleClick(e) {
+    if (!this.onItemClick) return
+
+    // Solo procesar el clic si no estamos arrastrando
+    if (this.isDown) return
+
+    // Verificar si el clic fue muy cercano al inicio del arrastre (para evitar clics accidentales durante el arrastre)
+    const now = Date.now()
+    if (now - this.lastTouchDown < 300) {
+      // Encontrar el medio más cercano al centro
+      let closestMedia = null
+      let closestDistance = Number.POSITIVE_INFINITY
+
+      this.medias.forEach((media) => {
+        const distance = Math.abs(media.plane.position.x)
+        if (distance < closestDistance) {
+          closestDistance = distance
+          closestMedia = media
+        }
+      })
+
+      if (closestMedia && closestDistance < this.medias[0].width * 0.5) {
+        // Obtener el ID del proyecto
+        const id = closestMedia.id
+        if (id !== undefined) {
+          this.onItemClick(id)
+        }
+      }
+    }
+  }
+
   onTouchDown(e) {
     this.isDown = true
+    this.lastTouchDown = Date.now() // Registrar el tiempo del último toque
     this.scroll.position = this.scroll.current
     this.start = e.touches ? e.touches[0].clientX : e.clientX
   }
+
   onTouchMove(e) {
     if (!this.isDown) return
     const x = e.touches ? e.touches[0].clientX : e.clientX
     const distance = (this.start - x) * 0.05
     this.scroll.target = this.scroll.position + distance
   }
+
   onTouchUp() {
     this.isDown = false
     this.onCheck()
   }
+
   onWheel() {
-    this.scroll.target += 2
-    this.onCheckDebounce()
+    // Desactivado para eliminar la funcionalidad de scroll
   }
+
   onCheck() {
     if (!this.medias || !this.medias[0]) return
     const width = this.medias[0].width
@@ -379,6 +427,7 @@ class App {
     const item = width * itemIndex
     this.scroll.target = this.scroll.target < 0 ? -item : item
   }
+
   onResize() {
     this.screen = {
       width: this.container.clientWidth,
@@ -396,6 +445,7 @@ class App {
       this.medias.forEach((media) => media.onResize({ screen: this.screen, viewport: this.viewport }))
     }
   }
+
   update() {
     this.scroll.current = lerp(this.scroll.current, this.scroll.target, this.scroll.ease)
     const direction = this.scroll.current > this.scroll.last ? "right" : "left"
@@ -406,33 +456,35 @@ class App {
     this.scroll.last = this.scroll.current
     this.raf = window.requestAnimationFrame(this.update.bind(this))
   }
+
   addEventListeners() {
     this.boundOnResize = this.onResize.bind(this)
-    this.boundOnWheel = this.onWheel.bind(this)
     this.boundOnTouchDown = this.onTouchDown.bind(this)
     this.boundOnTouchMove = this.onTouchMove.bind(this)
     this.boundOnTouchUp = this.onTouchUp.bind(this)
+    this.boundHandleClick = this.handleClick.bind(this)
+
     window.addEventListener("resize", this.boundOnResize)
-    window.addEventListener("mousewheel", this.boundOnWheel)
-    window.addEventListener("wheel", this.boundOnWheel)
     window.addEventListener("mousedown", this.boundOnTouchDown)
     window.addEventListener("mousemove", this.boundOnTouchMove)
     window.addEventListener("mouseup", this.boundOnTouchUp)
     window.addEventListener("touchstart", this.boundOnTouchDown)
     window.addEventListener("touchmove", this.boundOnTouchMove)
     window.addEventListener("touchend", this.boundOnTouchUp)
+    this.container.addEventListener("click", this.boundHandleClick)
   }
+
   destroy() {
     window.cancelAnimationFrame(this.raf)
     window.removeEventListener("resize", this.boundOnResize)
-    window.removeEventListener("mousewheel", this.boundOnWheel)
-    window.removeEventListener("wheel", this.boundOnWheel)
     window.removeEventListener("mousedown", this.boundOnTouchDown)
     window.removeEventListener("mousemove", this.boundOnTouchMove)
     window.removeEventListener("mouseup", this.boundOnTouchUp)
     window.removeEventListener("touchstart", this.boundOnTouchDown)
     window.removeEventListener("touchmove", this.boundOnTouchMove)
     window.removeEventListener("touchend", this.boundOnTouchUp)
+    this.container.removeEventListener("click", this.boundHandleClick)
+
     if (this.renderer && this.renderer.gl && this.renderer.gl.canvas.parentNode) {
       this.renderer.gl.canvas.parentNode.removeChild(this.renderer.gl.canvas)
     }
@@ -445,14 +497,27 @@ export default function CircularGallery({
   textColor = "#ffffff",
   borderRadius = 0.05,
   font = "bold 30px DM Sans",
+  onItemClick,
 }) {
   const containerRef = useRef(null)
+
   useEffect(() => {
-    const app = new App(containerRef.current, { items, bend, textColor, borderRadius, font })
+    if (!containerRef.current) return
+
+    const app = new App(containerRef.current, {
+      items,
+      bend,
+      textColor,
+      borderRadius,
+      font,
+      onItemClick,
+    })
+
     return () => {
       app.destroy()
     }
-  }, [items, bend, textColor, borderRadius, font])
+  }, [items, bend, textColor, borderRadius, font, onItemClick])
+
   return <div className="circular-gallery" ref={containerRef} />
 }
 

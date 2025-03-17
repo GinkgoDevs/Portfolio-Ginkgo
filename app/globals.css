@@ -2,16 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -39,15 +29,8 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -73,14 +56,6 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
@@ -89,25 +64,33 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .contrast-high {
+    @apply [&_*]:!contrast-[1.5];
   }
 }
 
 /* Estilos para el carrusel */
 .carousel-container {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
   padding-bottom: 2rem;
 }
 
-/* Ocultar la barra de desplazamiento */
 .carousel-container::-webkit-scrollbar {
   display: none;
 }
 
-/* Estilos para los cursores */
 .carousel-container {
   cursor: grab;
 }
@@ -116,9 +99,8 @@ body {
   cursor: grabbing;
 }
 
-/* Enhanced card styles */
 .card {
-  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
@@ -127,7 +109,6 @@ body {
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .carousel-container {
     padding-bottom: 2rem;
@@ -139,7 +120,6 @@ body {
   }
 }
 
-/* Sliding animation for carousel indicator */
 @keyframes slide {
   0% {
     left: -100%;
@@ -149,21 +129,18 @@ body {
   }
 }
 
-/* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
 }
 
-/* Dot indicator animation */
 .dot-indicator {
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .dot-indicator.active {
   transform: scale(1.5);
 }
 
-/* Custom cursor styles */
 .cursor-grab {
   cursor: grab;
 }
@@ -172,7 +149,6 @@ html {
   cursor: grabbing !important;
 }
 
-/* Scroll indicator animation */
 @keyframes bounce {
   0%,
   100% {
@@ -187,12 +163,244 @@ html {
   animation: bounce 1.5s infinite;
 }
 
-/* Improved mobile carousel navigation */
 .carousel-nav-button {
-  transition: all 0.2s ease;
+  transition: transform 0.2s ease;
 }
 
 .carousel-nav-button:active {
   transform: scale(0.95);
+}
+
+/* Simplificar la implementación del tamaño de texto para evitar errores */
+/* Reemplazar la sección de tamaño de texto con esta implementación más simple */
+
+/* Estilos para opciones de accesibilidad - implementación simplificada */
+html {
+  font-size: 16px; /* Base font size */
+}
+
+/* Aplicar tamaño de texto directamente al HTML */
+html.text-size-80 {
+  font-size: 80% !important;
+}
+
+html.text-size-90 {
+  font-size: 90% !important;
+}
+
+html.text-size-100 {
+  font-size: 100% !important;
+}
+
+html.text-size-110 {
+  font-size: 110% !important;
+}
+
+html.text-size-120 {
+  font-size: 120% !important;
+}
+
+html.text-size-130 {
+  font-size: 130% !important;
+}
+
+html.text-size-140 {
+  font-size: 140% !important;
+}
+
+html.text-size-150 {
+  font-size: 150% !important;
+}
+
+/* Modify the high contrast implementation */
+.high-contrast {
+  filter: contrast(1.5);
+}
+
+.high-contrast .text-white\/80,
+.high-contrast .text-white\/70,
+.high-contrast .text-white\/60,
+.high-contrast .text-white\/50 {
+  color: white !important;
+}
+
+.high-contrast .bg-white\/5,
+.high-contrast .bg-white\/10,
+.high-contrast .bg-white\/20 {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Add this new rule to prevent high contrast from affecting images */
+.high-contrast img,
+.high-contrast canvas,
+.high-contrast .profile-image-container {
+  filter: contrast(1) !important; /* Override the contrast filter for images */
+}
+
+/* Reducir movimiento */
+.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+/* Mejoras de accesibilidad para elementos interactivos */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus,
+[tabindex]:focus {
+  outline: 3px solid #d4f57a !important;
+  outline-offset: 2px !important;
+}
+
+/* Mejorar visibilidad de enlaces */
+a {
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.15em;
+}
+
+a:hover,
+a:focus {
+  text-decoration-thickness: 0.15em;
+}
+
+/* Mejorar contraste de texto sobre fondos */
+.text-white\/80 {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.text-white\/70,
+.text-white\/60,
+.text-white\/50 {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Mejorar contraste de textos con opacidad */
+/* Modificar al final del archivo, después de las clases existentes */
+
+/* Mejorar contraste de texto */
+.text-white\/80 {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.text-white\/70,
+.text-white\/60,
+.text-white\/50 {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Mejorar visibilidad de elementos interactivos en focus */
+a:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus,
+[tabindex]:focus {
+  outline: 3px solid #d4f57a !important;
+  outline-offset: 2px !important;
+}
+
+/* Mejorar espaciado en móviles */
+@media (max-width: 640px) {
+  .sm\:space-y-4 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
+  /* Aumentar tamaño de áreas táctiles */
+  button,
+  a[role="button"],
+  .interactive-element {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Estilos específicos para tablets */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .md\:tablet-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .md\:tablet-padding {
+    padding: 1.5rem;
+  }
+
+  .md\:tablet-text {
+    font-size: 1.1rem;
+  }
+}
+
+/* Mejorar indicadores de focus para navegación por teclado */
+.keyboard-focus-visible:focus {
+  box-shadow: 0 0 0 3px rgba(212, 245, 122, 0.6);
+  outline: none;
+}
+
+/* Añadir indicadores visuales para elementos interactivos */
+.interactive-element:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease;
+}
+
+/* Mejorar contraste en modo oscuro */
+.dark .text-white\/80 {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.dark .text-white\/70,
+.dark .text-white\/60,
+.dark .text-white\/50 {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Mejorar feedback visual */
+.btn,
+a[role="button"],
+button {
+  transition: all 0.3s ease;
+}
+
+.btn:hover,
+a[role="button"]:hover,
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn:active,
+a[role="button"]:active,
+button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Mejorar focus styles */
+.btn:focus,
+a[role="button"]:focus,
+button:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(212, 245, 122, 0.5);
+}
+
+/* Añadir efecto de hover a las tarjetas */
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 

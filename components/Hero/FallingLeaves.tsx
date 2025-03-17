@@ -1,7 +1,18 @@
 "use client"
 
 import { useEffect, useRef, useCallback } from "react"
-import * as THREE from "three"
+import {
+  Scene,
+  PerspectiveCamera,
+  WebGLRenderer,
+  Mesh,
+  ShapeGeometry,
+  MeshBasicMaterial,
+  Shape,
+  Vector2,
+  Vector3,
+  Euler,
+} from "three"
 
 interface FallingLeavesProps {
   className?: string
@@ -9,23 +20,27 @@ interface FallingLeavesProps {
 
 export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const mousePosition = useRef(new THREE.Vector2())
-  const lastMousePosition = useRef(new THREE.Vector2())
-  const mouseVelocity = useRef(new THREE.Vector2())
-  const sceneRef = useRef<THREE.Scene | null>(null)
-  const cameraRef = useRef<THREE.PerspectiveCamera | null>(null)
-  const rendererRef = useRef<THREE.WebGLRenderer | null>(null)
-  const leavesRef = useRef<THREE.Mesh[]>([])
-  const groundLeavesRef = useRef<THREE.Mesh[]>([])
-  const worldMousePosition = useRef(new THREE.Vector3())
+  const mousePosition = useRef(new Vector2())
+  const lastMousePosition = useRef(new Vector2())
+  const mouseVelocity = useRef(new Vector2())
+  const sceneRef = useRef<Scene | null>(null)
+  const cameraRef = useRef<PerspectiveCamera | null>(null)
+  const rendererRef = useRef<WebGLRenderer | null>(null)
+  const leavesRef = useRef<Mesh[]>([])
+  const groundLeavesRef = useRef<Mesh[]>([])
+  const worldMousePosition = useRef(new Vector3())
   const lastUpdateTime = useRef(0)
   const isMouseMoving = useRef(false)
   const mouseMovementTimer = useRef<NodeJS.Timeout | null>(null)
   const lastTime = useRef(performance.now())
   const lastMouseProcessTime = useRef(0)
+  const animationFrameRef = useRef<number | null>(null)
 
+  // Modificar el manejador de eventos handleMouseMove para verificar si canvasRef.current existe
   const handleMouseMove = useCallback((event: MouseEvent) => {
-    const rect = canvasRef.current!.getBoundingClientRect()
+    if (!canvasRef.current) return
+
+    const rect = canvasRef.current.getBoundingClientRect()
     const currentTime = performance.now()
     const deltaTime = (currentTime - lastTime.current) / 1000 // Convert to seconds
 
@@ -57,51 +72,53 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     lastTime.current = currentTime
   }, [])
 
+  // Modificar el manejador de eventos handleTouchMove para verificar si canvasRef.current existe
   const handleTouchMove = useCallback((event: TouchEvent) => {
-    if (event.touches.length > 0) {
-      const touch = event.touches[0]
-      const rect = canvasRef.current!.getBoundingClientRect()
-      const currentTime = performance.now()
-      const deltaTime = (currentTime - lastTime.current) / 1000
+    if (!canvasRef.current || event.touches.length === 0) return
 
-      const newX = (touch.clientX - rect.left) / rect.width
-      const newY = (touch.clientY - rect.top) / rect.height
+    const touch = event.touches[0]
+    const rect = canvasRef.current.getBoundingClientRect()
+    const currentTime = performance.now()
+    const deltaTime = (currentTime - lastTime.current) / 1000
 
-      mouseVelocity.current.x = (newX - lastMousePosition.current.x) / Math.max(deltaTime, 0.016)
-      mouseVelocity.current.y = (newY - lastMousePosition.current.y) / Math.max(deltaTime, 0.016)
+    const newX = (touch.clientX - rect.left) / rect.width
+    const newY = (touch.clientY - rect.top) / rect.height
 
-      mousePosition.current.set(newX, newY)
-      lastMousePosition.current.set(newX, newY)
+    mouseVelocity.current.x = (newX - lastMousePosition.current.x) / Math.max(deltaTime, 0.016)
+    mouseVelocity.current.y = (newY - lastMousePosition.current.y) / Math.max(deltaTime, 0.016)
 
-      isMouseMoving.current = true
+    mousePosition.current.set(newX, newY)
+    lastMousePosition.current.set(newX, newY)
 
-      if (mouseMovementTimer.current) {
-        clearTimeout(mouseMovementTimer.current)
-      }
+    isMouseMoving.current = true
 
-      mouseMovementTimer.current = setTimeout(() => {
-        isMouseMoving.current = false
-        mouseVelocity.current.set(0, 0)
-      }, 100)
-
-      lastTime.current = currentTime
+    if (mouseMovementTimer.current) {
+      clearTimeout(mouseMovementTimer.current)
     }
+
+    mouseMovementTimer.current = setTimeout(() => {
+      isMouseMoving.current = false
+      mouseVelocity.current.set(0, 0)
+    }, 100)
+
+    lastTime.current = currentTime
   }, [])
 
+  // Modificar el useEffect principal para asegurarse de que canvasRef.current existe antes de configurar los event listeners
   useEffect(() => {
     if (!canvasRef.current) return
 
     // Detectar si es un dispositivo móvil para optimizar rendimiento
     const isMobileDevice = window.innerWidth < 768
 
-    const scene = new THREE.Scene()
+    const scene = new Scene()
     sceneRef.current = scene
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
+    const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
     cameraRef.current = camera
     camera.position.z = 5
 
-    const renderer = new THREE.WebGLRenderer({
+    const renderer = new WebGLRenderer({
       canvas: canvasRef.current,
       alpha: true,
       antialias: !isMobileDevice, // Desactivar antialiasing en móvil para mejorar rendimiento
@@ -111,14 +128,14 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobileDevice ? 1.5 : 2)) // Reducir pixel ratio en móvil
 
     // Create custom Ginkgo leaf shape
-    const shape = new THREE.Shape()
+    const shape = new Shape()
     shape.moveTo(0, 1)
     shape.quadraticCurveTo(0.5, 0.8, 1, 0.5)
     shape.quadraticCurveTo(0.5, 0.2, 0, 0)
     shape.quadraticCurveTo(-0.5, 0.2, -1, 0.5)
     shape.quadraticCurveTo(-0.5, 0.8, 0, 1)
 
-    const leafGeometry = new THREE.ShapeGeometry(shape)
+    const leafGeometry = new ShapeGeometry(shape)
 
     const leafColors = [
       0xd4f57a, // Light green
@@ -128,12 +145,23 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     ]
 
     // Ajustar cantidad de hojas para móvil - aumentado ligeramente respecto a la versión anterior
-    const leavesCount = isMobileDevice ? 100 : 120 // Aumentado de 80 a 100 en móvil
-    const groundLayerCount = isMobileDevice ? 4 : 5 // Aumentado de 3 a 4 en móvil
-    const groundLeavesPerLayer = isMobileDevice ? 180 : 250 // Aumentado de 150 a 180 en móvil
+    let leavesCount = isMobileDevice ? 100 : 120 // Aumentado de 80 a 100 en móvil
+    let groundLayerCount = isMobileDevice ? 4 : 5 // Aumentado de 3 a 4 en móvil
+    let groundLeavesPerLayer = isMobileDevice ? 180 : 250 // Aumentado de 150 a 180 en móvil
 
-    const leaves: THREE.Mesh[] = []
-    const groundLeaves: THREE.Mesh[] = []
+    // Detectar preferencia de reducción de movimiento
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
+    if (prefersReducedMotion) {
+      // Reducir significativamente la cantidad de hojas y efectos
+      // para respetar la preferencia del usuario
+      leavesCount = Math.min(leavesCount, 20)
+      groundLayerCount = Math.min(groundLayerCount, 2)
+      groundLeavesPerLayer = Math.min(groundLeavesPerLayer, 50)
+    }
+
+    const leaves: Mesh[] = []
+    const groundLeaves: Mesh[] = []
 
     // Ground setup
     const groundY = -3.5
@@ -142,14 +170,14 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     for (let layer = 0; layer < groundLayerCount; layer++) {
       for (let i = 0; i < groundLeavesPerLayer; i++) {
         const colorIndex = Math.floor(Math.random() * leafColors.length)
-        const leafMaterial = new THREE.MeshBasicMaterial({
+        const leafMaterial = new MeshBasicMaterial({
           color: leafColors[colorIndex],
-          side: THREE.DoubleSide,
+          side: 2,
           transparent: true,
           opacity: 0.9,
         })
 
-        const groundLeaf = new THREE.Mesh(leafGeometry, leafMaterial)
+        const groundLeaf = new Mesh(leafGeometry, leafMaterial)
 
         // Distribute leaves in overlapping layers for denser coverage
         const x = Math.random() * 32 - 16
@@ -170,11 +198,11 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
         // Add physics properties to userData
         groundLeaf.userData = {
-          originalPosition: new THREE.Vector3(x, y, z),
-          originalRotation: new THREE.Euler().copy(groundLeaf.rotation),
-          originalScale: new THREE.Vector3().copy(groundLeaf.scale),
-          velocity: new THREE.Vector3(0, 0, 0),
-          angularVelocity: new THREE.Vector3(0, 0, 0),
+          originalPosition: new Vector3(x, y, z),
+          originalRotation: new Euler().copy(groundLeaf.rotation),
+          originalScale: new Vector3().copy(groundLeaf.scale),
+          velocity: new Vector3(0, 0, 0),
+          angularVelocity: new Vector3(0, 0, 0),
           mass: 0.3 + Math.random() * 0.7, // More varied masses
           isLifted: false,
           liftTime: 0,
@@ -192,14 +220,14 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     // Crear hojas que caen
     for (let i = 0; i < leavesCount; i++) {
       const colorIndex = Math.floor(Math.random() * leafColors.length)
-      const leafMaterial = new THREE.MeshBasicMaterial({
+      const leafMaterial = new MeshBasicMaterial({
         color: leafColors[colorIndex],
-        side: THREE.DoubleSide,
+        side: 2,
         transparent: true,
         opacity: 0.8,
       })
 
-      const leaf = new THREE.Mesh(leafGeometry, leafMaterial)
+      const leaf = new Mesh(leafGeometry, leafMaterial)
 
       // Posicionar las hojas con una velocidad inicial de caída más rápida
       leaf.position.set(Math.random() * 28 - 14, Math.random() * 8 + 5, Math.random() * 4 - 2)
@@ -213,12 +241,12 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
       // Velocidad inicial más rápida pero con física más suave después
       leaf.userData = {
-        velocity: new THREE.Vector3(
+        velocity: new Vector3(
           (Math.random() - 0.5) * 0.01, // Ligero movimiento horizontal aleatorio
           -0.008 - Math.random() * 0.007, // Velocidad inicial más rápida
           (Math.random() - 0.5) * 0.01, // Ligero movimiento en profundidad
         ),
-        angularVelocity: new THREE.Vector3(
+        angularVelocity: new Vector3(
           (Math.random() - 0.5) * 0.01,
           (Math.random() - 0.5) * 0.01,
           (Math.random() - 0.5) * 0.01,
@@ -237,7 +265,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     leavesRef.current = leaves
     groundLeavesRef.current = groundLeaves
 
-    const resetLeaf = (leaf: THREE.Mesh) => {
+    const resetLeaf = (leaf: Mesh) => {
       leaf.position.set(Math.random() * 28 - 14, Math.random() * 8 + 5, Math.random() * 4 - 2)
       leaf.rotation.x = Math.random() * Math.PI
       leaf.rotation.y = Math.random() * Math.PI
@@ -257,7 +285,9 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       if (now - lastMouseProcessTime.current < 16) return
       lastMouseProcessTime.current = now
 
-      const vector = new THREE.Vector3(mousePosition.current.x * 2 - 1, -(mousePosition.current.y * 2) + 1, 0.5)
+      if (!canvasRef.current || !camera) return
+
+      const vector = new Vector3(mousePosition.current.x * 2 - 1, -(mousePosition.current.y * 2) + 1, 0.5)
       vector.unproject(camera)
       const dir = vector.sub(camera.position).normalize()
       const distance = -camera.position.z / dir.z
@@ -265,7 +295,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     }
 
     function animate() {
-      requestAnimationFrame(animate)
+      animationFrameRef.current = requestAnimationFrame(animate)
 
       updateWorldMousePosition()
       const currentTime = Date.now()
@@ -301,7 +331,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
           isMouseMoving.current &&
           currentTime - userData.lastMouseImpact > 100
         ) {
-          const direction = new THREE.Vector3().subVectors(leaf.position, worldMousePosition.current).normalize()
+          const direction = new Vector3().subVectors(leaf.position, worldMousePosition.current).normalize()
           const impulseStrength = 0.12 * (1 - distanceToMouse / mouseInfluenceRadius)
           velocity.add(direction.multiplyScalar(impulseStrength))
 
@@ -358,7 +388,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
             userData.liftTime = currentTime
 
             // Calculate lift direction based on mouse movement - más suave
-            const liftDirection = new THREE.Vector3(
+            const liftDirection = new Vector3(
               mouseVelocity.current.x * 0.04,
               0.04 + Math.random() * 0.04,
               (Math.random() - 0.5) * 0.02,
@@ -382,7 +412,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
           // Apply mouse influence if nearby and mouse is moving
           if (distanceToMouse < mouseInfluenceRadius && isMouseMoving.current) {
-            const direction = new THREE.Vector3().subVectors(leaf.position, worldMousePosition.current).normalize()
+            const direction = new Vector3().subVectors(leaf.position, worldMousePosition.current).normalize()
             const force = 0.008 * (1 - distanceToMouse / mouseInfluenceRadius) * mouseSpeed
             userData.velocity.add(direction.multiplyScalar(force))
           }
@@ -416,10 +446,13 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
           leaf.position.lerp(userData.originalPosition, returnSpeed)
 
           // Convert Euler to Quaternion for smooth interpolation
-          const targetQuaternion = new THREE.Quaternion().setFromEuler(userData.originalRotation)
-          const currentQuaternion = new THREE.Quaternion().setFromEuler(leaf.rotation)
-          currentQuaternion.slerp(targetQuaternion, returnSpeed)
-          leaf.rotation.setFromQuaternion(currentQuaternion)
+          const targetQuaternion = new Euler(
+            userData.originalRotation.x,
+            userData.originalRotation.y,
+            userData.originalRotation.z,
+          )
+          const currentQuaternion = new Euler(leaf.rotation.x, leaf.rotation.y, leaf.rotation.z)
+          leaf.rotation.set(currentQuaternion.x, currentQuaternion.y, currentQuaternion.z)
 
           // Gentle sway for grounded leaves - mejorado
           const time = currentTime * 0.0004
@@ -442,18 +475,27 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     }
 
     window.addEventListener("resize", handleResize)
+    // Modificar la parte donde se agregan los event listeners
     window.addEventListener("mousemove", handleMouseMove)
     window.addEventListener("touchmove", handleTouchMove)
 
     return () => {
       window.removeEventListener("resize", handleResize)
+      // Modificar la parte donde se agregan los event listeners
       window.removeEventListener("mousemove", handleMouseMove)
       window.removeEventListener("touchmove", handleTouchMove)
       if (mouseMovementTimer.current) {
         clearTimeout(mouseMovementTimer.current)
       }
-      scene.clear()
-      renderer.dispose()
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current)
+      }
+      if (sceneRef.current) {
+        sceneRef.current.clear()
+      }
+      if (rendererRef.current) {
+        rendererRef.current.dispose()
+      }
     }
   }, [handleMouseMove, handleTouchMove])
 
