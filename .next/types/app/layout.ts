@@ -1,4 +1,4 @@
-// File: C:\Users\feduv\Desktop\proto\app\layout.tsx
+// File: C:\Users\feduv\Desktop\portafolio-ginkgo\app\layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
