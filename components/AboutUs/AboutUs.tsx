@@ -567,7 +567,7 @@ export default function AboutUs() {
             showValues ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <div className="max-w-7xl mx-auto w-full px-4">
+          <div className="max-w-8xl mx-auto w-full px-4">
             <div className="flex flex-col md:flex-row gap-8 md:gap-16">
               {/* Left side - Title */}
               <div className="md:w-1/3">
@@ -611,7 +611,7 @@ export default function AboutUs() {
                     <span className="sr-only">Instrucciones de accesibilidad: </span>
                     Usa las teclas de flecha izquierda y derecha para navegar por el carrusel
                   </div>
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 p-2">
                     <button
                       className="p-2 rounded-full bg-[#D4F57A]/10 hover:bg-[#D4F57A]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:ring-offset-2 focus:ring-offset-[#293B36]"
                       onClick={() => {

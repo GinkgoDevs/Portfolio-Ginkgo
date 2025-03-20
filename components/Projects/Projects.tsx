@@ -23,17 +23,17 @@ export default function Projects() {
 
   return (
     <section id="projects" className="py-20 relative bg-[#293B36]">
-      <div className="container mx-auto px-4">
+      <div className="w-full px-0 mx-0">
         <ScrollAnimation>
-          <h2 className="text-3xl sm:text-4xl font-bold text-center text-[#D4F57A] mb-12">Nuestros Proyectos</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-center text-[#D4F57A] ">Nuestros Proyectos</h2>
         </ScrollAnimation>
 
         <ScrollAnimation>
-          <div className="max-w-[1200px] mx-auto">
-            <div className="h-[400px] sm:h-[500px] md:h-[600px] relative rounded-xl overflow-hidden">
+          <div className="w-full px-0 mx-0">
+            <div className="h-[400px] sm:h-[500px] md:h-[600px] relative overflow-visible">
               <CircularGallery
                 items={galleryItems}
-                bend={3}
+                bend={2}
                 textColor="#D4F57A"
                 borderRadius={0.05}
                 font="bold 16px DM Sans"
