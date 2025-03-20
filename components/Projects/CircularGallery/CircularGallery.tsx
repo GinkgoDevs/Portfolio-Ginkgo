@@ -277,7 +277,7 @@ class Media {
     this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height
     this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y]
-    this.padding = 2
+    this.padding = 4
     this.width = this.plane.scale.x + this.padding
     this.widthTotal = this.width * this.length
     this.x = this.width * this.index
@@ -287,19 +287,35 @@ class Media {
 class App {
   constructor(
     container,
-    { items, bend, textColor = "#ffffff", borderRadius = 0, font = "bold 30px DM Sans", onItemClick } = {},
+    {
+      items,
+      bend,
+      textColor = "#ffffff",
+      borderRadius = 0,
+      font = "bold 30px DM Sans",
+      onItemClick,
+      initialIndex = 2,
+    } = {},
   ) {
     document.documentElement.classList.remove("no-js")
     this.container = container
     this.scroll = { ease: 0.05, current: 0, target: 0, last: 0 }
     this.onCheckDebounce = debounce(this.onCheck, 200)
     this.onItemClick = onItemClick
+    this.initialIndex = initialIndex
     this.createRenderer()
     this.createCamera()
     this.createScene()
     this.onResize()
     this.createGeometry()
     this.createMedias(items, bend, textColor, borderRadius, font)
+
+    // Set initial position to show the specified index
+    if (this.medias && this.medias.length > 0) {
+      const width = this.medias[0].width
+      this.scroll.current = this.scroll.target = width * this.initialIndex
+    }
+
     this.update()
     this.addEventListeners()
   }
@@ -309,6 +325,10 @@ class App {
     this.gl = this.renderer.gl
     this.gl.clearColor(0, 0, 0, 0)
     this.container.appendChild(this.gl.canvas)
+
+    // Make canvas take full width
+    this.gl.canvas.style.width = "100%"
+    this.gl.canvas.style.maxWidth = "none"
   }
 
   createCamera() {
@@ -498,6 +518,7 @@ export default function CircularGallery({
   borderRadius = 0.05,
   font = "bold 30px DM Sans",
   onItemClick,
+  initialIndex = 2,
 }) {
   const containerRef = useRef(null)
 
@@ -511,12 +532,13 @@ export default function CircularGallery({
       borderRadius,
       font,
       onItemClick,
+      initialIndex,
     })
 
     return () => {
       app.destroy()
     }
-  }, [items, bend, textColor, borderRadius, font, onItemClick])
+  }, [items, bend, textColor, borderRadius, font, onItemClick, initialIndex])
 
   return <div className="circular-gallery" ref={containerRef} />
 }
