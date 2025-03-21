@@ -18,12 +18,12 @@ const teamMembers = [
   {
     name: "Nicolas Alonso",
     role: "Full Stack Developer",
-    image: "/Nico.jpeg?height=400&width=400", // Cambiado a placeholder mientras no exista la imagen
+    image: "/Integrantes/Nico.jpg",// Cambiado a placeholder mientras no exista la imagen
   },
   {
     name: "Federico Valle",
     role: "Full Stack Developer",
-    image: "/Fede.jpg?height=400&width=400",
+    image: "/Integrantes/Fede.jpg",
   },
 ]
 

@@ -244,16 +244,7 @@ html.text-size-150 {
   transform: none !important;
 }
 
-/* Mejoras de accesibilidad para elementos interactivos */
-a:focus,
-button:focus,
-input:focus,
-textarea:focus,
-select:focus,
-[tabindex]:focus {
-  outline: 3px solid #d4f57a !important;
-  outline-offset: 2px !important;
-}
+
 
 /* Mejorar visibilidad de enlaces */
 a {
@@ -291,16 +282,7 @@ a:focus {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* Mejorar visibilidad de elementos interactivos en focus */
-a:focus,
-button:focus,
-input:focus,
-textarea:focus,
-select:focus,
-[tabindex]:focus {
-  outline: 3px solid #d4f57a !important;
-  outline-offset: 2px !important;
-}
+
 
 /* Mejorar espaciado en móviles */
 @media (max-width: 640px) {
@@ -314,12 +296,7 @@ select:focus,
   }
 
   /* Aumentar tamaño de áreas táctiles */
-  button,
-  a[role="button"],
-  .interactive-element {
-    min-height: 44px;
-    min-width: 44px;
-  }
+
 }
 
 /* Estilos específicos para tablets */

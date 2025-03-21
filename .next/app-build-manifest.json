@@ -47,16 +47,6 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/csrf/route.js"
-    ],
-    "/[locale]/project/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/project/layout.js"
-    ],
-    "/[locale]/project/[id]/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/[locale]/project/[id]/page.js"
     ]
   }
 }
