@@ -23,7 +23,7 @@ export default function Footer() {
   const contactInfo = [
     { icon: Mail, text: env.contact.email },
     { icon: Phone, text: env.contact.phone },
-    { icon: MapPin, text: "Buenos Aires, Argentina" },
+    { icon: MapPin, text: "Tucumán, Argentina" },
   ]
 
   const [expandedSection, setExpandedSection] = useState<string | null>(null)
@@ -65,16 +65,13 @@ export default function Footer() {
   const getLinkHref = (item: string) => {
     switch (item) {
       case "Desarrollo Web":
-      case "Apps Móviles":
-      case "UI/UX Design":
-      case "Consultoría":
+      case "Estrategias Digitales":
+      case "Optimización y Mantenimiento":
         return "#services"
       case "Sobre Nosotros":
         return "#about-us"
       case "Proyectos":
         return "#projects"
-      case "Blog":
-      case "Carreras":
       case "Contacto":
         return "#contact"
       default:
@@ -85,11 +82,11 @@ export default function Footer() {
   const links = [
     {
       title: "Servicios",
-      items: ["Desarrollo Web", "Apps Móviles", "UI/UX Design", "Consultoría"],
+      items: ["Desarrollo Web", "Optimización y Mantenimiento", "Estrategias Digitales"],
     },
     {
       title: "Compañía",
-      items: ["Sobre Nosotros", "Proyectos", "Blog", "Carreras"],
+      items: ["Sobre Nosotros", "Proyectos"],
     },
     {
       title: "Recursos",
@@ -106,7 +103,7 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <Link href="#home" onClick={(e) => handleSmoothScroll(e, "#home")}>
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/descarga-BNlNhb9dAxkJ2cjd8OiX1bfCcJiRqu.png"
+                src="/Logos/SVG/logo-footer.svg"
                 alt="Ginkgo Devs Logo"
                 width={200}
                 height={129}
@@ -174,7 +171,7 @@ export default function Footer() {
           <div className="flex flex-col items-center text-center mb-6">
             <Link href="#home" onClick={(e) => handleSmoothScroll(e, "#home")}>
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/descarga-BNlNhb9dAxkJ2cjd8OiX1bfCcJiRqu.png"
+                src="/Logos/SVG/logo-footer.svg"
                 alt="Ginkgo Devs Logo"
                 width={150}
                 height={97}
