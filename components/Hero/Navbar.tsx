@@ -173,12 +173,12 @@ export default function Navbar() {
             <div className="flex-shrink-0">
               <Link href={`/${locale}`}>
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/descarga-BNlNhb9dAxkJ2cjd8OiX1bfCcJiRqu.png"
+                  src="/Logos/SVG/logo-navbar.svg"
                   alt="Ginkgo Devs Logo"
                   width={200}
                   height={129}
                   priority
-                  className="w-32 sm:w-40 md:w-[250px]"
+                  className="w-42 sm:w-40 md:w-[250px]"
                 />
               </Link>
             </div>
