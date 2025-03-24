@@ -12,6 +12,7 @@ import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration"
 import JsonLd from "@/components/JsonLd"
 import { getDictionary } from "@/lib/dictionary"
 import CookieConsent from "@/components/CookieConsent"
+import type { Metadata } from "next"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,6 +22,23 @@ const inter = Inter({
 
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
+}
+
+export function generateMetadata({
+  params,
+}: {
+  params: { locale: string }
+}): Metadata {
+  return {
+    title: "Ginkgo Devs",
+    description: "Desarrollo Web y Soluciones Digitales",
+    icons: {
+      icon: [
+        { url: '/favicon.ico' },
+      ],
+      shortcut: '/favicon.ico',
+    },
+  }
 }
 
 export default async function LocaleLayout({
@@ -42,6 +60,9 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
@@ -65,4 +86,3 @@ export default async function LocaleLayout({
     </html>
   )
 }
-

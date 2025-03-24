@@ -13,7 +13,10 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Ginkgo Devs",
   description: "Desarrollo Web y Soluciones Digitales",
-  generator: "v0.dev",
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({
@@ -23,13 +26,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   )
 }
-
-import "./globals.css"
-
-
-
-import './globals.css'
