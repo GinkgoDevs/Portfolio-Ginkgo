@@ -79,7 +79,7 @@ export default async function LocaleLayout({
               <JsonLd />
               <CookieConsent />
             </TranslationProvider>
-          </AccessibilityProvider>
+          </AccessibilityProvider> 
         </ThemeProvider>
         <ServiceWorkerRegistration />
       </body>

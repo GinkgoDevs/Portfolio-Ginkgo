@@ -2,15 +2,26 @@
 
 import { motion } from "framer-motion"
 import type React from "react"
+<<<<<<< HEAD
+=======
+
+>>>>>>> f9a776322c9f4ce3fd5fdf589bb6fe271314b37c
 import { useInView } from "react-intersection-observer"
 import RotatingText from "./RotatingText"
 import FallingLeaves from "./FallingLeaves"
 import Navbar from "./Navbar"
 import Magnet from "./Magnet"
+<<<<<<< HEAD
 import { useEffect, useState, useCallback, useRef } from "react"
 import Link from "next/link"
 import { useTranslation } from "@/contexts/TranslationContext"
 import { Lock, Unlock, ChevronDown } from "lucide-react"
+=======
+import ScrollAnimation from "../ScrollAnimation"
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { useTranslation } from "@/contexts/TranslationContext"
+>>>>>>> f9a776322c9f4ce3fd5fdf589bb6fe271314b37c
 
 export default function Hero() {
   const { t } = useTranslation()
@@ -20,6 +31,7 @@ export default function Hero() {
   })
   const [isMobile, setIsMobile] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
+<<<<<<< HEAD
   const [isScrollLocked, setIsScrollLocked] = useState(true)
   const [showLockButton, setShowLockButton] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -95,6 +107,8 @@ export default function Hero() {
       document.removeEventListener("menuStateChange", handleMenuStateChange as EventListener)
     }
   }, [isScrollLocked])
+=======
+>>>>>>> f9a776322c9f4ce3fd5fdf589bb6fe271314b37c
 
   useEffect(() => {
     setIsMounted(true)
@@ -103,6 +117,7 @@ export default function Hero() {
     }
     checkMobile()
     window.addEventListener("resize", checkMobile)
+<<<<<<< HEAD
 
     // Apply initial scroll lock on mobile
     if (window.innerWidth < 768) {
@@ -126,10 +141,21 @@ export default function Hero() {
     e.preventDefault()
 
     // Extract section ID from href
+=======
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
+
+  // Función para manejar el scroll suave a las secciones
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+
+    // Extraer el ID de la sección del href
+>>>>>>> f9a776322c9f4ce3fd5fdf589bb6fe271314b37c
     const targetId = href.startsWith("#") ? href.substring(1) : href
     const targetElement = document.getElementById(targetId)
 
     if (targetElement) {
+<<<<<<< HEAD
       // Calculate offset to account for navbar height
       const navHeight = 80
       const elementPosition = targetElement.getBoundingClientRect().top
@@ -143,12 +169,24 @@ export default function Hero() {
       }
 
       // Smooth scroll to section with offset
+=======
+      // Calcular offset para tener en cuenta la altura de la barra de navegación
+      const navHeight = 80 // Altura aproximada de la barra de navegación
+      const elementPosition = targetElement.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - navHeight
+
+      // Scroll suave a la sección con offset
+>>>>>>> f9a776322c9f4ce3fd5fdf589bb6fe271314b37c
       window.scrollTo({
         top: offsetPosition,
         behavior: "smooth",
       })
 
+<<<<<<< HEAD
       // Update URL without page reload
+=======
+      // Actualizar la URL sin recargar la página
+>>>>>>> f9a776322c9f4ce3fd5fdf589bb6fe271314b37c
       window.history.pushState(null, "", href)
     }
   }
@@ -165,9 +203,15 @@ export default function Hero() {
       <Navbar />
 
       <div className="relative z-10 flex flex-col justify-start md:justify-center items-center min-h-screen px-2 sm:px-4 md:px-16 lg:px-24 pt-16 md:pt-0">
+<<<<<<< HEAD
         <div className="w-full max-w-7xl mt-20 md:mt-0">
           <div className="text-center">
             <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-2 md:mb-4">
+=======
+        <ScrollAnimation className="w-full max-w-7xl mt-20 md:mt-0">
+          <div className="text-center">
+            <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-7xl font-bold text-white font-delight leading-tight mb-2 md:mb-4">
+>>>>>>> f9a776322c9f4ce3fd5fdf589bb6fe271314b37c
               <span className="block mb-2 md:mb-0">{t("home.hero.title")}</span>
               <div className="flex flex-col md:flex-row justify-center items-center gap-2">
                 <span className="md:mr-2">{t("home.hero.titleSuffix")}</span>
@@ -190,12 +234,20 @@ export default function Hero() {
             <p className="text-base sm:text-lg md:text-2xl mt-4 md:mt-8 mb-4 md:mb-8 text-[#F5F2EB] max-w-2xl mx-auto px-4">
               {t("home.hero.subtitle")}
             </p>
+<<<<<<< HEAD
+=======
+            {/* Asegurarnos de que el botón tenga un buen contraste y sea accesible */}
+>>>>>>> f9a776322c9f4ce3fd5fdf589bb6fe271314b37c
             <ButtonWrapper padding={60} disabled={isMobile} magnetStrength={2}>
               <Link href="#contact" onClick={(e) => handleSmoothScroll(e, "#contact")}>
                 <motion.button
                   whileHover={isMobile ? {} : { scale: 1.05 }}
                   whileTap={isMobile ? {} : { scale: 0.95 }}
+<<<<<<< HEAD
                   className="bg-[#D4F57A] hover:bg-[#D4F57A]/90 text-[#293B36] font-bold py-2.5 md:py-3 px-6 md:px-8 rounded-lg text-base md:text-lg transition-all duration-300 mt-2 md:mt-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D4F57A]"
+=======
+                  className="bg-[#D4F57A] hover:bg-[#D4F57A]/90 text-[#293B36] font-bold py-2.5 md:py-3 px-6 md:px-8 rounded-lg text-base md:text-lg transition-all duration-300 font-inter mt-2 md:mt-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D4F57A]"
+>>>>>>> f9a776322c9f4ce3fd5fdf589bb6fe271314b37c
                   aria-label={t("home.hero.ctaButtonAriaLabel")}
                 >
                   {t("home.hero.ctaButton")}
@@ -203,6 +255,7 @@ export default function Hero() {
               </Link>
             </ButtonWrapper>
           </div>
+<<<<<<< HEAD
         </div>
       </div>
 
@@ -265,6 +318,12 @@ export default function Hero() {
     
 
       {/* Gradient transition at the bottom */}
+=======
+        </ScrollAnimation>
+      </div>
+
+      {/* Transición de gradiente en la parte inferior */}
+>>>>>>> f9a776322c9f4ce3fd5fdf589bb6fe271314b37c
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#293B36] pointer-events-none" />
     </div>
   )
