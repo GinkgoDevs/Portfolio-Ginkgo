@@ -13,6 +13,7 @@ interface ServiceCardProps {
   icon: React.ReactNode
   index: number
   isMobile: boolean
+  activeCardIndex?: number
 }
 
 const services = [
@@ -33,11 +34,14 @@ const services = [
   },
 ]
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, index, isMobile }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, index, isMobile, activeCardIndex }) => {
   const controls = useAnimation()
   const cardRef = useRef(null)
   const isInView = useInView(cardRef, { once: true, amount: 0.3 })
   const [isHovered, setIsHovered] = useState(false)
+
+  // Determine if this card should be highlighted (either by hover on desktop or by being centered on mobile)
+  const isHighlighted = isMobile ? activeCardIndex === index : isHovered
 
   useEffect(() => {
     if (isInView) {
@@ -66,13 +70,15 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
       initial="hidden"
       animate={controls}
       variants={variants}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => !isMobile && setIsHovered(true)}
+      onMouseLeave={() => !isMobile && setIsHovered(false)}
       className="relative overflow-hidden rounded-2xl transition-all duration-500 bg-white/10 backdrop-blur-sm text-white hover:bg-[#D4F57A]/10 h-[280px] flex flex-col"
+      data-index={index}
       style={{
-        boxShadow: isHovered ? "0 10px 25px rgba(212, 245, 122, 0.15)" : "none",
-        transform: isHovered ? "translateY(-5px)" : "translateY(0)",
+        boxShadow: isHighlighted ? "0 10px 25px rgba(212, 245, 122, 0.15)" : "none",
+        transform: isHighlighted ? "translateY(-5px)" : "translateY(0)",
         transition: "transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease",
+        backgroundColor: isHighlighted ? "rgba(212, 245, 122, 0.1)" : "rgba(255, 255, 255, 0.1)",
       }}
     >
       <div className="flex flex-col h-full p-6 md:p-8">
@@ -110,8 +116,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{
-          scale: isHovered ? 1 : 0.8,
-          opacity: isHovered ? 1 : 0,
+          scale: isHighlighted ? 1 : 0.8,
+          opacity: isHighlighted ? 1 : 0,
         }}
         transition={{ duration: 0.3 }}
         className="absolute -top-10 -left-10 w-20 h-20 rounded-full bg-[#D4F57A]/10 pointer-events-none"
@@ -122,9 +128,11 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
 
 export default function Services() {
   const [isMobile, setIsMobile] = useState(false)
+  const [activeCardIndex, setActiveCardIndex] = useState(0)
   const containerRef = useRef(null)
   const isInView = useInView(containerRef, { once: true, amount: 0.1 })
   const controls = useAnimation()
+  const cardsGridRef = useRef(null)
 
   useEffect(() => {
     const checkMobile = () => {
@@ -140,6 +148,45 @@ export default function Services() {
       controls.start("visible")
     }
   }, [isInView, controls])
+
+  // Add vertical centering detection for mobile
+  useEffect(() => {
+    if (!isMobile || !cardsGridRef.current) return
+
+    // Function to find which card is closest to the center of the viewport
+    const findCenteredCard = () => {
+      const cards = cardsGridRef.current.querySelectorAll("[data-index]")
+      const viewportHeight = window.innerHeight
+      const viewportCenter = window.scrollY + viewportHeight / 2
+
+      let closestCard = null
+      let closestDistance = Number.POSITIVE_INFINITY
+
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect()
+        const cardCenter = window.scrollY + rect.top + rect.height / 2
+        const distance = Math.abs(viewportCenter - cardCenter)
+
+        if (distance < closestDistance) {
+          closestDistance = distance
+          closestCard = card
+        }
+      })
+
+      if (closestCard && closestDistance < viewportHeight / 3) {
+        const index = Number.parseInt(closestCard.getAttribute("data-index"))
+        setActiveCardIndex(index)
+      }
+    }
+
+    // Call initially and on scroll
+    findCenteredCard()
+    window.addEventListener("scroll", findCenteredCard)
+
+    return () => {
+      window.removeEventListener("scroll", findCenteredCard)
+    }
+  }, [isMobile])
 
   return (
     <section
@@ -164,7 +211,7 @@ export default function Services() {
           </div>
         </ScrollAnimation>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8" ref={cardsGridRef}>
           {services.map((service, index) => (
             <ScrollAnimation key={index}>
               <ServiceCard
@@ -173,6 +220,7 @@ export default function Services() {
                 icon={service.icon}
                 index={index}
                 isMobile={isMobile}
+                activeCardIndex={activeCardIndex}
               />
             </ScrollAnimation>
           ))}
