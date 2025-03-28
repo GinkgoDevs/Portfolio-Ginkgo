@@ -12,11 +12,11 @@ import { useToast } from "@/components/ui/use-toast"
 import { Calendar, Mail, MessageSquare, Send } from "lucide-react"
 import ScrollAnimation from "./ScrollAnimation"
 
-// Esquema de validación del formulario
+// Form validation schema
 const formSchema = z.object({
-  name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
-  email: z.string().email("Dirección de email inválida"),
-  message: z.string().min(10, "El mensaje debe tener al menos 10 caracteres"),
+  name: z.string().min(2, "Name must have at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  message: z.string().min(10, "Message must have at least 10 characters"),
 })
 
 type FormData = z.infer<typeof formSchema>
@@ -31,10 +31,10 @@ export default function Contact() {
   const { toast } = useToast()
 
   useEffect(() => {
-    // Obtener token CSRF
+    // Get CSRF token
     const fetchCsrfToken = async () => {
       try {
-        // Añadir timestamp para evitar caché
+        // Add timestamp to avoid cache
         const response = await fetch(`/api/csrf?t=${Date.now()}`, {
           method: "GET",
           headers: {
@@ -56,23 +56,23 @@ export default function Contact() {
       } catch (error) {
         console.error("Error fetching CSRF token:", error)
         setCsrfError(true)
-        // Usar un token de respaldo en caso de error
+        // Use a fallback token in case of error
         setCsrfToken("fallback-csrf-token-" + Date.now())
       }
     }
 
     fetchCsrfToken()
 
-    // Cargar Calendly de forma segura
+    // Load Calendly safely
     const loadCalendly = async () => {
       try {
-        // Verificar si Calendly ya está cargado
+        // Check if Calendly is already loaded
         if (window.Calendly) {
           initializeCalendly()
           return
         }
 
-        // Cargar el script de Calendly manualmente
+        // Load Calendly script manually
         const script = document.createElement("script")
         script.src = "https://assets.calendly.com/assets/external/widget.js"
         script.async = true
@@ -102,12 +102,12 @@ export default function Contact() {
 
     loadCalendly()
 
-    // Añadir listener para el evento de Calendly
+    // Add listener for Calendly event
     const handleCalendlyEvent = (e: MessageEvent) => {
       if (e.data.event && e.data.event === "calendly.event_scheduled") {
         toast({
-          title: "¡Llamada agendada!",
-          description: "Tu llamada ha sido agendada exitosamente. Te enviaremos un correo con los detalles.",
+          title: "Call scheduled!",
+          description: "Your call has been successfully scheduled. We'll send you an email with the details.",
           duration: 5000,
         })
       }
@@ -139,19 +139,19 @@ export default function Contact() {
         csrfToken: csrfToken,
       }
 
-      // Aquí iría la lógica real para enviar el formulario con los datos sanitizados y el token CSRF
+      // Here would go the real logic to send the form with sanitized data and CSRF token
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
       toast({
-        title: "¡Mensaje enviado!",
-        description: "Nos pondremos en contacto contigo lo antes posible.",
+        title: "Message sent!",
+        description: "We'll get back to you as soon as possible.",
         duration: 5000,
       })
       reset()
     } catch (error) {
       toast({
-        title: "Error al enviar",
-        description: "Ha ocurrido un problema. Por favor, intenta nuevamente.",
+        title: "Error sending",
+        description: "A problem has occurred. Please try again.",
         variant: "destructive",
         duration: 5000,
       })
@@ -167,10 +167,10 @@ export default function Contact() {
         <ScrollAnimation>
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Hablemos de tu <span className="text-[#D4F57A]">proyecto</span>
+              Let's talk about your <span className="text-[#D4F57A]">project</span>
             </h2>
             <p className="text-[#F5F2EB]/80 text-lg max-w-2xl mx-auto">
-              Agenda una llamada o envíanos un mensaje. Estamos aquí para convertir tus ideas en realidad.
+              Schedule a call or send us a message. We're here to turn your ideas into reality.
             </p>
           </div>
         </ScrollAnimation>
@@ -181,19 +181,19 @@ export default function Contact() {
             <div className="bg-white/5 backdrop-blur-sm p-8 rounded-2xl h-full flex flex-col">
               <div className="flex items-center gap-3 mb-6">
                 <MessageSquare className="w-6 h-6 text-[#D4F57A]" />
-                <h3 className="text-xl font-semibold text-white">Envíanos un mensaje</h3>
+                <h3 className="text-xl font-semibold text-white">Send us a message</h3>
               </div>
 
-              {/* Mejorar la accesibilidad del formulario */}
+              {/* Improve form accessibility */}
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 flex-grow flex flex-col">
                 <input type="hidden" name="csrfToken" value={csrfToken} />
                 <div>
                   <label htmlFor="name" className="block text-white mb-1">
-                    Tu nombre
+                    Your name
                   </label>
                   <Input
                     id="name"
-                    placeholder="Tu nombre"
+                    placeholder="Your name"
                     {...register("name")}
                     className={`bg-white/5 border-white/10 text-white placeholder:text-white/50 ${
                       errors.name ? "border-red-500" : ""
@@ -210,11 +210,11 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="email" className="block text-white mb-1">
-                    Tu email
+                    Your email
                   </label>
                   <Input
                     id="email"
-                    placeholder="Tu email"
+                    placeholder="Your email"
                     type="email"
                     {...register("email")}
                     className={`bg-white/5 border-white/10 text-white placeholder:text-white/50 ${
@@ -232,11 +232,11 @@ export default function Contact() {
 
                 <div className="flex-grow">
                   <label htmlFor="message" className="block text-white mb-1">
-                    Tu mensaje
+                    Your message
                   </label>
                   <Textarea
                     id="message"
-                    placeholder="Tu mensaje"
+                    placeholder="Your message"
                     {...register("message")}
                     className={`bg-white/5 border-white/10 text-white placeholder:text-white/50 min-h-[120px] h-full ${
                       errors.message ? "border-red-500" : ""
@@ -258,7 +258,7 @@ export default function Contact() {
                   aria-busy={isSubmitting}
                 >
                   <Send className="w-4 h-4 mr-2" aria-hidden="true" />
-                  {isSubmitting ? "Enviando..." : "Enviar mensaje"}
+                  {isSubmitting ? "Sending..." : "Send message"}
                 </Button>
               </form>
             </div>
@@ -269,28 +269,24 @@ export default function Contact() {
             <div className="bg-white/5 backdrop-blur-sm p-8 rounded-2xl h-full flex flex-col">
               <div className="flex items-center gap-3 mb-6">
                 <Calendar className="w-6 h-6 text-[#D4F57A]" />
-                <h3 className="text-xl font-semibold text-white">Agenda una llamada</h3>
+                <h3 className="text-xl font-semibold text-white">Schedule a call</h3>
               </div>
 
-              <p className="text-[#F5F2EB]/80 mb-6">
-                Reserva una videollamada de 30 minutos para discutir tu proyecto en detalle.
-              </p>
+              <p className="text-[#F5F2EB]/80 mb-6">Book a 30-minute video call to discuss your project in detail.</p>
 
               <div className="flex-grow rounded-lg overflow-hidden bg-white/5 min-h-[500px]">
                 {calendlyError ? (
                   <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center">
                     <Calendar className="w-12 h-12 text-[#D4F57A] mb-4" />
-                    <h4 className="text-white text-lg font-medium mb-2">No se pudo cargar el calendario</h4>
-                    <p className="text-[#F5F2EB]/80 mb-4">
-                      Parece que hay un problema al cargar nuestro sistema de reservas.
-                    </p>
+                    <h4 className="text-white text-lg font-medium mb-2">Could not load calendar</h4>
+                    <p className="text-[#F5F2EB]/80 mb-4">There seems to be a problem loading our booking system.</p>
                     <a
                       href="https://calendly.com/ginkgodevs/30min"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-4 py-2 bg-[#D4F57A] text-[#293B36] rounded-md font-medium hover:bg-[#D4F57A]/90 transition-colors"
                     >
-                      Agendar directamente en Calendly
+                      Schedule directly on Calendly
                     </a>
                   </div>
                 ) : (
@@ -311,8 +307,8 @@ export default function Contact() {
               <div className="mt-6 flex items-center gap-3 p-4 bg-white/5 rounded-lg">
                 <Mail className="w-5 h-5 text-[#D4F57A]" />
                 <div>
-                  <p className="text-white font-medium">¿Prefieres email?</p>
-                  <p className="text-[#F5F2EB]/80 text-sm">Escríbenos a hello@ginkgodevs.com</p>
+                  <p className="text-white font-medium">Prefer email?</p>
+                  <p className="text-[#F5F2EB]/80 text-sm">Write to us at hello@ginkgodevs.com</p>
                 </div>
               </div>
             </div>

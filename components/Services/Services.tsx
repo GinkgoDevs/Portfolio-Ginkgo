@@ -6,6 +6,7 @@ import { motion, useAnimation, useInView } from "framer-motion"
 import { Code, Settings, LineChart, ArrowRight } from "lucide-react"
 import Magnet from "../Hero/Magnet"
 import ScrollAnimation from "../ScrollAnimation"
+import { useTranslation } from "@/contexts/TranslationContext"
 
 interface ServiceCardProps {
   title: string
@@ -16,29 +17,12 @@ interface ServiceCardProps {
   activeCardIndex?: number
 }
 
-const services = [
-  {
-    title: "Desarrollo Web",
-    description: "Sitios web escalables, rápidos y optimizados.",
-    icon: <Code className="w-8 h-8" />,
-  },
-  {
-    title: "Optimización y Mantenimiento",
-    description: "Mejoramos tu web para que rinda al máximo.",
-    icon: <Settings className="w-8 h-8" />,
-  },
-  {
-    title: "Estrategias Digitales",
-    description: "Maximizamos tu presencia online con soluciones inteligentes.",
-    icon: <LineChart className="w-8 h-8" />,
-  },
-]
-
 const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, index, isMobile, activeCardIndex }) => {
   const controls = useAnimation()
   const cardRef = useRef(null)
   const isInView = useInView(cardRef, { once: true, amount: 0.3 })
   const [isHovered, setIsHovered] = useState(false)
+  const { t } = useTranslation()
 
   // Determine if this card should be highlighted (either by hover on desktop or by being centered on mobile)
   const isHighlighted = isMobile ? activeCardIndex === index : isHovered
@@ -104,7 +88,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
               whileTap={isMobile ? {} : { scale: 0.95 }}
               className="flex items-center gap-2 font-medium text-[#D4F57A] hover:text-white transition-colors duration-300"
             >
-              <span>Cotiza tu proyecto</span>
+              <span>{t("home.services.quoteButton")}</span>
               <ArrowRight className="w-4 h-4" />
             </motion.button>
           </ButtonWrapper>
@@ -127,12 +111,31 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
 }
 
 export default function Services() {
+  const { t } = useTranslation()
   const [isMobile, setIsMobile] = useState(false)
   const [activeCardIndex, setActiveCardIndex] = useState(0)
   const containerRef = useRef(null)
   const isInView = useInView(containerRef, { once: true, amount: 0.1 })
   const controls = useAnimation()
   const cardsGridRef = useRef(null)
+
+  const services = [
+    {
+      title: t("home.services.webDevelopment"),
+      description: t("home.services.webDevelopmentDesc"),
+      icon: <Code className="w-8 h-8" />,
+    },
+    {
+      title: t("home.services.optimization"),
+      description: t("home.services.optimizationDesc"),
+      icon: <Settings className="w-8 h-8" />,
+    },
+    {
+      title: t("home.services.strategies"),
+      description: t("home.services.strategiesDesc"),
+      icon: <LineChart className="w-8 h-8" />,
+    },
+  ]
 
   useEffect(() => {
     const checkMobile = () => {
@@ -202,12 +205,8 @@ export default function Services() {
       <div className="container mx-auto px-4 relative z-10" ref={containerRef}>
         <ScrollAnimation>
           <div className="text-center mb-16 pt-16 md:pt-24">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Soluciones digitales que transforman negocios
-            </h2>
-            <p className="text-[#F5F2EB]/80 max-w-2xl mx-auto text-lg">
-              Creamos experiencias digitales que impulsan el crecimiento de tu empresa
-            </p>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">{t("home.services.title")}</h2>
+            <p className="text-[#F5F2EB]/80 max-w-2xl mx-auto text-lg">{t("home.services.subtitle")}</p>
           </div>
         </ScrollAnimation>
 
@@ -233,7 +232,7 @@ export default function Services() {
               whileTap={isMobile ? {} : { scale: 0.95 }}
               className="bg-[#D4F57A] hover:bg-[#c2e65c] text-[#293B36] font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 font-inter"
             >
-              Ver portafolio
+              {t("home.services.portfolioButton")}
             </motion.button>
           </Magnet>
         </ScrollAnimation>

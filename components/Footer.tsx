@@ -64,15 +64,15 @@ export default function Footer() {
   // Función para determinar el href basado en el nombre del elemento
   const getLinkHref = (item: string) => {
     switch (item) {
-      case "Desarrollo Web":
-      case "Estrategias Digitales":
-      case "Optimización y Mantenimiento":
+      case "Web Development":
+      case "Digital Strategies":
+      case "Optimization and Maintenance":
         return "#services"
-      case "Sobre Nosotros":
+      case "About Us":
         return "#about-us"
-      case "Proyectos":
+      case "Projects":
         return "#projects"
-      case "Contacto":
+      case "Contact":
         return "#contact"
       default:
         return "#"
@@ -81,16 +81,16 @@ export default function Footer() {
 
   const links = [
     {
-      title: "Servicios",
-      items: ["Desarrollo Web", "Optimización y Mantenimiento", "Estrategias Digitales"],
+      title: "Services",
+      items: ["Web Development", "Optimization and Maintenance", "Digital Strategies"],
     },
     {
-      title: "Compañía",
-      items: ["Sobre Nosotros", "Proyectos"],
+      title: "Company",
+      items: ["About Us", "Projects"],
     },
     {
-      title: "Recursos",
-      items: ["Contacto"],
+      title: "Resources",
+      items: ["Contact"],
     },
   ]
 
@@ -110,9 +110,7 @@ export default function Footer() {
                 className="mb-6"
               />
             </Link>
-            <p className="text-[#F5F2EB]/60 mb-6">
-              Transformamos ideas en soluciones digitales innovadoras y escalables.
-            </p>
+            <p className="text-[#F5F2EB]/60 mb-6">We transform ideas into innovative and scalable digital solutions.</p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
                 <Link
@@ -153,7 +151,7 @@ export default function Footer() {
 
           {/* Contact Info - 2 columns */}
           <div className="lg:col-span-2">
-            <h3 className="text-[#D4F57A] font-semibold mb-4">Contacto</h3>
+            <h3 className="text-[#D4F57A] font-semibold mb-4">Contact</h3>
             <ul className="space-y-4">
               {contactInfo.map((info) => (
                 <li key={info.text} className="flex items-center gap-2 text-[#F5F2EB]/60">
@@ -170,16 +168,10 @@ export default function Footer() {
           {/* Logo and description */}
           <div className="flex flex-col items-center text-center mb-6">
             <Link href="#home" onClick={(e) => handleSmoothScroll(e, "#home")}>
-              <Image
-                src="/Logos/SVG/logo-footer.svg"
-                alt="Ginkgo Devs Logo"
-                width={150}
-                height={97}
-                className="mb-4"
-              />
+              <Image src="/Logos/SVG/logo-footer.svg" alt="Ginkgo Devs Logo" width={150} height={97} className="mb-4" />
             </Link>
             <p className="text-[#F5F2EB]/60 text-sm mb-4 max-w-xs">
-              Transformamos ideas en soluciones digitales innovadoras y escalables.
+              We transform ideas into innovative and scalable digital solutions.
             </p>
             <div className="flex space-x-5 mb-2">
               {socialLinks.map((social) => (
@@ -248,20 +240,20 @@ export default function Footer() {
         <div className="border-t border-white/10 pt-4 mt-4">
           <div className="flex flex-col sm:flex-row justify-between items-center">
             <p className="text-[#F5F2EB]/60 text-xs sm:text-sm mb-4 sm:mb-0 text-center sm:text-left">
-              © {new Date().getFullYear()} Ginkgo Devs. Todos los derechos reservados.
+              © {new Date().getFullYear()} Ginkgo Devs. All rights reserved.
             </p>
             <div className="flex space-x-4">
               <Link
                 href={`/${locale}/terms`}
                 className="text-[#F5F2EB]/60 hover:text-[#D4F57A] text-xs sm:text-sm transition-colors"
               >
-                Términos
+                Terms
               </Link>
               <Link
                 href={`/${locale}/privacy-policy`}
                 className="text-[#F5F2EB]/60 hover:text-[#D4F57A] text-xs sm:text-sm transition-colors"
               >
-                Privacidad
+                Privacy
               </Link>
               <Link
                 href={`/${locale}/cookies-policy`}
