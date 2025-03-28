@@ -7,12 +7,12 @@ import { useTranslation } from "@/contexts/TranslationContext"
 
 export default function Projects() {
   const router = useRouter()
-  const { locale } = useTranslation()
+  const { t, locale } = useTranslation()
 
-  // Formatear proyectos para la galería circular
+  // Formatear proyectos para la galería circular con títulos según el idioma
   const galleryItems = projects.map((project) => ({
     image: project.image || "/placeholder.svg",
-    text: project.title,
+    text: locale === "en" ? project.title : project.titleEs || project.title,
     id: project.id,
   }))
 
@@ -25,7 +25,7 @@ export default function Projects() {
     <section id="projects" className="py-20 relative bg-[#293B36]">
       <div className="w-full px-0 mx-0">
         <ScrollAnimation>
-          <h2 className="text-3xl sm:text-4xl font-bold text-center text-[#D4F57A] ">Nuestros Proyectos</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold text-center text-[#D4F57A] ">{t("home.projects.title")}</h2>
         </ScrollAnimation>
 
         <ScrollAnimation>
@@ -41,7 +41,7 @@ export default function Projects() {
               />
             </div>
             <div className="text-center mt-6 text-white/70">
-              <p className="text-sm sm:text-base">Desliza o arrastra para navegar por los proyectos</p>
+              <p className="text-sm sm:text-base">{t("home.projects.scrollInstructions")}</p>
               <span className="sr-only">
                 Galería de proyectos interactiva. Usa las teclas de flecha izquierda y derecha para navegar entre
                 proyectos.
