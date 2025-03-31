@@ -27,23 +27,45 @@ export default function Hero() {
   // Referencia para rastrear el estado real del scroll
   const wasScrollLockedBeforeMenu = useRef(true)
 
-  // Modificar la función toggleScrollLock para que se desplace a la sección de servicios
+  // Añadir una función para aplicar clases CSS que bloqueen el desplazamiento
+  const applyScrollLock = useCallback((lock: boolean) => {
+    if (lock) {
+      document.body.classList.add("no-scroll")
+      document.documentElement.classList.add("no-scroll")
+      document.body.style.overflow = "hidden"
+      document.documentElement.style.overflow = "hidden"
+      // Forzar la posición de desplazamiento a 0
+      window.scrollTo(0, 0)
+    } else {
+      document.body.classList.remove("no-scroll")
+      document.documentElement.classList.remove("no-scroll")
+      document.body.style.overflow = "auto"
+      document.documentElement.style.overflow = "auto"
+      document.body.style.overflowX = "hidden"
+      document.documentElement.style.overflowX = "hidden"
+    }
+  }, [])
+
+  // Modificar la función toggleScrollLock para usar la nueva función
   const toggleScrollLock = useCallback(() => {
     setIsScrollLocked((prev) => !prev)
 
     if (isScrollLocked) {
       // Unlock scroll and scroll to services section
-      document.body.style.overflow = "auto"
+      applyScrollLock(false)
       const servicesSection = document.getElementById("services")
       if (servicesSection) {
         servicesSection.scrollIntoView({ behavior: "smooth" })
       }
     } else {
       // Lock scroll and go back to hero
-      document.body.style.overflow = "hidden"
       window.scrollTo({ top: 0, behavior: "smooth" })
+      // Pequeño retraso para aplicar el bloqueo después de que termine la animación
+      setTimeout(() => {
+        applyScrollLock(true)
+      }, 500)
     }
-  }, [isScrollLocked])
+  }, [isScrollLocked, applyScrollLock])
 
   // Handle scroll events to show/hide lock button
   const handleScroll = useCallback(() => {
@@ -96,6 +118,7 @@ export default function Hero() {
     }
   }, [isScrollLocked])
 
+  // Modificar el useEffect para usar la nueva función
   useEffect(() => {
     setIsMounted(true)
     const checkMobile = () => {
@@ -106,9 +129,12 @@ export default function Hero() {
 
     // Apply initial scroll lock on mobile
     if (window.innerWidth < 768) {
-      document.body.style.overflow = isScrollLocked ? "hidden" : "auto"
+      applyScrollLock(isScrollLocked)
     } else {
       document.body.style.overflow = "auto" // Always enable scroll on desktop
+      document.documentElement.style.overflow = "auto"
+      document.body.style.overflowX = "hidden" // Mantener hidden solo para el eje X
+      document.documentElement.style.overflowX = "hidden"
     }
 
     // Add scroll event listener
@@ -117,9 +143,14 @@ export default function Hero() {
     return () => {
       window.removeEventListener("resize", checkMobile)
       window.removeEventListener("scroll", handleScroll)
+      document.body.classList.remove("no-scroll")
+      document.documentElement.classList.remove("no-scroll")
       document.body.style.overflow = "auto" // Reset on unmount
+      document.documentElement.style.overflow = "auto"
+      document.body.style.overflowX = "hidden" // Mantener hidden solo para el eje X
+      document.documentElement.style.overflowX = "hidden"
     }
-  }, [isScrollLocked, handleScroll])
+  }, [isScrollLocked, handleScroll, applyScrollLock])
 
   // Function to handle smooth scrolling to sections
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -160,11 +191,11 @@ export default function Hero() {
   const rotatingTexts = rotatingTextsString.split(",")
 
   return (
-    <div id="home" className="relative min-h-screen bg-[#293B36] pb-32 overflow-x-hidden">
+    <div id="home" className="relative min-h-screen bg-[#293B36] pb-32 overflow-hidden">
       {isMounted && <FallingLeaves />}
       <Navbar />
 
-      <div className="relative z-10 flex flex-col justify-start md:justify-center items-center min-h-screen px-2 sm:px-4 md:px-16 lg:px-24 pt-16 md:pt-0">
+      <div className="relative z-10 flex flex-col justify-start md:justify-center items-center min-h-screen px-2 sm:px-4 md:px-16 lg:px-24 pt-16 md:pt-0 overflow-hidden">
         <div className="w-full max-w-7xl mt-20 md:mt-0">
           <div className="text-center">
             <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-2 md:mb-4">
@@ -261,8 +292,6 @@ export default function Hero() {
           </motion.div>
         </div>
       )}
-
-    
 
       {/* Gradient transition at the bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#293B36] pointer-events-none" />

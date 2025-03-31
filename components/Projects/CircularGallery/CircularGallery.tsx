@@ -436,8 +436,14 @@ class App {
     this.onCheck()
   }
 
-  onWheel() {
-    // Desactivado para eliminar la funcionalidad de scroll
+  onWheel(e) {
+    // Habilitar la funcionalidad de scroll para la galería
+    if (e.deltaY > 0) {
+      this.scroll.target += 1
+    } else {
+      this.scroll.target -= 1
+    }
+    this.onCheckDebounce()
   }
 
   onCheck() {
