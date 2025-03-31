@@ -18,7 +18,7 @@ const teamMembers = [
   {
     name: "Nicolas Alonso",
     role: "Full Stack Developer",
-    image: "/Integrantes/Nico.jpg",// Cambiado a placeholder mientras no exista la imagen
+    image: "/Integrantes/Nico.jpg", // Cambiado a placeholder mientras no exista la imagen
   },
   {
     name: "Federico Valle",
@@ -270,99 +270,23 @@ export default function AboutUs() {
 
   // Funciones para el arrastre suave del carrusel con momentum
   const handleMouseDown = (e: React.MouseEvent, carouselElement: HTMLDivElement | null) => {
-    if (!carouselElement) return
-
-    const drag = dragRef.current
-    drag.isDown = true
-    drag.startX = e.pageX
-    drag.scrollLeft = carouselElement.scrollLeft
-    drag.lastX = e.pageX
-    drag.lastTimestamp = Date.now()
-    drag.velocity = 0
-
-    // Detener cualquier momentum existente
-    if (drag.momentumID !== null) {
-      cancelAnimationFrame(drag.momentumID)
-      drag.momentumID = null
-    }
-
-    // Cambiar el cursor durante el arrastre
-    carouselElement.style.cursor = "grabbing"
-    document.body.style.cursor = "grabbing"
-
-    // Detener el auto-scroll si está activo
-    if (autoScrollInterval) {
-      clearInterval(autoScrollInterval)
-      setAutoScrollInterval(null)
-    }
+    // Desactivar el comportamiento de arrastre horizontal
+    return
   }
 
   const handleMouseUp = (carouselElement: HTMLDivElement | null) => {
-    if (!carouselElement) return
-
-    const drag = dragRef.current
-    drag.isDown = false
-
-    // Restaurar el cursor
-    carouselElement.style.cursor = "grab"
-    document.body.style.cursor = "default"
-
-    // Aplicar momentum si la velocidad es suficiente
-    if (Math.abs(drag.velocity) > 0.5) {
-      applyMomentum(carouselElement)
-    }
+    // Desactivar el comportamiento de arrastre horizontal
+    return
   }
 
   const handleMouseMove = (e: React.MouseEvent, carouselElement: HTMLDivElement | null) => {
-    if (!carouselElement) return
-
-    const drag = dragRef.current
-    if (!drag.isDown) return
-
-    e.preventDefault()
-
-    const x = e.pageX
-    const now = Date.now()
-    const elapsed = now - drag.lastTimestamp
-
-    // Calcular la distancia recorrida con un factor de resistencia para movimiento más suave
-    const sensitivity = 2.0 // Aumentado para mayor sensibilidad
-    const resistance = 0.8 // Factor de resistencia para suavizar
-    const walk = (x - drag.startX) * sensitivity * resistance
-
-    // Aplicar el desplazamiento con suavizado
-    const targetScrollLeft = drag.scrollLeft - walk
-    carouselElement.scrollLeft = targetScrollLeft
-
-    // Calcular velocidad para momentum con promedio ponderado para suavizar
-    if (elapsed > 0) {
-      // Calcular la nueva velocidad
-      const newVelocity = ((drag.lastX - x) / elapsed) * 20 // Factor ajustado para mejor momentum
-
-      // Aplicar promedio ponderado con la velocidad anterior (70% nueva, 30% anterior)
-      drag.velocity = newVelocity * 0.7 + drag.velocity * 0.3
-
-      drag.lastX = x
-      drag.lastTimestamp = now
-    }
+    // Desactivar el comportamiento de arrastre horizontal
+    return
   }
 
   const handleMouseLeave = (carouselElement: HTMLDivElement | null) => {
-    if (!carouselElement) return
-
-    const drag = dragRef.current
-    if (drag.isDown) {
-      drag.isDown = false
-
-      // Restaurar el cursor
-      carouselElement.style.cursor = "grab"
-      document.body.style.cursor = "default"
-
-      // Aplicar momentum si la velocidad es suficiente
-      if (Math.abs(drag.velocity) > 0.5) {
-        applyMomentum(carouselElement)
-      }
-    }
+    // Desactivar el comportamiento de arrastre horizontal
+    return
   }
 
   // Función para aplicar el efecto de momentum
