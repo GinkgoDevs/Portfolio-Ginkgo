@@ -1,12 +1,12 @@
 export const projects = [
   {
     id: 1,
-    title: "E-commerce Platform",
-    titleEs: "Plataforma de E-commerce",
+    title: "Bauketing AI",
+    titleEs: "Plataforma de Clonación Digital",
     description: "A modern e-commerce solution with advanced features for a growing online retailer.",
     descriptionEs:
-      "Una solución moderna de comercio electrónico con características avanzadas para un minorista en línea en crecimiento.",
-    image: "/placeholder.svg?height=400&width=600",
+      "Una solución moderna de clonacion digital para generar contenido.",
+    image: "/Projects/Bauketing.png",
     category: "next",
     overview:
       "Una solución moderna de comercio electrónico con características avanzadas para un minorista en línea en crecimiento.",
@@ -78,10 +78,10 @@ export const projects = [
   {
     id: 2,
     title: "Corporate Website",
-    titleEs: "Sitio Web Corporativo",
+    titleEs: "Sitio Web Retiro uno",
     description: "A responsive corporate website with a custom theme for a multinational company.",
     descriptionEs: "Un sitio web corporativo responsive con un tema personalizado para una empresa multinacional.",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/Projects/Retiro-Uno.png",
     category: "wordpress",
     overview: "Un sitio web corporativo responsive con un tema personalizado para una empresa multinacional.",
     overviewEn: "A responsive corporate website with a custom theme for a multinational company.",
@@ -144,11 +144,227 @@ export const projects = [
   {
     id: 3,
     title: "Shopify Store",
-    titleEs: "Tienda Shopify",
+    titleEs: "Sitio Web NasFit",
     description: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
     descriptionEs:
       "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/Projects/NasFit.png",
+    category: "shopify",
+    overview: "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
+    overviewEn: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
+    process: {
+      planning:
+        "Analizamos las necesidades de la marca y el catálogo de productos, definiendo recorridos clave del usuario.",
+      planningEn: "Analyzed brand needs and product catalog, defining key user journeys.",
+      design: "Personalizamos un tema premium de Shopify para alinearlo con la estética de la marca.",
+      designEn: "Customized a premium Shopify theme to align with the brand's aesthetic.",
+      development:
+        "Implementamos características personalizadas e integraciones para mejorar la experiencia de compra.",
+      developmentEn: "Implemented custom features and integrations to enhance the shopping experience.",
+      deployment: "Lanzado en hosting de Shopify con pruebas exhaustivas y optimización.",
+      deploymentEn: "Launched on Shopify hosting with thorough testing and optimization.",
+    },
+    technologies: ["Shopify", "Liquid", "JavaScript", "CSS", "Shopify APIs"],
+    keyFeatures: [
+      "Configurador de productos personalizado",
+      "Prueba virtual usando AR",
+      "Programa de fidelidad integrado",
+      "Recomendaciones de productos personalizadas",
+      "Gestión avanzada de inventario",
+    ],
+    keyFeaturesEn: [
+      "Custom product configurator",
+      "Virtual try-on using AR",
+      "Integrated loyalty program",
+      "Personalized product recommendations",
+      "Advanced inventory management",
+    ],
+    challenges: [
+      {
+        title: "Personalización Compleja de Productos",
+        titleEn: "Complex Product Customization",
+        description:
+          "La marca ofrecía amplias opciones de personalización para sus productos, lo que fue difícil de implementar dentro del sistema estándar de productos de Shopify.",
+        descriptionEn:
+          "The brand offered extensive customization options for their products, which was challenging to implement within Shopify's standard product system.",
+        solution:
+          "Desarrollamos un configurador de productos personalizado utilizando el sistema de propiedades de línea de artículos de Shopify y JavaScript, permitiendo a los clientes personalizar productos con una interfaz fácil de usar.",
+        solutionEn:
+          "Developed a custom product configurator using Shopify's line item property system and JavaScript, allowing customers to personalize products with a user-friendly interface.",
+      },
+      {
+        title: "Integración con Sistemas Heredados",
+        titleEn: "Integration with Legacy Systems",
+        description:
+          "El cliente tenía sistemas existentes de inventario y CRM que necesitaban ser integrados con la nueva tienda Shopify.",
+        descriptionEn:
+          "The client had existing inventory and CRM systems that needed to be integrated with the new Shopify store.",
+        solution:
+          "Creamos aplicaciones personalizadas de Shopify y utilizamos la API de Shopify para construir integraciones perfectas, asegurando la sincronización de datos en tiempo real entre sistemas.",
+        solutionEn:
+          "Created custom Shopify apps and utilized Shopify's API to build seamless integrations, ensuring real-time data synchronization between systems.",
+      },
+    ],
+    duration: "3 meses",
+    durationEn: "3 months",
+    team: "2 desarrolladores",
+    teamEn: "2 developers",
+    role: "Desarrollo completo",
+    roleEn: "Complete development",
+    year: "2023",
+  },
+  {
+    id: 4,
+    title: "Shopify Store",
+    titleEs: "Tienda Sitio Sport",
+    description: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
+    descriptionEs:
+      "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
+    image: "/Projects/SitioSport.png",
+    category: "shopify",
+    overview: "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
+    overviewEn: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
+    process: {
+      planning:
+        "Analizamos las necesidades de la marca y el catálogo de productos, definiendo recorridos clave del usuario.",
+      planningEn: "Analyzed brand needs and product catalog, defining key user journeys.",
+      design: "Personalizamos un tema premium de Shopify para alinearlo con la estética de la marca.",
+      designEn: "Customized a premium Shopify theme to align with the brand's aesthetic.",
+      development:
+        "Implementamos características personalizadas e integraciones para mejorar la experiencia de compra.",
+      developmentEn: "Implemented custom features and integrations to enhance the shopping experience.",
+      deployment: "Lanzado en hosting de Shopify con pruebas exhaustivas y optimización.",
+      deploymentEn: "Launched on Shopify hosting with thorough testing and optimization.",
+    },
+    technologies: ["Shopify", "Liquid", "JavaScript", "CSS", "Shopify APIs"],
+    keyFeatures: [
+      "Configurador de productos personalizado",
+      "Prueba virtual usando AR",
+      "Programa de fidelidad integrado",
+      "Recomendaciones de productos personalizadas",
+      "Gestión avanzada de inventario",
+    ],
+    keyFeaturesEn: [
+      "Custom product configurator",
+      "Virtual try-on using AR",
+      "Integrated loyalty program",
+      "Personalized product recommendations",
+      "Advanced inventory management",
+    ],
+    challenges: [
+      {
+        title: "Personalización Compleja de Productos",
+        titleEn: "Complex Product Customization",
+        description:
+          "La marca ofrecía amplias opciones de personalización para sus productos, lo que fue difícil de implementar dentro del sistema estándar de productos de Shopify.",
+        descriptionEn:
+          "The brand offered extensive customization options for their products, which was challenging to implement within Shopify's standard product system.",
+        solution:
+          "Desarrollamos un configurador de productos personalizado utilizando el sistema de propiedades de línea de artículos de Shopify y JavaScript, permitiendo a los clientes personalizar productos con una interfaz fácil de usar.",
+        solutionEn:
+          "Developed a custom product configurator using Shopify's line item property system and JavaScript, allowing customers to personalize products with a user-friendly interface.",
+      },
+      {
+        title: "Integración con Sistemas Heredados",
+        titleEn: "Integration with Legacy Systems",
+        description:
+          "El cliente tenía sistemas existentes de inventario y CRM que necesitaban ser integrados con la nueva tienda Shopify.",
+        descriptionEn:
+          "The client had existing inventory and CRM systems that needed to be integrated with the new Shopify store.",
+        solution:
+          "Creamos aplicaciones personalizadas de Shopify y utilizamos la API de Shopify para construir integraciones perfectas, asegurando la sincronización de datos en tiempo real entre sistemas.",
+        solutionEn:
+          "Created custom Shopify apps and utilized Shopify's API to build seamless integrations, ensuring real-time data synchronization between systems.",
+      },
+    ],
+    duration: "3 meses",
+    durationEn: "3 months",
+    team: "2 desarrolladores",
+    teamEn: "2 developers",
+    role: "Desarrollo completo",
+    roleEn: "Complete development",
+    year: "2023",
+  },
+  {
+    id: 5,
+    title: "Shopify Store",
+    titleEs: "Sitio Web Galindo SA",
+    description: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
+    descriptionEs:
+      "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
+    image: "/Projects/Galindo.png",
+    category: "shopify",
+    overview: "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
+    overviewEn: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
+    process: {
+      planning:
+        "Analizamos las necesidades de la marca y el catálogo de productos, definiendo recorridos clave del usuario.",
+      planningEn: "Analyzed brand needs and product catalog, defining key user journeys.",
+      design: "Personalizamos un tema premium de Shopify para alinearlo con la estética de la marca.",
+      designEn: "Customized a premium Shopify theme to align with the brand's aesthetic.",
+      development:
+        "Implementamos características personalizadas e integraciones para mejorar la experiencia de compra.",
+      developmentEn: "Implemented custom features and integrations to enhance the shopping experience.",
+      deployment: "Lanzado en hosting de Shopify con pruebas exhaustivas y optimización.",
+      deploymentEn: "Launched on Shopify hosting with thorough testing and optimization.",
+    },
+    technologies: ["Shopify", "Liquid", "JavaScript", "CSS", "Shopify APIs"],
+    keyFeatures: [
+      "Configurador de productos personalizado",
+      "Prueba virtual usando AR",
+      "Programa de fidelidad integrado",
+      "Recomendaciones de productos personalizadas",
+      "Gestión avanzada de inventario",
+    ],
+    keyFeaturesEn: [
+      "Custom product configurator",
+      "Virtual try-on using AR",
+      "Integrated loyalty program",
+      "Personalized product recommendations",
+      "Advanced inventory management",
+    ],
+    challenges: [
+      {
+        title: "Personalización Compleja de Productos",
+        titleEn: "Complex Product Customization",
+        description:
+          "La marca ofrecía amplias opciones de personalización para sus productos, lo que fue difícil de implementar dentro del sistema estándar de productos de Shopify.",
+        descriptionEn:
+          "The brand offered extensive customization options for their products, which was challenging to implement within Shopify's standard product system.",
+        solution:
+          "Desarrollamos un configurador de productos personalizado utilizando el sistema de propiedades de línea de artículos de Shopify y JavaScript, permitiendo a los clientes personalizar productos con una interfaz fácil de usar.",
+        solutionEn:
+          "Developed a custom product configurator using Shopify's line item property system and JavaScript, allowing customers to personalize products with a user-friendly interface.",
+      },
+      {
+        title: "Integración con Sistemas Heredados",
+        titleEn: "Integration with Legacy Systems",
+        description:
+          "El cliente tenía sistemas existentes de inventario y CRM que necesitaban ser integrados con la nueva tienda Shopify.",
+        descriptionEn:
+          "The client had existing inventory and CRM systems that needed to be integrated with the new Shopify store.",
+        solution:
+          "Creamos aplicaciones personalizadas de Shopify y utilizamos la API de Shopify para construir integraciones perfectas, asegurando la sincronización de datos en tiempo real entre sistemas.",
+        solutionEn:
+          "Created custom Shopify apps and utilized Shopify's API to build seamless integrations, ensuring real-time data synchronization between systems.",
+      },
+    ],
+    duration: "3 meses",
+    durationEn: "3 months",
+    team: "2 desarrolladores",
+    teamEn: "2 developers",
+    role: "Desarrollo completo",
+    roleEn: "Complete development",
+    year: "2023",
+  },
+  {
+    id: 6,
+    title: "Shopify Store",
+    titleEs: "Sitio Web Bodega Chico Zossi",
+    description: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
+    descriptionEs:
+      "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
+    image: "/Projects/ChicoZossi.png",
     category: "shopify",
     overview: "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
     overviewEn: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
