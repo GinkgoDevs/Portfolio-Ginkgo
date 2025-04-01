@@ -17,8 +17,20 @@ export default function Projects() {
   }))
 
   const handleProjectClick = (id) => {
-    // Navegar a la ruta correcta incluyendo el locale
-    router.push(`/${locale}/project/${id}`)
+    // Buscar el proyecto por ID
+    const project = projects.find((project) => project.id === id)
+
+    if (project && project.url) {
+      // Si el proyecto tiene una URL, redirigir a ella
+      window.open(project.url, "_blank", "noopener,noreferrer")
+    } else {
+      // Mantener la lógica existente para la navegación interna (para uso futuro)
+      // Comentado para evitar que se ejecute ahora
+      // router.push(`/${locale}/project/${id}`);
+
+      // Por ahora, si no hay URL, simplemente mostrar un mensaje en consola
+      console.log(`Proyecto ${id} no tiene URL externa definida`)
+    }
   }
 
   return (

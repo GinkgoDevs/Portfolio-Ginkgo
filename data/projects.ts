@@ -4,10 +4,10 @@ export const projects = [
     title: "Bauketing AI",
     titleEs: "Plataforma de Clonación Digital",
     description: "A modern e-commerce solution with advanced features for a growing online retailer.",
-    descriptionEs:
-      "Una solución moderna de clonacion digital para generar contenido.",
+    descriptionEs: "Una solución moderna de clonacion digital para generar contenido.",
     image: "/Projects/Bauketing.png",
     category: "next",
+    url: "https://bauketing.com",
     overview:
       "Una solución moderna de comercio electrónico con características avanzadas para un minorista en línea en crecimiento.",
     overviewEn: "A modern e-commerce solution with advanced features for a growing online retailer.",
@@ -83,6 +83,7 @@ export const projects = [
     descriptionEs: "Un sitio web corporativo responsive con un tema personalizado para una empresa multinacional.",
     image: "/Projects/Retiro-Uno.png",
     category: "wordpress",
+    url: "https://www.bodylinenqn.com/retiro-uno",
     overview: "Un sitio web corporativo responsive con un tema personalizado para una empresa multinacional.",
     overviewEn: "A responsive corporate website with a custom theme for a multinational company.",
     process: {
@@ -150,6 +151,7 @@ export const projects = [
       "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
     image: "/Projects/NasFit.png",
     category: "shopify",
+    url: "https://julinas.com",
     overview: "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
     overviewEn: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
     process: {
@@ -222,6 +224,7 @@ export const projects = [
       "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
     image: "/Projects/SitioSport.png",
     category: "shopify",
+    url: "https://www.sitiosports.com",
     overview: "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
     overviewEn: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
     process: {
@@ -294,6 +297,7 @@ export const projects = [
       "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
     image: "/Projects/Galindo.png",
     category: "shopify",
+    url: "https://www.galindosa.com.ar",
     overview: "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
     overviewEn: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
     process: {
@@ -366,6 +370,7 @@ export const projects = [
       "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
     image: "/Projects/ChicoZossi.png",
     category: "shopify",
+    url: "https://www.chicozossi.com.ar",
     overview: "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
     overviewEn: "A customized Shopify store for a high-end fashion brand with unique design requirements.",
     process: {

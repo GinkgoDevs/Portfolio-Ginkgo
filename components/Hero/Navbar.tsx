@@ -31,8 +31,6 @@ export default function Navbar() {
   ]
 
   const socialLinks = [
-    { name: "Facebook", icon: Facebook, href: "#" },
-    { name: "Youtube", icon: Youtube, href: "#" },
     { name: "Instagram", icon: Instagram, href: "#" },
     { name: "Linkedin", icon: Linkedin, href: "#" },
     { name: "Github", icon: Github, href: "#" },
