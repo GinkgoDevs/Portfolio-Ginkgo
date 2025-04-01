@@ -12,6 +12,7 @@ import { useTranslation } from "@/contexts/TranslationContext"
 export default function Footer() {
   const env = validateEnv()
   const { locale } = useTranslation()
+  const { t } = useTranslation()
 
   // Filtrar solo las redes sociales que tienen URL
   const socialLinks = [
@@ -61,38 +62,59 @@ export default function Footer() {
     }
   }
 
-  // Función para determinar el href basado en el nombre del elemento
+  // Modificar la función para que use diferentes textos según el locale
+  const links =
+    locale === "en"
+      ? [
+          {
+            title: "Services",
+            items: ["Web Development", "Optimization and Maintenance", "Digital Strategies"],
+          },
+          {
+            title: "Company",
+            items: ["About Us", "Projects"],
+          },
+          {
+            title: "Resources",
+            items: ["Contact"],
+          },
+        ]
+      : [
+          {
+            title: "Servicios",
+            items: ["Desarrollo Web", "Optimización y Mantenimiento", "Estrategias Digitales"],
+          },
+          {
+            title: "Empresa",
+            items: ["Nosotros", "Proyectos"],
+          },
+          {
+            title: "Recursos",
+            items: ["Contacto"],
+          },
+        ]
+
+  // Modificar la función getLinkHref para que funcione con ambos idiomas
   const getLinkHref = (item: string) => {
-    switch (item) {
-      case "Web Development":
-      case "Digital Strategies":
-      case "Optimization and Maintenance":
-        return "#services"
-      case "About Us":
-        return "#about-us"
-      case "Projects":
-        return "#projects"
-      case "Contact":
-        return "#contact"
-      default:
-        return "#"
+    if (
+      item === "Desarrollo Web" ||
+      item === "Optimización y Mantenimiento" ||
+      item === "Estrategias Digitales" ||
+      item === "Web Development" ||
+      item === "Optimization and Maintenance" ||
+      item === "Digital Strategies"
+    ) {
+      return "#services"
+    } else if (item === "Nosotros" || item === "About Us") {
+      return "#about-us"
+    } else if (item === "Proyectos" || item === "Projects") {
+      return "#projects"
+    } else if (item === "Contacto" || item === "Contact") {
+      return "#contact"
+    } else {
+      return "#"
     }
   }
-
-  const links = [
-    {
-      title: "Services",
-      items: ["Web Development", "Optimization and Maintenance", "Digital Strategies"],
-    },
-    {
-      title: "Company",
-      items: ["About Us", "Projects"],
-    },
-    {
-      title: "Resources",
-      items: ["Contact"],
-    },
-  ]
 
   return (
     <footer className="bg-[#1E2C29] text-white pt-12 pb-6">
@@ -110,7 +132,12 @@ export default function Footer() {
                 className="mb-6"
               />
             </Link>
-            <p className="text-[#F5F2EB]/60 mb-6">We transform ideas into innovative and scalable digital solutions.</p>
+            {/* Reemplazar el texto de la descripción del footer con texto condicional según el locale */}
+            <p className="text-[#F5F2EB]/60 mb-6">
+              {locale === "en"
+                ? "Transforming ideas into functional and attractive web solutions"
+                : "Transformando ideas en soluciones web funcionales y atractivas"}
+            </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
                 <Link
@@ -151,7 +178,10 @@ export default function Footer() {
 
           {/* Contact Info - 2 columns */}
           <div className="lg:col-span-2">
-            <h3 className="text-[#D4F57A] font-semibold mb-4">Contact</h3>
+            {/* Reemplazar el título de la sección de contacto con texto condicional según el locale */}
+            <h3 className="text-[#D4F57A] font-semibold mb-4">
+              {locale === "en" ? "Contact Information" : "Información de contacto"}
+            </h3>
             <ul className="space-y-4">
               {contactInfo.map((info) => (
                 <li key={info.text} className="flex items-center gap-2 text-[#F5F2EB]/60">
@@ -170,8 +200,11 @@ export default function Footer() {
             <Link href="#home" onClick={(e) => handleSmoothScroll(e, "#home")}>
               <Image src="/Logos/SVG/logo-footer.svg" alt="Ginkgo Devs Logo" width={150} height={97} className="mb-4" />
             </Link>
+            {/* Reemplazar el texto de la descripción en la versión móvil */}
             <p className="text-[#F5F2EB]/60 text-sm mb-4 max-w-xs">
-              We transform ideas into innovative and scalable digital solutions.
+              {locale === "en"
+                ? "We transform ideas into innovative and scalable digital solutions."
+                : "Transformando ideas en soluciones web innovadoras y escalables."}
             </p>
             <div className="flex space-x-5 mb-2">
               {socialLinks.map((social) => (
@@ -209,6 +242,8 @@ export default function Footer() {
                   aria-expanded={expandedSection === section.title}
                   aria-controls={`section-${section.title}`}
                 >
+                  {/* Modificar las secciones que muestran las claves de traducción directamente
+                  Reemplazar los títulos de sección */}
                   <h3 className="text-[#D4F57A] font-semibold text-sm">{section.title}</h3>
                   {expandedSection === section.title ? (
                     <ChevronUp className="w-4 h-4 text-[#D4F57A]" aria-hidden="true" />
@@ -220,6 +255,7 @@ export default function Footer() {
                   <ul id={`section-${section.title}`} className="grid grid-cols-2 gap-x-4 gap-y-2 py-2">
                     {section.items.map((item) => (
                       <li key={item}>
+                        {/* Reemplazar los elementos de lista */}
                         <Link
                           href={getLinkHref(item)}
                           onClick={(e) => handleSmoothScroll(e, getLinkHref(item))}
@@ -239,27 +275,30 @@ export default function Footer() {
         {/* Bottom Bar - Same for both layouts */}
         <div className="border-t border-white/10 pt-4 mt-4">
           <div className="flex flex-col sm:flex-row justify-between items-center">
+            {/* Reemplazar el texto de derechos reservados */}
             <p className="text-[#F5F2EB]/60 text-xs sm:text-sm mb-4 sm:mb-0 text-center sm:text-left">
-              © {new Date().getFullYear()} Ginkgo Devs. All rights reserved.
+              © {new Date().getFullYear()} Ginkgo Devs.{" "}
+              {locale === "en" ? "All rights reserved." : "Todos los derechos reservados."}
             </p>
             <div className="flex space-x-4">
+              {/* Reemplazar los textos de los enlaces del pie de página */}
               <Link
                 href={`/${locale}/terms`}
                 className="text-[#F5F2EB]/60 hover:text-[#D4F57A] text-xs sm:text-sm transition-colors"
               >
-                Terms
+                {locale === "en" ? "Terms" : "Términos"}
               </Link>
               <Link
                 href={`/${locale}/privacy-policy`}
                 className="text-[#F5F2EB]/60 hover:text-[#D4F57A] text-xs sm:text-sm transition-colors"
               >
-                Privacy
+                {locale === "en" ? "Privacy" : "Privacidad"}
               </Link>
               <Link
                 href={`/${locale}/cookies-policy`}
                 className="text-[#F5F2EB]/60 hover:text-[#D4F57A] text-xs sm:text-sm transition-colors"
               >
-                Cookies
+                {locale === "en" ? "Cookies" : "Cookies"}
               </Link>
             </div>
           </div>
