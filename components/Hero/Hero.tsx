@@ -71,19 +71,13 @@ export default function Hero() {
   const handleScroll = useCallback(() => {
     const heroSection = document.getElementById("home")
     if (heroSection) {
-      const heroBottom = heroSection.getBoundingClientRect().bottom
-      const windowHeight = window.innerHeight
-      const scrollY = window.scrollY
+      const heroRect = heroSection.getBoundingClientRect()
+      const isHeroFullyVisible = heroRect.top >= 0 && heroRect.bottom <= window.innerHeight
 
-      // Mostrar el botón de candado en dos casos:
-      // 1. Cuando el usuario ha scrolleado hacia abajo y luego vuelve al Hero
-      // 2. Cuando el usuario está en el Hero pero el scroll no está bloqueado
-      if (heroBottom > windowHeight * 0.5 && !isScrollLocked) {
+      // Only show the lock button when the hero is fully visible and scroll is not locked
+      if (isHeroFullyVisible && !isScrollLocked) {
         setShowLockButton(true)
-      } else if (scrollY < 50 && !isScrollLocked) {
-        // Si estamos en la parte superior y el scroll no está bloqueado, mostrar el botón
-        setShowLockButton(true)
-      } else if (heroBottom <= windowHeight * 0.5 || isScrollLocked) {
+      } else {
         setShowLockButton(false)
       }
     }
