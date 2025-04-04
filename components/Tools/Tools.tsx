@@ -85,7 +85,7 @@ export default function Tools() {
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
               <span className="text-[#D4F57A]">{t("home.tools.title")}</span>
             </h2>
-            <p className="text-[#F5F2EB]/80 text-lg max-w-2xl mx-auto">{t("home.tools.subtitle")}</p>
+            <p className="text-[#F5F2EB]/80 text-lg max-w-2xl mx-auto text-balance">{t("home.tools.subtitle")}</p>
           </div>
         </ScrollAnimation>
 

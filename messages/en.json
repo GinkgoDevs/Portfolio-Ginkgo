@@ -18,7 +18,7 @@
       "closeButton": "CLOSE"
     },
     "services": {
-      "title": "Digital solutions that transform businesses",
+      "title": "Digital solutions that transform.",
       "subtitle": "We create digital experiences that drive your company's growth",
       "webDevelopment": "Web Development",
       "webDevelopmentDesc": "Scalable, fast, and optimized websites.",
@@ -38,7 +38,8 @@
       "ctaButtonAriaLabel": "Contact to talk about your project"
     },
     "about": {
-      "title": "Behind the code, there are people passionate about technology",
+      "title": "GinkGo Team",
+      "subtitle": "Behind the code, there are people passionate about technology",
       "values": {
         "title": "Our values",
         "subtitle": "These principles guide our work and define our culture as a team.",

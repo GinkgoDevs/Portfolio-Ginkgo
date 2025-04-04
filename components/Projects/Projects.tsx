@@ -37,7 +37,7 @@ export default function Projects() {
     <section id="projects" className="py-20 relative bg-[#293B36]">
       <div className="w-full px-0 mx-0">
         <ScrollAnimation>
-          <h2 className="text-3xl sm:text-4xl font-bold text-center text-[#D4F57A] ">{t("home.projects.title")}</h2>
+          <h2 className="text-4xl sm:text-5xl font-bold text-center text-[#D4F57A] ">{t("home.projects.title")}</h2>
         </ScrollAnimation>
 
         <ScrollAnimation>
