@@ -83,7 +83,9 @@
       "send": "Enviar mensaje",
       "sending": "Enviando...",
       "success": "¡Mensaje enviado!",
-      "successDesc": "Nos pondremos en contacto contigo lo antes posible."
+      "successDesc": "Nos pondremos en contacto contigo lo antes posible.",
+      "whatsapp": "WhatsApp",
+      "scheduleCall": "Agendar una llamada"
     }
   },
   "footer": {

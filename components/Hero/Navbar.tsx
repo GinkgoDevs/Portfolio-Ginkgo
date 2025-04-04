@@ -4,10 +4,11 @@ import type React from "react"
 
 import { useState, useEffect, createContext, useContext } from "react"
 import Link from "next/link"
-import { Facebook, Youtube, Instagram, Linkedin, Github } from "lucide-react"
+import { Instagram, Linkedin, Github, ZoomIn, ZoomOut, RotateCcw } from "lucide-react"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "@/contexts/TranslationContext"
+import { useAccessibility } from "@/components/AccessibilityProvider"
 
 // Crear un contexto para el estado del menú
 export const MenuContext = createContext<{ isMenuOpen: boolean }>({ isMenuOpen: false })
@@ -20,6 +21,8 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const { locale } = useTranslation()
+  const { highContrast, toggleHighContrast, fontSize, increaseFontSize, decreaseFontSize, resetFontSize } =
+    useAccessibility()
 
   // Define menu items with translations
   const menuItems = [
@@ -140,18 +143,22 @@ export default function Navbar() {
     }
   }
 
+  // Modificar las funciones openMenu y closeMenu para asegurarnos de que el evento se dispare correctamente
+
   // Modificar la función para abrir el menú
   const openMenu = () => {
     setIsOpen(true)
     // Disparar un evento personalizado cuando el menú se abre
-    document.dispatchEvent(new CustomEvent("menuStateChange", { detail: { isOpen: true } }))
+    const event = new CustomEvent("menuStateChange", { detail: { isOpen: true } })
+    document.dispatchEvent(event)
   }
 
   // Modificar la función para cerrar el menú
   const closeMenu = () => {
     setIsOpen(false)
     // Disparar un evento personalizado cuando el menú se cierra
-    document.dispatchEvent(new CustomEvent("menuStateChange", { detail: { isOpen: false } }))
+    const event = new CustomEvent("menuStateChange", { detail: { isOpen: false } })
+    document.dispatchEvent(event)
   }
 
   return (
@@ -215,7 +222,7 @@ export default function Navbar() {
               animate="open"
               exit="closed"
               variants={menuVariants}
-              className="fixed top-4 bottom-4 right-4 w-[90vw] max-w-[300px] bg-[#D4F57A]/95 shadow-lg rounded-3xl overflow-hidden z-50"
+              className="fixed top-4 bottom-4 right-4 w-[90vw] max-w-[320px] bg-[#D4F57A]/95 shadow-lg rounded-3xl overflow-hidden z-50"
               style={{
                 boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
                 backdropFilter: "blur(5px)",
@@ -235,13 +242,13 @@ export default function Navbar() {
 
                 {/* Navigation Items */}
                 <motion.nav className="flex-1 overflow-y-auto overflow-x-hidden">
-                  <motion.ul className="space-y-2 md:space-y-2.5 w-full">
+                  <motion.ul className="space-y-1 w-full">
                     {menuItems.map((item) => (
                       <motion.li key={item.name} variants={menuItemVariants} className="w-full">
                         <Link
                           href={item.href}
                           onClick={(e) => handleSmoothScroll(e, item.href)}
-                          className="text-[#293B36] text-xl font-medium hover:text-[#293B36]/70 transition-colors block w-full whitespace-nowrap"
+                          className="text-[#293B36] text-lg font-medium hover:text-[#293B36]/70 transition-colors block w-full py-1"
                         >
                           {item.name}
                         </Link>
@@ -250,9 +257,70 @@ export default function Navbar() {
                   </motion.ul>
                 </motion.nav>
 
+                {/* Accessibility Options */}
+                <motion.div variants={menuItemVariants} className="mt-3 mb-3 bg-[#293B36]/10 rounded-xl p-3">
+                  <h3 className="text-[#293B36] font-medium mb-2 text-sm">{t("accessibility.options")}</h3>
+
+                  <div className="space-y-4">
+                    {/* High Contrast Toggle */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#293B36] text-sm">{t("accessibility.highContrast")}</span>
+                      <button
+                        onClick={toggleHighContrast}
+                        className={`relative w-10 h-5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#293B36] ${
+                          highContrast ? "bg-[#293B36]" : "bg-[#293B36]/20"
+                        }`}
+                        aria-label={highContrast ? "Desactivar alto contraste" : "Activar alto contraste"}
+                        aria-pressed={highContrast}
+                        role="switch"
+                      >
+                        <span
+                          className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-[#D4F57A] transition-transform ${
+                            highContrast ? "translate-x-5" : "translate-x-0"
+                          }`}
+                        />
+                      </button>
+                    </div>
+
+                    {/* Text Size Controls */}
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[#293B36] text-sm">
+                          {t("accessibility.fontSize")} ({fontSize}%)
+                        </span>
+                        <button
+                          onClick={resetFontSize}
+                          className="p-1 rounded-lg bg-[#293B36]/10 hover:bg-[#293B36]/20 text-[#293B36] transition-colors focus:outline-none focus:ring-2 focus:ring-[#293B36]"
+                          aria-label="Restablecer tamaño de texto"
+                        >
+                          <RotateCcw className="w-3 h-3" />
+                        </button>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={decreaseFontSize}
+                          className="p-2 rounded-lg bg-[#293B36]/10 hover:bg-[#293B36]/20 text-[#293B36] transition-colors flex-1 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#293B36]"
+                          aria-label="Disminuir tamaño de texto"
+                          disabled={fontSize <= 80}
+                        >
+                          <ZoomOut className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={increaseFontSize}
+                          className="p-2 rounded-lg bg-[#293B36]/10 hover:bg-[#293B36]/20 text-[#293B36] transition-colors flex-1 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#293B36]"
+                          aria-label="Aumentar tamaño de texto"
+                          disabled={fontSize >= 140}
+                        >
+                          <ZoomIn className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
                 {/* Social Links */}
-                <motion.div variants={menuItemVariants} className="mt-4 w-full">
-                  <div className="grid grid-cols-2 gap-2 text-xs">
+                <motion.div variants={menuItemVariants} className="mt-auto w-full">
+                  <div className="grid grid-cols-3 gap-2 text-xs">
                     {socialLinks.map((link) => (
                       <Link
                         key={link.name}

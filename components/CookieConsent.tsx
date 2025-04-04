@@ -70,6 +70,9 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
     setShowBanner(false)
     setShowPreferences(false)
     if (onAccept) onAccept(prefs)
+
+    // Disparar un evento personalizado para notificar que se ha dado consentimiento
+    document.dispatchEvent(new CustomEvent("cookieConsentChanged"))
   }
 
   const togglePreference = (key: keyof CookiePreferences) => {
@@ -89,7 +92,7 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 100, opacity: 0 }}
         transition={{ type: "spring", damping: 20, stiffness: 100 }}
-        className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6"
+        className="fixed bottom-0 left-0 right-0 z-50 p-4 md:p-6 cookie-banner"
       >
         <div className="max-w-7xl mx-auto">
           <div className="bg-[#1E2C29] border border-[#D4F57A]/20 rounded-xl shadow-xl overflow-hidden">
