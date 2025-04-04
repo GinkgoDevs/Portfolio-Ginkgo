@@ -35,6 +35,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
   const lastTime = useRef(performance.now())
   const lastMouseProcessTime = useRef(0)
   const animationFrameRef = useRef<number | null>(null)
+  const lastScrollY = useRef(0)
 
   // Modificar el manejador de eventos handleMouseMove para verificar si canvasRef.current existe
   const handleMouseMove = useCallback((event: MouseEvent) => {
@@ -279,8 +280,9 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       leaf.userData.isAffectedByMouse = false
     }
 
+    // Modificar la función updateWorldMousePosition para evitar cálculos excesivos durante el scroll
     const updateWorldMousePosition = () => {
-      // Only update mouse position every 16ms (roughly 60fps) to avoid excessive calculations
+      // Solo actualizar la posición del mouse cada 16ms (aproximadamente 60fps) para evitar cálculos excesivos
       const now = Date.now()
       if (now - lastMouseProcessTime.current < 16) return
       lastMouseProcessTime.current = now
@@ -294,6 +296,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       worldMousePosition.current.copy(camera.position).add(dir.multiplyScalar(distance))
     }
 
+    // Modificar la función animate para mejorar el rendimiento en móviles
     function animate() {
       animationFrameRef.current = requestAnimationFrame(animate)
 
@@ -304,11 +307,16 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
       const mouseSpeed = mouseVelocity.current.length()
 
+      // Detectar scroll pero sin filtrar demasiadas hojas
+      const isScrolling = Math.abs(window.scrollY - lastScrollY.current) > 5
+      lastScrollY.current = window.scrollY
+
       // Ajustar el umbral de rendimiento para dispositivos móviles
       const performanceMode = isMobileDevice ? deltaTime > 0.04 : deltaTime > 0.05
 
-      // Update falling leaves
-      leaves.forEach((leaf) => {
+      // Update falling leaves - con optimización más suave
+      leaves.forEach((leaf, index) => {
+        // Procesar todas las hojas, pero con menos cálculos durante scroll
         const userData = leaf.userData
         const velocity = userData.velocity
         const angularVelocity = userData.angularVelocity
@@ -323,24 +331,27 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
         velocity.x += swayAmount
 
         // Check for mouse proximity and apply force only if mouse is moving
-        const distanceToMouse = leaf.position.distanceTo(worldMousePosition.current)
-        const mouseInfluenceRadius = 3.5
+        if (!isScrolling) {
+          // Omitir interacción con el mouse durante scroll
+          const distanceToMouse = leaf.position.distanceTo(worldMousePosition.current)
+          const mouseInfluenceRadius = 3.5
 
-        if (
-          distanceToMouse < mouseInfluenceRadius &&
-          isMouseMoving.current &&
-          currentTime - userData.lastMouseImpact > 100
-        ) {
-          const direction = new Vector3().subVectors(leaf.position, worldMousePosition.current).normalize()
-          const impulseStrength = 0.12 * (1 - distanceToMouse / mouseInfluenceRadius)
-          velocity.add(direction.multiplyScalar(impulseStrength))
+          if (
+            distanceToMouse < mouseInfluenceRadius &&
+            isMouseMoving.current &&
+            currentTime - userData.lastMouseImpact > 100
+          ) {
+            const direction = new Vector3().subVectors(leaf.position, worldMousePosition.current).normalize()
+            const impulseStrength = 0.12 * (1 - distanceToMouse / mouseInfluenceRadius)
+            velocity.add(direction.multiplyScalar(impulseStrength))
 
-          angularVelocity.x += (Math.random() - 0.5) * 0.08
-          angularVelocity.y += (Math.random() - 0.5) * 0.08
-          angularVelocity.z += (Math.random() - 0.5) * 0.08
+            angularVelocity.x += (Math.random() - 0.5) * 0.08
+            angularVelocity.y += (Math.random() - 0.5) * 0.08
+            angularVelocity.z += (Math.random() - 0.5) * 0.08
 
-          userData.lastMouseImpact = currentTime
-          userData.isAffectedByMouse = true
+            userData.lastMouseImpact = currentTime
+            userData.isAffectedByMouse = true
+          }
         }
 
         // Apply air resistance - más suave para movimientos más fluidos
@@ -373,16 +384,20 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
       // Update ground leaves with improved physics
       groundLeaves.forEach((leaf, index) => {
-        // En modo rendimiento, procesar menos hojas en móvil pero más que antes
-        if (performanceMode && isMobileDevice && index % 3 !== 0) return
-        if (performanceMode && !isMobileDevice && index % 4 !== 0) return
+        // Optimización más suave para hojas del suelo
+        if (performanceMode && isScrolling && index % 2 !== 0) return
 
         const userData = leaf.userData
         const distanceToMouse = leaf.position.distanceTo(worldMousePosition.current)
         const mouseInfluenceRadius = 4.5
 
         // Only lift leaves if mouse is moving AND close to the leaf
-        if (distanceToMouse < mouseInfluenceRadius && isMouseMoving.current && mouseSpeed > userData.liftThreshold) {
+        if (
+          !isScrolling &&
+          distanceToMouse < mouseInfluenceRadius &&
+          isMouseMoving.current &&
+          mouseSpeed > userData.liftThreshold
+        ) {
           if (!userData.isLifted) {
             userData.isLifted = true
             userData.liftTime = currentTime
@@ -411,7 +426,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
           userData.velocity.y -= 0.0004 * userData.mass
 
           // Apply mouse influence if nearby and mouse is moving
-          if (distanceToMouse < mouseInfluenceRadius && isMouseMoving.current) {
+          if (!isScrolling && distanceToMouse < mouseInfluenceRadius && isMouseMoving.current) {
             const direction = new Vector3().subVectors(leaf.position, worldMousePosition.current).normalize()
             const force = 0.008 * (1 - distanceToMouse / mouseInfluenceRadius) * mouseSpeed
             userData.velocity.add(direction.multiplyScalar(force))
@@ -464,7 +479,16 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       renderer.render(scene, camera)
     }
 
+    // Asegurarse de iniciar la animación
     animate()
+
+    // Añadir un event listener para el scroll
+    const handleScroll = () => {
+      // No hacer nada específico aquí, solo para referencia
+      // El valor de window.scrollY se usará en la función animate
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
 
     const handleResize = () => {
       if (cameraRef.current && rendererRef.current) {
@@ -484,6 +508,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       // Modificar la parte donde se agregan los event listeners
       window.removeEventListener("mousemove", handleMouseMove)
       window.removeEventListener("touchmove", handleTouchMove)
+      window.removeEventListener("scroll", handleScroll)
       if (mouseMovementTimer.current) {
         clearTimeout(mouseMovementTimer.current)
       }
