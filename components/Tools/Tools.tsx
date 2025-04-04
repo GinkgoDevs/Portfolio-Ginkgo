@@ -1,6 +1,4 @@
 "use client"
-
-import type React from "react"
 import { useRef, useState, useEffect } from "react"
 import { Code2, Database, Cloud, Laptop, Paintbrush, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react"
 import ScrollAnimation from "../ScrollAnimation"
@@ -12,8 +10,6 @@ export default function Tools() {
   const carouselRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
   const [activeCategory, setActiveCategory] = useState(0)
-  const [touchStart, setTouchStart] = useState(0)
-  const [touchEnd, setTouchEnd] = useState(0)
 
   // Tecnologías organizadas por categoría
   const technologies = [
@@ -59,35 +55,27 @@ export default function Tools() {
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
-  // Funciones para navegación del carrusel
+  // Funciones para navegación del carrusel - simplificadas
   const handlePrev = () => {
-    setActiveCategory((prev) => (prev === 0 ? technologies.length - 1 : prev - 1))
+    setActiveCategory((prev) => {
+      return prev === 0 ? technologies.length - 1 : prev - 1
+    })
   }
 
   const handleNext = () => {
-    setActiveCategory((prev) => (prev === technologies.length - 1 ? 0 : prev + 1))
+    setActiveCategory((prev) => {
+      return prev === technologies.length - 1 ? 0 : prev + 1
+    })
   }
 
-  // Manejo de gestos táctiles
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setTouchStart(e.targetTouches[0].clientX)
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX)
-  }
-
-  const handleTouchEnd = () => {
-    if (touchStart - touchEnd > 50) {
-      // Deslizar hacia la izquierda
-      handleNext()
+  // Monitorear cambios en activeCategory para asegurar consistencia
+  useEffect(() => {
+    // Validar que activeCategory esté dentro de los límites válidos
+    if (activeCategory < 0 || activeCategory >= technologies.length) {
+      // Corregir a un valor válido
+      setActiveCategory(Math.max(0, Math.min(technologies.length - 1, activeCategory)))
     }
-
-    if (touchStart - touchEnd < -50) {
-      // Deslizar hacia la derecha
-      handlePrev()
-    }
-  }
+  }, [activeCategory, technologies.length])
 
   return (
     <section ref={sectionRef} id="tools" className="py-20 bg-[#293B36] overflow-hidden">
@@ -128,9 +116,6 @@ export default function Tools() {
         {/* Vista para móvil - Carrusel */}
         <div
           className="md:hidden"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
           ref={carouselRef}
           role="region"
           aria-label={t("home.tools.categories.frontend")}
@@ -173,7 +158,9 @@ export default function Tools() {
             {technologies.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setActiveCategory(index)}
+                onClick={() => {
+                  setActiveCategory(index)
+                }}
                 className={`w-2 h-2 mx-1 rounded-full ${index === activeCategory ? "bg-[#D4F57A]" : "bg-white/20"}`}
                 aria-label={`Ir a categoría ${technologies[index].category}`}
                 aria-selected={index === activeCategory}
@@ -183,33 +170,35 @@ export default function Tools() {
             ))}
           </div>
 
-          {/* Contenido del carrusel */}
-          <div
-            className="bg-white/5 backdrop-blur-sm rounded-xl p-6"
-            role="tabpanel"
-            id={`category-panel-${activeCategory}`}
-            aria-labelledby={`category-${activeCategory}`}
-          >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 rounded-lg bg-[#D4F57A] text-[#293B36]">{technologies[activeCategory].icon}</div>
-              <h3 className="text-xl font-semibold text-white">{technologies[activeCategory].category}</h3>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {technologies[activeCategory].items.map((item) => (
-                <span
-                  key={item}
-                  className="px-3 py-2 bg-white/10 rounded-lg text-white/90 text-sm inline-flex items-center hover:bg-[#D4F57A]/10 hover:text-[#D4F57A] transition-colors"
-                >
-                  {item}
-                </span>
-              ))}
+          {/* Contenido del carrusel con transición suave */}
+          <div className="relative overflow-hidden">
+            <div
+              className="bg-white/5 backdrop-blur-sm rounded-xl p-6 transition-opacity duration-300"
+              role="tabpanel"
+              id={`category-panel-${activeCategory}`}
+              aria-labelledby={`category-${activeCategory}`}
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="p-2 rounded-lg bg-[#D4F57A] text-[#293B36]">{technologies[activeCategory].icon}</div>
+                <h3 className="text-xl font-semibold text-white">{technologies[activeCategory].category}</h3>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {technologies[activeCategory].items.map((item) => (
+                  <span
+                    key={item}
+                    className="px-3 py-2 bg-white/10 rounded-lg text-white/90 text-sm inline-flex items-center hover:bg-[#D4F57A]/10 hover:text-[#D4F57A] transition-colors"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Instrucciones de deslizamiento */}
+          {/* Instrucciones de navegación actualizadas */}
           <div className="text-center mt-4 text-white/80 text-sm flex items-center justify-center">
             <ChevronLeft className="w-4 h-4 mr-1" />
-            <span>{t("home.tools.scrollInstructions")}</span>
+            <span>Usa las flechas para navegar entre categorías</span>
             <ChevronRight className="w-4 h-4 ml-1" />
           </div>
         </div>
