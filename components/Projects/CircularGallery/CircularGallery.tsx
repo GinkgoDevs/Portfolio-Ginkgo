@@ -390,27 +390,50 @@ class App {
     if (!this.onItemClick) return
 
     // Solo procesar el clic si no estamos arrastrando
-    if (this.isDown) return
+    if (this.isDown && Math.abs(this.dragDistance) > 5) return
 
     // Verificar si el clic fue muy cercano al inicio del arrastre (para evitar clics accidentales durante el arrastre)
     const now = Date.now()
     if (now - this.lastTouchDown < 300) {
-      // Encontrar el medio más cercano al centro
+      // Convertir coordenadas del clic a coordenadas del canvas
+      const rect = this.gl.canvas.getBoundingClientRect()
+      const x = e.clientX - rect.left
+      const y = e.clientY - rect.top
+
+      // Convertir a coordenadas normalizadas (-1 a 1)
+      const normalizedX = (x / rect.width) * 2 - 1
+      const normalizedY = -((y / rect.height) * 2 - 1) // Y invertido en WebGL
+
+      // Encontrar el medio más cercano al punto de clic
       let closestMedia = null
       let closestDistance = Number.POSITIVE_INFINITY
 
       this.medias.forEach((media) => {
-        const distance = Math.abs(media.plane.position.x)
-        if (distance < closestDistance) {
+        // Obtener la posición del plano en el espacio de la pantalla
+        const planeX = media.plane.position.x / (this.viewport.width / 2) // Normalizar a -1 a 1
+
+        // Calcular la distancia entre el clic y el centro del plano
+        const distance = Math.abs(normalizedX - planeX)
+
+        // Verificar si el clic está dentro de los límites del plano
+        const planeWidth = media.plane.scale.x / (this.viewport.width / 2) // Ancho normalizado
+
+        // Si el clic está dentro del plano y es el más cercano hasta ahora
+        if (distance < planeWidth / 2 && distance < closestDistance) {
           closestDistance = distance
           closestMedia = media
         }
       })
 
-      if (closestMedia && closestDistance < this.medias[0].width * 0.5) {
+      if (closestMedia) {
         // Obtener el ID del proyecto
         const id = closestMedia.id
         if (id !== undefined) {
+          // Centrar la tarjeta seleccionada
+          const targetPosition = closestMedia.x - closestMedia.extra
+          this.scroll.target = targetPosition
+
+          // Llamar al callback con el ID del proyecto
           this.onItemClick(id)
         }
       }
@@ -422,12 +445,14 @@ class App {
     this.lastTouchDown = Date.now() // Registrar el tiempo del último toque
     this.scroll.position = this.scroll.current
     this.start = e.touches ? e.touches[0].clientX : e.clientX
+    this.dragDistance = 0 // Reiniciar la distancia de arrastre
   }
 
   onTouchMove(e) {
     if (!this.isDown) return
     const x = e.touches ? e.touches[0].clientX : e.clientX
-    const distance = (this.start - x) * 0.05
+    this.dragDistance = this.start - x // Calcular la distancia de arrastre
+    const distance = this.dragDistance * 0.05
     this.scroll.target = this.scroll.position + distance
   }
 

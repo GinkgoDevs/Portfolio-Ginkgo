@@ -108,7 +108,9 @@ export default function FloatingActionButtons() {
   }
 
   // No renderizar nada si el banner de cookies está visible o si el menú está abierto
-  if (cookieConsentShown || !shouldRender || isMenuOpen) return null
+  if (cookieConsentShown || !shouldRender) return null
+  // Solo ocultar cuando el menú está abierto, pero mantener el componente montado
+  if (isMenuOpen) return <div className="hidden"></div>
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">

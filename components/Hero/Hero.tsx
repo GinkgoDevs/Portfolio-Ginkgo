@@ -67,15 +67,21 @@ export default function Hero() {
     }
   }, [isScrollLocked, applyScrollLock])
 
-  // Handle scroll events to show/hide lock button
+  // Modificar la función handleScroll para mostrar el botón de candado cuando se vuelve al Hero
   const handleScroll = useCallback(() => {
     const heroSection = document.getElementById("home")
     if (heroSection) {
       const heroBottom = heroSection.getBoundingClientRect().bottom
       const windowHeight = window.innerHeight
+      const scrollY = window.scrollY
 
-      // Show lock button when user has scrolled back to hero section
+      // Mostrar el botón de candado en dos casos:
+      // 1. Cuando el usuario ha scrolleado hacia abajo y luego vuelve al Hero
+      // 2. Cuando el usuario está en el Hero pero el scroll no está bloqueado
       if (heroBottom > windowHeight * 0.5 && !isScrollLocked) {
+        setShowLockButton(true)
+      } else if (scrollY < 50 && !isScrollLocked) {
+        // Si estamos en la parte superior y el scroll no está bloqueado, mostrar el botón
         setShowLockButton(true)
       } else if (heroBottom <= windowHeight * 0.5 || isScrollLocked) {
         setShowLockButton(false)
@@ -118,6 +124,23 @@ export default function Hero() {
     }
   }, [isScrollLocked])
 
+  // Añadir un event listener para detectar cuando el scroll se desbloquea desde el menú
+  useEffect(() => {
+    const handleScrollUnlocked = (e: CustomEvent) => {
+      if (e.detail.unlocked) {
+        setIsScrollLocked(false)
+        wasScrollLockedBeforeMenu.current = false
+      }
+    }
+
+    // Añadir el event listener para el evento personalizado
+    document.addEventListener("scrollUnlocked", handleScrollUnlocked as EventListener)
+
+    return () => {
+      document.removeEventListener("scrollUnlocked", handleScrollUnlocked as EventListener)
+    }
+  }, [])
+
   // Modificar el useEffect para usar la nueva función
   useEffect(() => {
     setIsMounted(true)
@@ -151,6 +174,28 @@ export default function Hero() {
       document.documentElement.style.overflowX = "hidden"
     }
   }, [isScrollLocked, handleScroll, applyScrollLock])
+
+  // Añadir un efecto para restablecer el estado cuando se vuelve al Hero
+  useEffect(() => {
+    const checkIfInHero = () => {
+      if (window.scrollY < 50) {
+        // Si estamos en la parte superior de la página, mostrar el botón de candado
+        // pero solo si el scroll no está bloqueado
+        if (!isScrollLocked) {
+          setShowLockButton(true)
+        }
+      }
+    }
+
+    window.addEventListener("scroll", checkIfInHero)
+
+    // También verificar al montar el componente
+    checkIfInHero()
+
+    return () => {
+      window.removeEventListener("scroll", checkIfInHero)
+    }
+  }, [isScrollLocked])
 
   // Function to handle smooth scrolling to sections
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
