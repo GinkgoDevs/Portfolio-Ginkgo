@@ -35,10 +35,6 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
   const lastTime = useRef(performance.now())
   const lastMouseProcessTime = useRef(0)
   const animationFrameRef = useRef<number | null>(null)
-  const lastScrollY = useRef(0)
-  const isScrolling = useRef(false)
-  const scrollEndTimer = useRef<NodeJS.Timeout | null>(null)
-  const scrollTransitionFactor = useRef(1) // 1 = normal physics, 0 = reduced physics
 
   // Modificar el manejador de eventos handleMouseMove para verificar si canvasRef.current existe
   const handleMouseMove = useCallback((event: MouseEvent) => {
@@ -148,10 +144,10 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       0xa1c920, // Even darker green
     ]
 
-    // Reducir cantidad de hojas en móvil para mejor rendimiento
-    let leavesCount = isMobileDevice ? 60 : 120 // Reducido para móvil
-    let groundLayerCount = isMobileDevice ? 3 : 5 // Reducido para móvil
-    let groundLeavesPerLayer = isMobileDevice ? 120 : 250 // Reducido para móvil
+    // Ajustar cantidad de hojas para móvil - aumentado ligeramente respecto a la versión anterior
+    let leavesCount = isMobileDevice ? 100 : 120 // Aumentado de 80 a 100 en móvil
+    let groundLayerCount = isMobileDevice ? 4 : 5 // Aumentado de 3 a 4 en móvil
+    let groundLeavesPerLayer = isMobileDevice ? 180 : 250 // Aumentado de 150 a 180 en móvil
 
     // Detectar preferencia de reducción de movimiento
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -214,9 +210,6 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
           restingTime: 0,
           swayPhase: Math.random() * Math.PI * 2, // Fase aleatoria para el movimiento ondulante
           swayAmplitude: 0.005 + Math.random() * 0.01, // Amplitud variable para el movimiento
-          // Guardar la última posición y rotación para transiciones suaves
-          lastPosition: new Vector3(x, y, z),
-          lastRotation: new Euler().copy(groundLeaf.rotation),
         }
 
         scene.add(groundLeaf)
@@ -263,9 +256,6 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
         lastMouseImpact: 0,
         swayFactor: 0.2 + Math.random() * 0.3, // Factor de oscilación para movimiento lateral
         swayPhase: Math.random() * Math.PI * 2, // Fase inicial aleatoria
-        // Guardar la última posición y rotación para transiciones suaves
-        lastPosition: new Vector3().copy(leaf.position),
-        lastRotation: new Euler().copy(leaf.rotation),
       }
 
       scene.add(leaf)
@@ -287,15 +277,10 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
         (Math.random() - 0.5) * 0.01,
       )
       leaf.userData.isAffectedByMouse = false
-
-      // Actualizar la última posición y rotación conocidas
-      leaf.userData.lastPosition = new Vector3().copy(leaf.position)
-      leaf.userData.lastRotation = new Euler().copy(leaf.rotation)
     }
 
-    // Modificar la función updateWorldMousePosition para evitar cálculos excesivos durante el scroll
     const updateWorldMousePosition = () => {
-      // Solo actualizar la posición del mouse cada 16ms (aproximadamente 60fps) para evitar cálculos excesivos
+      // Only update mouse position every 16ms (roughly 60fps) to avoid excessive calculations
       const now = Date.now()
       if (now - lastMouseProcessTime.current < 16) return
       lastMouseProcessTime.current = now
@@ -309,7 +294,6 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       worldMousePosition.current.copy(camera.position).add(dir.multiplyScalar(distance))
     }
 
-    // Modificar la función animate para mejorar el rendimiento en móviles
     function animate() {
       animationFrameRef.current = requestAnimationFrame(animate)
 
@@ -323,69 +307,51 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       // Ajustar el umbral de rendimiento para dispositivos móviles
       const performanceMode = isMobileDevice ? deltaTime > 0.04 : deltaTime > 0.05
 
-      // Aplicar el factor de transición para suavizar los cambios entre scroll y no-scroll
-      const transitionFactor = scrollTransitionFactor.current
-
-      // Update falling leaves - con optimización más suave
-      leaves.forEach((leaf, index) => {
+      // Update falling leaves
+      leaves.forEach((leaf) => {
         const userData = leaf.userData
-
-        // Guardar la posición y rotación actual antes de actualizarla
-        userData.lastPosition.copy(leaf.position)
-        userData.lastRotation.copy(leaf.rotation)
-
         const velocity = userData.velocity
         const angularVelocity = userData.angularVelocity
         const mass = userData.mass
 
         // Apply gravity - más suave después de la velocidad inicial
-        velocity.y -= 0.00015 * mass * transitionFactor
+        velocity.y -= 0.00015 * mass
 
         // Añadir movimiento ondulante lateral para simular brisa
         const time = currentTime * 0.0004
-        const swayAmount = Math.sin(time + userData.swayPhase) * 0.0003 * userData.swayFactor * transitionFactor
+        const swayAmount = Math.sin(time + userData.swayPhase) * 0.0003 * userData.swayFactor
         velocity.x += swayAmount
 
         // Check for mouse proximity and apply force only if mouse is moving
-        if (!isScrolling.current) {
-          // Omitir interacción con el mouse durante scroll
-          const distanceToMouse = leaf.position.distanceTo(worldMousePosition.current)
-          const mouseInfluenceRadius = 3.5
+        const distanceToMouse = leaf.position.distanceTo(worldMousePosition.current)
+        const mouseInfluenceRadius = 3.5
 
-          if (
-            distanceToMouse < mouseInfluenceRadius &&
-            isMouseMoving.current &&
-            currentTime - userData.lastMouseImpact > 100
-          ) {
-            const direction = new Vector3().subVectors(leaf.position, worldMousePosition.current).normalize()
-            const impulseStrength = 0.12 * (1 - distanceToMouse / mouseInfluenceRadius) * transitionFactor
-            velocity.add(direction.multiplyScalar(impulseStrength))
+        if (
+          distanceToMouse < mouseInfluenceRadius &&
+          isMouseMoving.current &&
+          currentTime - userData.lastMouseImpact > 100
+        ) {
+          const direction = new Vector3().subVectors(leaf.position, worldMousePosition.current).normalize()
+          const impulseStrength = 0.12 * (1 - distanceToMouse / mouseInfluenceRadius)
+          velocity.add(direction.multiplyScalar(impulseStrength))
 
-            angularVelocity.x += (Math.random() - 0.5) * 0.08 * transitionFactor
-            angularVelocity.y += (Math.random() - 0.5) * 0.08 * transitionFactor
-            angularVelocity.z += (Math.random() - 0.5) * 0.08 * transitionFactor
+          angularVelocity.x += (Math.random() - 0.5) * 0.08
+          angularVelocity.y += (Math.random() - 0.5) * 0.08
+          angularVelocity.z += (Math.random() - 0.5) * 0.08
 
-            userData.lastMouseImpact = currentTime
-            userData.isAffectedByMouse = true
-          }
+          userData.lastMouseImpact = currentTime
+          userData.isAffectedByMouse = true
         }
 
         // Apply air resistance - más suave para movimientos más fluidos
         velocity.multiplyScalar(0.997)
         angularVelocity.multiplyScalar(0.997)
 
-        // Aplicar velocidades con factor de transición para evitar saltos
-        const positionDelta = new Vector3(
-          velocity.x * transitionFactor,
-          velocity.y * transitionFactor,
-          velocity.z * transitionFactor,
-        )
-
-        leaf.position.add(positionDelta)
-
-        leaf.rotation.x += angularVelocity.x * transitionFactor
-        leaf.rotation.y += angularVelocity.y * transitionFactor
-        leaf.rotation.z += angularVelocity.z * transitionFactor
+        // Update position and rotation
+        leaf.position.add(velocity)
+        leaf.rotation.x += angularVelocity.x
+        leaf.rotation.y += angularVelocity.y
+        leaf.rotation.z += angularVelocity.z
 
         // Ground collision
         if (leaf.position.y < groundY + 0.4) {
@@ -407,25 +373,16 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
       // Update ground leaves with improved physics
       groundLeaves.forEach((leaf, index) => {
-        // Optimización más suave para hojas del suelo
-        if (performanceMode && isScrolling.current && index % 2 !== 0) return
+        // En modo rendimiento, procesar menos hojas en móvil pero más que antes
+        if (performanceMode && isMobileDevice && index % 3 !== 0) return
+        if (performanceMode && !isMobileDevice && index % 4 !== 0) return
 
         const userData = leaf.userData
-
-        // Guardar la posición y rotación actual antes de actualizarla
-        userData.lastPosition.copy(leaf.position)
-        userData.lastRotation.copy(leaf.rotation)
-
         const distanceToMouse = leaf.position.distanceTo(worldMousePosition.current)
         const mouseInfluenceRadius = 4.5
 
         // Only lift leaves if mouse is moving AND close to the leaf
-        if (
-          !isScrolling.current &&
-          distanceToMouse < mouseInfluenceRadius &&
-          isMouseMoving.current &&
-          mouseSpeed > userData.liftThreshold
-        ) {
+        if (distanceToMouse < mouseInfluenceRadius && isMouseMoving.current && mouseSpeed > userData.liftThreshold) {
           if (!userData.isLifted) {
             userData.isLifted = true
             userData.liftTime = currentTime
@@ -451,27 +408,20 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
         if (userData.isLifted) {
           // Apply gravity - más suave
-          userData.velocity.y -= 0.0004 * userData.mass * transitionFactor
+          userData.velocity.y -= 0.0004 * userData.mass
 
           // Apply mouse influence if nearby and mouse is moving
-          if (!isScrolling.current && distanceToMouse < mouseInfluenceRadius && isMouseMoving.current) {
+          if (distanceToMouse < mouseInfluenceRadius && isMouseMoving.current) {
             const direction = new Vector3().subVectors(leaf.position, worldMousePosition.current).normalize()
-            const force = 0.008 * (1 - distanceToMouse / mouseInfluenceRadius) * mouseSpeed * transitionFactor
+            const force = 0.008 * (1 - distanceToMouse / mouseInfluenceRadius) * mouseSpeed
             userData.velocity.add(direction.multiplyScalar(force))
           }
 
-          // Aplicar velocidades con factor de transición para evitar saltos
-          const positionDelta = new Vector3(
-            userData.velocity.x * transitionFactor,
-            userData.velocity.y * transitionFactor,
-            userData.velocity.z * transitionFactor,
-          )
-
-          leaf.position.add(positionDelta)
-
-          leaf.rotation.x += userData.angularVelocity.x * transitionFactor
-          leaf.rotation.y += userData.angularVelocity.y * transitionFactor
-          leaf.rotation.z += userData.angularVelocity.z * transitionFactor
+          // Update position and rotation
+          leaf.position.add(userData.velocity)
+          leaf.rotation.x += userData.angularVelocity.x
+          leaf.rotation.y += userData.angularVelocity.y
+          leaf.rotation.z += userData.angularVelocity.z
 
           // Check for ground collision
           if (leaf.position.y < userData.originalPosition.y) {
@@ -492,7 +442,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
           userData.angularVelocity.multiplyScalar(0.995)
         } else {
           // Return to original position and rotation gradually - más suave
-          const returnSpeed = 0.015 * transitionFactor
+          const returnSpeed = 0.015
           leaf.position.lerp(userData.originalPosition, returnSpeed)
 
           // Convert Euler to Quaternion for smooth interpolation
@@ -506,8 +456,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
           // Gentle sway for grounded leaves - mejorado
           const time = currentTime * 0.0004
-          const wave =
-            Math.sin(time + leaf.position.x * 0.2 + userData.swayPhase) * userData.swayAmplitude * transitionFactor
+          const wave = Math.sin(time + leaf.position.x * 0.2 + userData.swayPhase) * userData.swayAmplitude
           leaf.rotation.z += wave
         }
       })
@@ -515,46 +464,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       renderer.render(scene, camera)
     }
 
-    // Asegurarse de iniciar la animación
     animate()
-
-    // Añadir un event listener para el scroll con detección de inicio y fin
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY
-      const scrollDelta = Math.abs(currentScrollY - lastScrollY.current)
-
-      // Detectar inicio de scroll
-      if (scrollDelta > 5) {
-        isScrolling.current = true
-
-        // Reducir gradualmente el factor de transición para suavizar la física
-        scrollTransitionFactor.current = Math.max(0.3, scrollTransitionFactor.current - 0.1)
-
-        // Reiniciar el temporizador de fin de scroll
-        if (scrollEndTimer.current) {
-          clearTimeout(scrollEndTimer.current)
-        }
-      }
-
-      // Configurar temporizador para detectar fin de scroll
-      scrollEndTimer.current = setTimeout(() => {
-        isScrolling.current = false
-
-        // Restaurar gradualmente el factor de transición
-        const restoreTransition = () => {
-          scrollTransitionFactor.current = Math.min(1, scrollTransitionFactor.current + 0.05)
-          if (scrollTransitionFactor.current < 1) {
-            requestAnimationFrame(restoreTransition)
-          }
-        }
-
-        restoreTransition()
-      }, 100)
-
-      lastScrollY.current = currentScrollY
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true })
 
     const handleResize = () => {
       if (cameraRef.current && rendererRef.current) {
@@ -574,12 +484,8 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       // Modificar la parte donde se agregan los event listeners
       window.removeEventListener("mousemove", handleMouseMove)
       window.removeEventListener("touchmove", handleTouchMove)
-      window.removeEventListener("scroll", handleScroll)
       if (mouseMovementTimer.current) {
         clearTimeout(mouseMovementTimer.current)
-      }
-      if (scrollEndTimer.current) {
-        clearTimeout(scrollEndTimer.current)
       }
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current)
