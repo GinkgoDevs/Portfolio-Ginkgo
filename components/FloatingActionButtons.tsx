@@ -6,82 +6,41 @@ import { MessageCircle, Calendar, X, Phone } from "lucide-react"
 import { useTranslation } from "@/contexts/TranslationContext"
 
 export default function FloatingActionButtons() {
-  const [isExpanded, setIsExpanded] = useState(false) // Inicialmente cerrado
-  const [isMobile, setIsMobile] = useState(true) // Asumimos móvil por defecto para SSR
-  const [cookieConsentShown, setCookieConsentShown] = useState(true) // Asumimos que el banner de cookies está visible inicialmente
-  const [shouldRender, setShouldRender] = useState(false) // No renderizar hasta verificar el estado de las cookies
-  const [isMenuOpen, setIsMenuOpen] = useState(false) // Estado para controlar si el menú está abierto
-  const { t, locale } = useTranslation()
+  // Modificar la declaración del estado isExpanded y añadir un useEffect para establecer el estado inicial
+  const [isExpanded, setIsExpanded] = useState(false) // Inicialmente cerrado para evitar problemas de hidratación
+  const [cookieConsentShown, setCookieConsentShown] = useState(true)
+  const [shouldRender, setShouldRender] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { locale } = useTranslation()
 
+  // Efecto para establecer el estado inicial basado en el tipo de dispositivo (solo se ejecuta una vez al montar)
   useEffect(() => {
-    // Detectar si es un dispositivo móvil
-    const checkMobile = () => {
-      const isMobileDevice = window.innerWidth < 768
-      setIsMobile(isMobileDevice)
-      // Solo expandir por defecto en desktop
-      if (!isMobileDevice && !isExpanded) {
-        setIsExpanded(true)
-      }
-    }
+    // Detectar si es PC o móvil
+    const isMobileDevice = window.innerWidth < 768
+    // En PC: expandido por defecto, en móvil: cerrado por defecto
+    setIsExpanded(!isMobileDevice)
+  }, []) // Array de dependencias vacío para que solo se ejecute al montar
 
-    // Verificar al montar el componente
-    checkMobile()
-
-    // Actualizar en cambios de tamaño de ventana
-    window.addEventListener("resize", checkMobile)
-    return () => window.removeEventListener("resize", checkMobile)
-  }, [isExpanded])
-
+  // Efecto para verificar el consentimiento de cookies
   useEffect(() => {
-    // Verificar si el usuario ya ha dado su consentimiento de cookies
     const cookieConsent = localStorage.getItem("cookie-consent")
-
-    // Si ya hay consentimiento de cookies, mostrar los botones inmediatamente
     if (cookieConsent) {
       setCookieConsentShown(false)
       setShouldRender(true)
     } else {
-      // Si no hay consentimiento, escuchar el evento de cambio
       const handleCookieConsentChange = () => {
         setCookieConsentShown(false)
         setShouldRender(true)
       }
 
-      // Crear un observador de mutación para detectar cuando se elimina el banner de cookies del DOM
-      const observer = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (mutation.type === "childList" && mutation.removedNodes.length > 0) {
-            // Verificar si alguno de los nodos eliminados podría ser el banner de cookies
-            const cookieBannerRemoved = Array.from(mutation.removedNodes).some(
-              (node) =>
-                node instanceof HTMLElement &&
-                (node.classList.contains("cookie-banner") ||
-                  node.textContent?.includes("cookies") ||
-                  node.textContent?.includes("Cookies")),
-            )
-
-            if (cookieBannerRemoved) {
-              handleCookieConsentChange()
-              observer.disconnect()
-            }
-          }
-        })
-      })
-
-      // Observar cambios en el cuerpo del documento
-      observer.observe(document.body, { childList: true, subtree: true })
-
-      // También escuchar un evento personalizado que podría ser disparado cuando se acepta/rechaza cookies
       document.addEventListener("cookieConsentChanged", handleCookieConsentChange)
 
-      // Establecer un temporizador de respaldo (10 segundos) en caso de que no se detecte el evento
       const fallbackTimer = setTimeout(() => {
         setCookieConsentShown(false)
         setShouldRender(true)
       }, 10000)
 
       return () => {
-        observer.disconnect()
         document.removeEventListener("cookieConsentChanged", handleCookieConsentChange)
         clearTimeout(fallbackTimer)
       }
@@ -94,7 +53,6 @@ export default function FloatingActionButtons() {
       setIsMenuOpen(e.detail.isOpen)
     }
 
-    // Añadir el event listener para el evento personalizado
     document.addEventListener("menuStateChange", handleMenuStateChange as EventListener)
 
     return () => {
@@ -102,8 +60,9 @@ export default function FloatingActionButtons() {
     }
   }, [])
 
+  // Función simple para alternar el estado
   const toggleExpand = () => {
-    setIsExpanded(!isExpanded)
+    setIsExpanded((prev) => !prev)
   }
 
   // WhatsApp number - replace with your actual number
@@ -113,7 +72,6 @@ export default function FloatingActionButtons() {
   const calendlyLink = "https://calendly.com/ginkgodevs/30min"
 
   const handleWhatsAppClick = () => {
-    // Open WhatsApp with predefined message
     const message =
       locale === "en"
         ? "Hello! I'm interested in your services. Can you provide more information?"
@@ -123,14 +81,12 @@ export default function FloatingActionButtons() {
   }
 
   const handleScheduleClick = () => {
-    // Open Calendly link
     window.open(calendlyLink, "_blank")
   }
 
   // No renderizar nada si el banner de cookies está visible o si el menú está abierto
   if (cookieConsentShown || !shouldRender) return null
-  // Solo ocultar cuando el menú está abierto, pero mantener el componente montado
-  if (isMenuOpen) return <div className="hidden"></div>
+  if (isMenuOpen) return null
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
@@ -171,11 +127,7 @@ export default function FloatingActionButtons() {
       {/* Main Toggle Button */}
       <motion.button
         onClick={toggleExpand}
-        className={`flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-          isExpanded
-            ? "bg-[#D4F57A] text-[#293B36] focus:ring-[#D4F57A]"
-            : "bg-[#D4F57A] text-[#293B36] focus:ring-[#D4F57A]"
-        }`}
+        className="flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-[#D4F57A] text-[#293B36] focus:ring-[#D4F57A]"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         aria-label={isExpanded ? "Cerrar menú" : "Abrir menú de contacto"}

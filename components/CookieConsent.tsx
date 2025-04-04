@@ -99,7 +99,9 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
             {!showPreferences ? (
               <div className="p-4 md:p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-xl font-bold text-white">Política de Cookies</h3>
+                  <h3 className="text-xl font-bold text-white mb-4">
+                    {locale === "en" ? "Cookie Policy" : "Política de Cookies"}
+                  </h3>
                   <button
                     onClick={() => setShowBanner(false)}
                     className="text-white/60 hover:text-white transition-colors"
@@ -110,9 +112,9 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
                 </div>
 
                 <p className="text-white/80 mb-6">
-                  Utilizamos cookies para mejorar tu experiencia en nuestro sitio web. Al hacer clic en "Aceptar todas",
-                  consientes el uso de cookies para análisis, contenido personalizado y publicidad. Puedes personalizar
-                  tus preferencias o rechazar las cookies no esenciales haciendo clic en las opciones correspondientes.
+                  {locale === "en"
+                    ? 'We use cookies to improve your experience on our website. By clicking "Accept All", you consent to the use of cookies for analytics, personalized content, and advertising. You can customize your preferences or reject non-essential cookies by clicking on the corresponding options.'
+                    : 'Utilizamos cookies para mejorar tu experiencia en nuestro sitio web. Al hacer clic en "Aceptar todas", consientes el uso de cookies para análisis, contenido personalizado y publicidad. Puedes personalizar tus preferencias o rechazar las cookies no esenciales haciendo clic en las opciones correspondientes.'}
                 </p>
 
                 <div className="flex flex-wrap gap-3 justify-end">
@@ -120,21 +122,21 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
                     onClick={handleRejectNonEssential}
                     className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors text-sm"
                   >
-                    Solo esenciales
+                    {locale === "en" ? "Essential Only" : "Solo esenciales"}
                   </button>
                   <button
                     onClick={() => setShowPreferences(true)}
                     className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors text-sm flex items-center gap-2"
                   >
                     <Settings className="w-4 h-4" />
-                    Personalizar
+                    {locale === "en" ? "Customize" : "Personalizar"}
                   </button>
                   <button
                     onClick={handleAcceptAll}
                     className="px-4 py-2 bg-[#D4F57A] hover:bg-[#D4F57A]/90 text-[#293B36] font-medium rounded-lg transition-colors text-sm flex items-center gap-2"
                   >
                     <Check className="w-4 h-4" />
-                    Aceptar todas
+                    {locale === "en" ? "Accept All" : "Aceptar todas"}
                   </button>
                 </div>
 
@@ -153,7 +155,9 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
             ) : (
               <div className="p-4 md:p-6">
                 <div className="flex items-start justify-between mb-4">
-                  <h3 className="text-xl font-bold text-white">Preferencias de Cookies</h3>
+                  <h3 className="text-xl font-bold text-white mb-4">
+                    {locale === "en" ? "Cookie Preferences" : "Preferencias de Cookies"}
+                  </h3>
                   <button
                     onClick={() => setShowPreferences(false)}
                     className="text-white/60 hover:text-white transition-colors"
@@ -167,13 +171,17 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
                   <div className="p-4 bg-white/5 rounded-lg flex items-start justify-between">
                     <div>
                       <div className="flex items-center gap-2">
-                        <h4 className="font-medium text-white">Cookies necesarias</h4>
+                        <h4 className="font-medium text-white">
+                          {locale === "en" ? "Necessary Cookies" : "Cookies necesarias"}
+                        </h4>
                         <div className="px-2 py-0.5 bg-[#D4F57A]/20 text-[#D4F57A] text-xs rounded-full">
-                          Siempre activas
+                          {locale === "en" ? "Always active" : "Siempre activas"}
                         </div>
                       </div>
                       <p className="text-white/70 text-sm mt-1">
-                        Estas cookies son esenciales para el funcionamiento del sitio web y no pueden ser desactivadas.
+                        {locale === "en"
+                          ? "These cookies are essential for the website to function and cannot be disabled."
+                          : "Estas cookies son esenciales para el funcionamiento del sitio web y no pueden ser desactivadas."}
                       </p>
                     </div>
                     <div className="relative">
@@ -195,9 +203,13 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
 
                   <div className="p-4 bg-white/5 rounded-lg flex items-start justify-between">
                     <div>
-                      <h4 className="font-medium text-white">Cookies analíticas</h4>
+                      <h4 className="font-medium text-white">
+                        {locale === "en" ? "Analytics Cookies" : "Cookies analíticas"}
+                      </h4>
                       <p className="text-white/70 text-sm mt-1">
-                        Nos ayudan a entender cómo interactúas con el sitio web, permitiéndonos mejorar tu experiencia.
+                        {locale === "en"
+                          ? "Help us understand how you interact with the website, allowing us to improve your experience."
+                          : "Nos ayudan a entender cómo interactúas con el sitio web, permitiéndonos mejorar tu experiencia."}
                       </p>
                     </div>
                     <div className="relative">
@@ -225,10 +237,13 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
 
                   <div className="p-4 bg-white/5 rounded-lg flex items-start justify-between">
                     <div>
-                      <h4 className="font-medium text-white">Cookies de marketing</h4>
+                      <h4 className="font-medium text-white">
+                        {locale === "en" ? "Marketing Cookies" : "Cookies de marketing"}
+                      </h4>
                       <p className="text-white/70 text-sm mt-1">
-                        Utilizadas para rastrear a los visitantes en los sitios web con el fin de mostrar anuncios
-                        relevantes.
+                        {locale === "en"
+                          ? "Used to track visitors across websites to display relevant advertisements."
+                          : "Utilizadas para rastrear a los visitantes en los sitios web con el fin de mostrar anuncios relevantes."}
                       </p>
                     </div>
                     <div className="relative">
@@ -256,9 +271,13 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
 
                   <div className="p-4 bg-white/5 rounded-lg flex items-start justify-between">
                     <div>
-                      <h4 className="font-medium text-white">Cookies de preferencias</h4>
+                      <h4 className="font-medium text-white">
+                        {locale === "en" ? "Preference Cookies" : "Cookies de preferencias"}
+                      </h4>
                       <p className="text-white/70 text-sm mt-1">
-                        Permiten que el sitio web recuerde información que cambia la forma en que se comporta o se ve.
+                        {locale === "en"
+                          ? "Allow the website to remember information that changes how the website behaves or looks."
+                          : "Permiten que el sitio web recuerde información que cambia la forma en que se comporta o se ve."}
                       </p>
                     </div>
                     <div className="relative">
@@ -290,14 +309,14 @@ export default function CookieConsent({ onAccept }: CookieConsentProps) {
                     onClick={() => setShowPreferences(false)}
                     className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors text-sm"
                   >
-                    Cancelar
+                    {locale === "en" ? "Cancel" : "Cancelar"}
                   </button>
                   <button
                     onClick={handleSavePreferences}
                     className="px-4 py-2 bg-[#D4F57A] hover:bg-[#D4F57A]/90 text-[#293B36] font-medium rounded-lg transition-colors text-sm flex items-center gap-2"
                   >
                     <Check className="w-4 h-4" />
-                    Guardar preferencias
+                    {locale === "en" ? "Save Preferences" : "Guardar preferencias"}
                   </button>
                 </div>
               </div>
