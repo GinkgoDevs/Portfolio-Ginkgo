@@ -12,6 +12,7 @@ import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration"
 import JsonLd from "@/components/JsonLd"
 import { getDictionary } from "@/lib/dictionary"
 import CookieConsent from "@/components/CookieConsent"
+import FloatingActionButtons from "@/components/FloatingActionButtons"
 import type { Metadata } from "next"
 
 const inter = Inter({
@@ -33,10 +34,8 @@ export function generateMetadata({
     title: "Ginkgo Devs",
     description: "Desarrollo Web y Soluciones Digitales",
     icons: {
-      icon: [
-        { url: '/favicon.ico' },
-      ],
-      shortcut: '/favicon.ico',
+      icon: [{ url: "/favicon.ico" }],
+      shortcut: "/favicon.ico",
     },
   }
 }
@@ -78,11 +77,13 @@ export default async function LocaleLayout({
               <AccessibilityControls />
               <JsonLd />
               <CookieConsent />
+              <FloatingActionButtons />
             </TranslationProvider>
-          </AccessibilityProvider> 
+          </AccessibilityProvider>
         </ThemeProvider>
         <ServiceWorkerRegistration />
       </body>
     </html>
   )
 }
+
