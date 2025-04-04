@@ -113,7 +113,7 @@ export default function Navbar() {
     },
   }
 
-  // Función para manejar el scroll suave a las secciones
+  // Modificar la función handleSmoothScroll para que no afecte al estado de FloatingActionButtons
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
 
@@ -122,6 +122,19 @@ export default function Navbar() {
     const targetElement = document.getElementById(targetId)
 
     if (targetElement) {
+      // Desbloquear el scroll si está bloqueado
+      // Esto asegura que podamos navegar a la sección seleccionada
+      document.body.classList.remove("no-scroll")
+      document.documentElement.classList.remove("no-scroll")
+      document.body.style.overflow = "auto"
+      document.documentElement.style.overflow = "auto"
+      document.body.style.overflowX = "hidden"
+      document.documentElement.style.overflowX = "hidden"
+
+      // Disparar un evento personalizado para notificar que el scroll ha sido desbloqueado
+      const event = new CustomEvent("scrollUnlocked", { detail: { unlocked: true } })
+      document.dispatchEvent(event)
+
       // Calcular offset para tener en cuenta la altura de la barra de navegación
       const navHeight = 80 // Altura aproximada de la barra de navegación
       const elementPosition = targetElement.getBoundingClientRect().top
@@ -138,7 +151,7 @@ export default function Navbar() {
 
       // Cerrar el menú si está abierto
       if (isOpen) {
-        setIsOpen(false)
+        closeMenu()
       }
     }
   }
