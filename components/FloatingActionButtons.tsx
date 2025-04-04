@@ -6,11 +6,31 @@ import { MessageCircle, Calendar, X, Phone } from "lucide-react"
 import { useTranslation } from "@/contexts/TranslationContext"
 
 export default function FloatingActionButtons() {
-  const [isExpanded, setIsExpanded] = useState(true) // Inicialmente expandido
+  const [isExpanded, setIsExpanded] = useState(false) // Inicialmente cerrado
+  const [isMobile, setIsMobile] = useState(true) // Asumimos móvil por defecto para SSR
   const [cookieConsentShown, setCookieConsentShown] = useState(true) // Asumimos que el banner de cookies está visible inicialmente
   const [shouldRender, setShouldRender] = useState(false) // No renderizar hasta verificar el estado de las cookies
   const [isMenuOpen, setIsMenuOpen] = useState(false) // Estado para controlar si el menú está abierto
   const { t, locale } = useTranslation()
+
+  useEffect(() => {
+    // Detectar si es un dispositivo móvil
+    const checkMobile = () => {
+      const isMobileDevice = window.innerWidth < 768
+      setIsMobile(isMobileDevice)
+      // Solo expandir por defecto en desktop
+      if (!isMobileDevice && !isExpanded) {
+        setIsExpanded(true)
+      }
+    }
+
+    // Verificar al montar el componente
+    checkMobile()
+
+    // Actualizar en cambios de tamaño de ventana
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [isExpanded])
 
   useEffect(() => {
     // Verificar si el usuario ya ha dado su consentimiento de cookies
