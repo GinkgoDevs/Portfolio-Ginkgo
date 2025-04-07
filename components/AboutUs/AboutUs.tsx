@@ -498,7 +498,7 @@ export default function AboutUs() {
         <h2 className="text-4xl md:text-5xl font-bold text-center text-[#D4F57A] mb-4">
           {t("home.about.title")}
         </h2>
-        <p className="text-[#F5F2EB]/80 text-lg max-w-2xl mx-auto mb-6">
+        <p className="text-[#F5F2EB]/80 text-lg max-w-2xl mx-auto mb-6 text-center">
           {t("home.about.subtitle")}
         </p>
 
