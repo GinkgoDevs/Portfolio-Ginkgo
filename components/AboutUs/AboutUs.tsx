@@ -495,12 +495,14 @@ export default function AboutUs() {
 
       <div className="relative z-10 container mx-auto px-4 py-16 md:py-12 min-h-screen flex flex-col justify-center">
         {/* Title */}
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-[#D4F57A] mb-4">
-          {t("home.about.title")}
-        </h2>
-        <p className="text-[#F5F2EB]/80 text-lg max-w-2xl mx-auto mb-6 text-center">
-          {t("home.about.subtitle")}
-        </p>
+        <div ref={titleRef}>
+          <h2 className="text-4xl md:text-5xl font-bold text-center text-[#D4F57A] mb-4">
+            {t("home.about.title")}
+          </h2>
+          <p className="text-[#F5F2EB]/80 text-lg max-w-2xl mx-auto mb-6 text-center">
+            {t("home.about.subtitle")}
+          </p>
+        </div>
 
         {/* Team Members Grid */}
         <div
