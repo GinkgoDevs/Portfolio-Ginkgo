@@ -18,7 +18,7 @@
       "closeButton": "CERRAR"
     },
     "services": {
-      "title": "Soluciones digitales que transforman negocios",
+      "title": "Soluciones digitales que transforman.",
       "subtitle": "Creamos experiencias digitales que impulsan el crecimiento de tu empresa",
       "webDevelopment": "Desarrollo Web",
       "webDevelopmentDesc": "Sitios web escalables, rápidos y optimizados.",
@@ -38,7 +38,8 @@
       "ctaButtonAriaLabel": "Contactar para hablar sobre tu proyecto"
     },
     "about": {
-      "title": "Detrás del código, hay personas apasionadas por la tecnología",
+      "title": "Nuestro Equipo",
+      "subtitle": "Detrás del código, hay personas apasionadas por la tecnología",
       "values": {
         "title": "Nuestros valores",
         "subtitle": "Estos principios guían nuestro trabajo y definen nuestra cultura como equipo.",
