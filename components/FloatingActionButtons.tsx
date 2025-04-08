@@ -6,22 +6,21 @@ import { MessageCircle, Calendar, X, Phone } from "lucide-react"
 import { useTranslation } from "@/contexts/TranslationContext"
 
 export default function FloatingActionButtons() {
-  // Modificar la declaración del estado isExpanded y añadir un useEffect para establecer el estado inicial
-  const [isExpanded, setIsExpanded] = useState(false) // Inicialmente cerrado para evitar problemas de hidratación
+  const [isExpanded, setIsExpanded] = useState(false)
   const [cookieConsentShown, setCookieConsentShown] = useState(true)
   const [shouldRender, setShouldRender] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { locale } = useTranslation()
+  const { locale, t } = useTranslation()
 
-  // Efecto para establecer el estado inicial basado en el tipo de dispositivo (solo se ejecuta una vez al montar)
+  // Effect to set initial state based on device type (only runs once on mount)
   useEffect(() => {
-    // Detectar si es PC o móvil
+    // Detect if PC or mobile
     const isMobileDevice = window.innerWidth < 768
-    // En PC: expandido por defecto, en móvil: cerrado por defecto
+    // On PC: expanded by default, on mobile: closed by default
     setIsExpanded(!isMobileDevice)
-  }, []) // Array de dependencias vacío para que solo se ejecute al montar
+  }, [])
 
-  // Efecto para verificar el consentimiento de cookies
+  // Effect to check cookie consent
   useEffect(() => {
     const cookieConsent = localStorage.getItem("cookie-consent")
     if (cookieConsent) {
@@ -47,7 +46,7 @@ export default function FloatingActionButtons() {
     }
   }, [])
 
-  // Escuchar eventos de apertura y cierre del menú
+  // Listen for menu open/close events
   useEffect(() => {
     const handleMenuStateChange = (e: CustomEvent) => {
       setIsMenuOpen(e.detail.isOpen)
@@ -60,7 +59,7 @@ export default function FloatingActionButtons() {
     }
   }, [])
 
-  // Función simple para alternar el estado
+  // Simple function to toggle state
   const toggleExpand = () => {
     setIsExpanded((prev) => !prev)
   }
@@ -84,68 +83,69 @@ export default function FloatingActionButtons() {
     window.open(calendlyLink, "_blank")
   }
 
-  // No renderizar nada si el banner de cookies está visible o si el menú está abierto
+  // Don't render anything if cookie banner is visible or if menu is open
   if (cookieConsentShown || !shouldRender) return null
   if (isMenuOpen) return null
 
   return (
-    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
-      <AnimatePresence>
-        {isExpanded && (
-          <>
-            {/* WhatsApp Button */}
-            <motion.button
-              initial={{ opacity: 0, y: 20, scale: 0.8 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.8 }}
-              transition={{ duration: 0.2, delay: 0.1 }}
-              onClick={handleWhatsAppClick}
-              className="mb-3 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-white shadow-lg hover:bg-[#22c55e] focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2"
-              aria-label="Contactar por WhatsApp"
-            >
-              <MessageCircle size={20} />
-              <span className="font-medium">{locale === "en" ? "WhatsApp" : "WhatsApp"}</span>
-            </motion.button>
+    <div className="fixed bottom-6 right-6 z-40">
+      <div className="relative">
+        <AnimatePresence>
+          {isExpanded && (
+            <div className="absolute bottom-16 right-0 flex flex-col items-end space-y-3">
+              {/* WhatsApp Button */}
+              <motion.button
+                initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.8 }}
+                transition={{ duration: 0.2, delay: 0.1 }}
+                onClick={handleWhatsAppClick}
+                className="flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-white shadow-lg hover:bg-[#22c55e] focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 whitespace-nowrap"
+                aria-label={t("home.contact.whatsapp") || "WhatsApp"}
+              >
+                <MessageCircle size={20} />
+                <span className="font-medium">{t("home.contact.whatsapp") || "WhatsApp"}</span>
+              </motion.button>
 
-            {/* Schedule Call Button */}
-            <motion.button
-              initial={{ opacity: 0, y: 20, scale: 0.8 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 10, scale: 0.8 }}
-              transition={{ duration: 0.2 }}
-              onClick={handleScheduleClick}
-              className="mb-3 flex items-center gap-2 rounded-full bg-[#D4F57A] px-4 py-3 text-[#293B36] shadow-lg hover:bg-[#c2e65c] focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:ring-offset-2"
-              aria-label="Agendar una llamada"
-            >
-              <Calendar size={20} />
-              <span className="font-medium">{locale === "en" ? "Schedule a call" : "Agendar una llamada"}</span>
-            </motion.button>
-          </>
-        )}
-      </AnimatePresence>
-
-      {/* Main Toggle Button */}
-      <motion.button
-        onClick={toggleExpand}
-        className="flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-[#D4F57A] text-[#293B36] focus:ring-[#D4F57A]"
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        aria-label={isExpanded ? "Cerrar menú" : "Abrir menú de contacto"}
-        aria-expanded={isExpanded}
-      >
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={isExpanded ? "close" : "open"}
-            initial={{ rotate: -90, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 1 }}
-            exit={{ rotate: 90, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            {isExpanded ? <X size={24} /> : <Phone size={24} />}
-          </motion.div>
+              {/* Schedule Call Button */}
+              <motion.button
+                initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 20, scale: 0.8 }}
+                transition={{ duration: 0.2 }}
+                onClick={handleScheduleClick}
+                className="flex items-center gap-2 rounded-full bg-[#D4F57A] px-4 py-3 text-[#293B36] shadow-lg hover:bg-[#c2e65c] focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:ring-offset-2 whitespace-nowrap"
+                aria-label={t("home.contact.scheduleCall") || "Schedule a call"}
+              >
+                <Calendar size={20} />
+                <span className="font-medium">{locale === "en" ? "Schedule a call" : "Agendar llamada"}</span>
+              </motion.button>
+            </div>
+          )}
         </AnimatePresence>
-      </motion.button>
+
+        {/* Main Toggle Button */}
+        <motion.button
+          onClick={toggleExpand}
+          className="flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-[#D4F57A] text-[#293B36] focus:ring-[#D4F57A]"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          aria-label={isExpanded ? "Close menu" : "Open contact menu"}
+          aria-expanded={isExpanded}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={isExpanded ? "close" : "open"}
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              {isExpanded ? <X size={24} /> : <Phone size={24} />}
+            </motion.div>
+          </AnimatePresence>
+        </motion.button>
+      </div>
     </div>
   )
 }
-
