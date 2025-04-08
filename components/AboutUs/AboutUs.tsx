@@ -1,52 +1,43 @@
-"use client";
+"use client"
 
-import type React from "react";
-import { useRef, useState, useEffect, useMemo } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import DisintegrationEffect from "./DisintegrationEffect";
-import {
-  ShieldCheck,
-  Users,
-  RefreshCw,
-  BookOpen,
-  Sparkles,
-  Smile,
-} from "lucide-react";
-import { useTranslation } from "@/contexts/TranslationContext";
-import LazyLoad from "@/components/LazyLoad";
+import type React from "react"
+import { useRef, useState, useEffect, useMemo } from "react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { ShieldCheck, Users, RefreshCw, BookOpen, Sparkles, Smile } from "lucide-react"
+import { useTranslation } from "@/contexts/TranslationContext"
+import DisintegrationEffect from "./DisintegrationEffect"
 
 // Register GSAP plugins
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger)
 }
 
 const teamMembers = [
   {
     name: "Nicolas Alonso",
     role: "Full Stack Developer",
-    image: "/Integrantes/Nico.jpg", // Cambiado a placeholder mientras no exista la imagen
+    image: "/Integrantes/Nico.jpg",
   },
   {
     name: "Federico Valle",
     role: "Full Stack Developer",
     image: "/Integrantes/Fede.jpg",
   },
-];
+]
 
 export default function AboutUs() {
-  const { t } = useTranslation();
-  const [showValues, setShowValues] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-  const teamSectionRef = useRef<HTMLDivElement>(null);
-  const valuesSectionRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
-  const mobileCarouselRef = useRef<HTMLDivElement>(null);
-  const [autoScrollInterval, setAutoScrollInterval] =
-    useState<NodeJS.Timeout | null>(null);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const { t } = useTranslation()
+  const [showValues, setShowValues] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+  const teamSectionRef = useRef<HTMLDivElement>(null)
+  const valuesSectionRef = useRef<HTMLDivElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const carouselRef = useRef<HTMLDivElement>(null)
+  const mobileCarouselRef = useRef<HTMLDivElement>(null)
+  const [autoScrollInterval, setAutoScrollInterval] = useState<NodeJS.Timeout | null>(null)
+  const [isTransitioning, setIsTransitioning] = useState(false)
   const dragRef = useRef({
     startX: 0,
     scrollLeft: 0,
@@ -55,7 +46,7 @@ export default function AboutUs() {
     velocity: 0,
     lastTimestamp: 0,
     momentumID: null as number | null,
-  });
+  })
 
   const values = [
     {
@@ -88,7 +79,7 @@ export default function AboutUs() {
       description: t("home.about.values.learningDesc"),
       icon: <BookOpen className="w-12 h-12" />,
     },
-  ];
+  ]
 
   const ScrollIndicator = () => (
     <div className="flex items-center gap-2 text-[#D4F57A]">
@@ -97,38 +88,32 @@ export default function AboutUs() {
         <div className="absolute inset-y-0 left-0 w-3 bg-[#D4F57A] rounded-full animate-[slide_2s_infinite]"></div>
       </div>
     </div>
-  );
+  )
 
   // Detect mobile devices
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   // Desktop scroll animation
   useEffect(() => {
-    if (
-      isMobile ||
-      !sectionRef.current ||
-      !teamSectionRef.current ||
-      !valuesSectionRef.current ||
-      !titleRef.current
-    )
-      return;
+    if (isMobile || !sectionRef.current || !teamSectionRef.current || !valuesSectionRef.current || !titleRef.current)
+      return
 
     // Clear any existing ScrollTriggers
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
 
     // Pre-position the values section below the viewport for smoother animation
     gsap.set(valuesSectionRef.current, {
       opacity: 0,
       y: 80,
       scale: 0.98,
-    });
+    })
 
     // Create a timeline for the transition animation
     const tl = gsap.timeline({
@@ -141,14 +126,14 @@ export default function AboutUs() {
         pinSpacing: true,
         anticipatePin: 1,
         onEnter: () => {
-          setShowValues(false);
+          setShowValues(false)
         },
         onLeaveBack: () => {
-          setShowValues(false);
+          setShowValues(false)
         },
         markers: false, // Desactivar en producción
       },
-    });
+    })
 
     // Mejorar la secuencia de animación para una transición más suave
     // Primero, desvanecemos el título
@@ -160,8 +145,8 @@ export default function AboutUs() {
         duration: 0.4,
         ease: "power2.out", // Añadido easing para suavizar
       },
-      0.5
-    );
+      0.5,
+    )
 
     // Luego, desvanecemos la sección del equipo
     tl.to(
@@ -173,8 +158,8 @@ export default function AboutUs() {
         ease: "power2.out", // Añadido easing para suavizar
         onComplete: () => setShowValues(true),
       },
-      0.5 // Ligeramente retrasado después del título
-    );
+      0.5, // Ligeramente retrasado después del título
+    )
 
     // Finalmente, mostramos la sección de valores con una animación más elaborada
     tl.fromTo(
@@ -191,13 +176,13 @@ export default function AboutUs() {
         duration: 0.5,
         ease: "power2.out", // Añadido easing para suavizar
       },
-      1.0 // Ajustado para una secuencia más fluida
-    );
+      1.0, // Ajustado para una secuencia más fluida
+    )
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, [isMobile]);
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+    }
+  }, [isMobile])
 
   // Memoize value cards to avoid unnecessary re-renders
   const valueCards = useMemo(() => {
@@ -211,319 +196,287 @@ export default function AboutUs() {
         <h3 className="text-2xl font-bold text-white mb-4">{value.title}</h3>
         <p className="text-[#F5F2EB]/80 text-lg">{value.description}</p>
       </div>
-    ));
-  }, []);
+    ))
+  }, [])
 
   // Configurar el carrusel infinito para desktop
   useEffect(() => {
-    if (!carouselRef.current || isMobile) return;
+    if (!carouselRef.current || isMobile) return
 
-    const carousel = carouselRef.current;
+    const carousel = carouselRef.current
 
     // Inicializar el carrusel al principio
-    carousel.scrollLeft = 0;
+    carousel.scrollLeft = 0
 
     // Añadir límites de desplazamiento para evitar el scroll excesivo
     const handleScrollLimits = () => {
-      if (isTransitioning) return;
+      if (isTransitioning) return
 
-      const { scrollLeft, scrollWidth } = carousel;
-      const containerWidth = carousel.clientWidth;
+      const { scrollLeft, scrollWidth } = carousel
+      const containerWidth = carousel.clientWidth
 
       // Evitar desplazamiento más allá del final
       if (scrollLeft + containerWidth > scrollWidth) {
-        carousel.scrollLeft = scrollWidth - containerWidth;
+        carousel.scrollLeft = scrollWidth - containerWidth
       }
 
       // Evitar desplazamiento más allá del principio
       if (scrollLeft < 0) {
-        carousel.scrollLeft = 0;
+        carousel.scrollLeft = 0
       }
-    };
+    }
 
-    carousel.addEventListener("scroll", handleScrollLimits);
+    carousel.addEventListener("scroll", handleScrollLimits)
 
     return () => {
-      carousel.removeEventListener("scroll", handleScrollLimits);
-    };
-  }, [isMobile, isTransitioning]);
+      carousel.removeEventListener("scroll", handleScrollLimits)
+    }
+  }, [isMobile, isTransitioning])
 
   // Configurar el mismo comportamiento para el carrusel móvil
   useEffect(() => {
-    if (!mobileCarouselRef.current || !isMobile) return;
+    if (!mobileCarouselRef.current || !isMobile) return
 
-    const carousel = mobileCarouselRef.current;
+    const carousel = mobileCarouselRef.current
 
     // Inicializar el carrusel al principio
-    carousel.scrollLeft = 0;
+    carousel.scrollLeft = 0
 
     // Añadir límites de desplazamiento para evitar el scroll excesivo
     const handleScrollLimits = () => {
-      if (isTransitioning) return;
+      if (isTransitioning) return
 
-      const { scrollLeft, scrollWidth } = carousel;
-      const containerWidth = carousel.clientWidth;
+      const { scrollLeft, scrollWidth } = carousel
+      const containerWidth = carousel.clientWidth
 
       // Evitar desplazamiento más allá del final
       if (scrollLeft + containerWidth > scrollWidth) {
-        carousel.scrollLeft = scrollWidth - containerWidth;
+        carousel.scrollLeft = scrollWidth - containerWidth
       }
 
       // Evitar desplazamiento más allá del principio
       if (scrollLeft < 0) {
-        carousel.scrollLeft = 0;
+        carousel.scrollLeft = 0
       }
-    };
+    }
 
-    carousel.addEventListener("scroll", handleScrollLimits);
+    carousel.addEventListener("scroll", handleScrollLimits)
 
     return () => {
-      carousel.removeEventListener("scroll", handleScrollLimits);
-    };
-  }, [isMobile, isTransitioning]);
+      carousel.removeEventListener("scroll", handleScrollLimits)
+    }
+  }, [isMobile, isTransitioning])
 
   // Funciones para el arrastre suave del carrusel con momentum
-  const handleMouseDown = (
-    e: React.MouseEvent,
-    carouselElement: HTMLDivElement | null
-  ) => {
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>, carouselElement: HTMLDivElement | null) => {
     // Desactivar el comportamiento de arrastre horizontal
-    return;
-  };
+    return
+  }
 
   const handleMouseUp = (carouselElement: HTMLDivElement | null) => {
     // Desactivar el comportamiento de arrastre horizontal
-    return;
-  };
+    return
+  }
 
-  const handleMouseMove = (
-    e: React.MouseEvent,
-    carouselElement: HTMLDivElement | null
-  ) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, carouselElement: HTMLDivElement | null) => {
     // Desactivar el comportamiento de arrastre horizontal
-    return;
-  };
+    return
+  }
 
   const handleMouseLeave = (carouselElement: HTMLDivElement | null) => {
     // Desactivar el comportamiento de arrastre horizontal
-    return;
-  };
+    return
+  }
 
   // Función para aplicar el efecto de momentum
   const applyMomentum = (carousel: HTMLDivElement) => {
-    const drag = dragRef.current;
+    const drag = dragRef.current
 
     // Ajustar la velocidad inicial para un momentum más natural
-    const initialVelocity = drag.velocity * 1.2; // Aumentado para un efecto más pronunciado
-    let currentVelocity = initialVelocity;
-    let lastTimestamp = performance.now();
+    const initialVelocity = drag.velocity * 1.2 // Aumentado para un efecto más pronunciado
+    let currentVelocity = initialVelocity
+    let lastTimestamp = performance.now()
 
     const animate = () => {
-      const now = performance.now();
-      const deltaTime = (now - lastTimestamp) / 16.67; // Normalizar a ~60fps
-      lastTimestamp = now;
+      const now = performance.now()
+      const deltaTime = (now - lastTimestamp) / 16.67 // Normalizar a ~60fps
+      lastTimestamp = now
 
       // Detener la animación si la velocidad es muy baja o el carrusel no existe
       if (Math.abs(currentVelocity) < 0.1 || !carousel) {
-        drag.momentumID = null;
-        return;
+        drag.momentumID = null
+        return
       }
 
       // Aplicar fricción variable - más suave al principio, más fuerte al final
-      const frictionFactor =
-        0.92 +
-        0.03 *
-          (1 -
-            Math.min(Math.abs(currentVelocity) / Math.abs(initialVelocity), 1));
-      currentVelocity *= frictionFactor;
+      const frictionFactor = 0.92 + 0.03 * (1 - Math.min(Math.abs(currentVelocity) / Math.abs(initialVelocity), 1))
+      currentVelocity *= frictionFactor
 
       // Actualizar posición con suavizado
-      carousel.scrollLeft += currentVelocity * deltaTime;
+      carousel.scrollLeft += currentVelocity * deltaTime
 
       // Continuar el momentum
-      drag.momentumID = requestAnimationFrame(animate);
-    };
+      drag.momentumID = requestAnimationFrame(animate)
+    }
 
-    drag.momentumID = requestAnimationFrame(animate);
-  };
+    drag.momentumID = requestAnimationFrame(animate)
+  }
 
   // Función para avanzar el carrusel automáticamente
   const startAutoScroll = (carouselElement: HTMLDivElement | null) => {
-    if (!carouselElement) return;
+    if (!carouselElement) return
 
-    let lastTimestamp = performance.now();
-    const scrollSpeed = 0.2; // Velocidad base más lenta para un movimiento más sutil
-    let direction = 1; // 1 para derecha, -1 para izquierda
+    let lastTimestamp = performance.now()
+    const scrollSpeed = 0.2 // Velocidad base más lenta para un movimiento más sutil
+    let direction = 1 // 1 para derecha, -1 para izquierda
 
     const interval = setInterval(() => {
-      if (dragRef.current.isDown || isTransitioning) return;
+      if (dragRef.current.isDown || isTransitioning) return
 
-      const now = performance.now();
-      const deltaTime = (now - lastTimestamp) / 16.67; // Normalizar a ~60fps
-      lastTimestamp = now;
+      const now = performance.now()
+      const deltaTime = (now - lastTimestamp) / 16.67 // Normalizar a ~60fps
+      lastTimestamp = now
 
       // Aplicar un patrón sinusoidal para que el movimiento sea más orgánico
-      const time = now * 0.001; // Convertir a segundos
-      const speedVariation = Math.sin(time * 0.2) * 0.1 + 1.0; // Variación de 0.9 a 1.1
+      const time = now * 0.001 // Convertir a segundos
+      const speedVariation = Math.sin(time * 0.2) * 0.1 + 1.0 // Variación de 0.9 a 1.1
 
       // Calcular el desplazamiento con variación de velocidad
-      const scrollAmount = scrollSpeed * speedVariation * deltaTime * direction;
+      const scrollAmount = scrollSpeed * speedVariation * deltaTime * direction
 
       // Verificar si hemos llegado a un límite
-      const { scrollLeft, scrollWidth } = carouselElement;
-      const containerWidth = carouselElement.clientWidth;
+      const { scrollLeft, scrollWidth } = carouselElement
+      const containerWidth = carouselElement.clientWidth
 
       // Si llegamos al final, cambiar dirección
       if (scrollLeft + containerWidth >= scrollWidth - 10 && direction > 0) {
-        direction = -1;
+        direction = -1
       }
       // Si llegamos al principio, cambiar dirección
       else if (scrollLeft <= 10 && direction < 0) {
-        direction = 1;
+        direction = 1
       }
 
-      carouselElement.scrollLeft += scrollAmount;
-    }, 16);
+      carouselElement.scrollLeft += scrollAmount
+    }, 16)
 
-    setAutoScrollInterval(interval);
+    setAutoScrollInterval(interval)
 
     return () => {
-      clearInterval(interval);
-    };
-  };
+      clearInterval(interval)
+    }
+  }
 
   // Iniciar auto-scroll cuando el componente se monta
   useEffect(() => {
-    const desktopCarousel = carouselRef.current;
-    const mobileCarousel = mobileCarouselRef.current;
+    const desktopCarousel = carouselRef.current
+    const mobileCarousel = mobileCarouselRef.current
 
-    let desktopCleanup: (() => void) | undefined;
-    let mobileCleanup: (() => void) | undefined;
+    let desktopCleanup: (() => void) | undefined
+    let mobileCleanup: (() => void) | undefined
 
     if (desktopCarousel && !isMobile) {
-      desktopCleanup = startAutoScroll(desktopCarousel);
+      desktopCleanup = startAutoScroll(desktopCarousel)
     }
 
     if (mobileCarousel && isMobile) {
-      mobileCleanup = startAutoScroll(mobileCarousel);
+      mobileCleanup = startAutoScroll(mobileCarousel)
     }
 
     return () => {
-      if (desktopCleanup) desktopCleanup();
-      if (mobileCleanup) mobileCleanup();
-      if (autoScrollInterval) clearInterval(autoScrollInterval);
+      if (desktopCleanup) desktopCleanup()
+      if (mobileCleanup) mobileCleanup()
+      if (autoScrollInterval) clearInterval(autoScrollInterval)
       if (dragRef.current.momentumID !== null) {
-        cancelAnimationFrame(dragRef.current.momentumID);
+        cancelAnimationFrame(dragRef.current.momentumID)
       }
-    };
-  }, [isMobile, isTransitioning]);
+    }
+  }, [isMobile, isTransitioning])
 
   // Añadir indicadores visuales al carrusel
   useEffect(() => {
-    const carousel = carouselRef.current;
-    if (!carousel || isMobile) return;
+    const carousel = carouselRef.current
+    if (!carousel || isMobile) return
 
     // Añadir indicadores visuales de deslizamiento
     const addVisualCues = () => {
       // Añadir clase para mejorar la apariencia del cursor
-      carousel.classList.add("cursor-grab");
+      carousel.classList.add("cursor-grab")
 
       // Añadir efecto de sombra para indicar que hay más contenido
       const addShadowEffect = () => {
         // Verificar si ya existe el elemento de sombra
-        const existingShadow = document.getElementById(
-          "carousel-shadow-indicator"
-        );
-        if (existingShadow) return;
+        const existingShadow = document.getElementById("carousel-shadow-indicator")
+        if (existingShadow) return
 
         // Crear elemento de sombra
-        const shadowElement = document.createElement("div");
-        shadowElement.id = "carousel-shadow-indicator";
-        shadowElement.className =
-          "absolute top-0 bottom-0 right-0 w-24 pointer-events-none";
-        shadowElement.style.background =
-          "linear-gradient(90deg, rgba(41, 59, 54, 0) 0%, rgba(41, 59, 54, 0.8) 100%)";
-        shadowElement.style.zIndex = "1";
+        const shadowElement = document.createElement("div")
+        shadowElement.id = "carousel-shadow-indicator"
+        shadowElement.className = "absolute top-0 bottom-0 right-0 w-24 pointer-events-none"
+        shadowElement.style.background = "linear-gradient(90deg, rgba(41, 59, 54, 0) 0%, rgba(41, 59, 54, 0.8) 100%)"
+        shadowElement.style.zIndex = "1"
 
-        carousel.parentElement?.appendChild(shadowElement);
-      };
+        carousel.parentElement?.appendChild(shadowElement)
+      }
 
-      addShadowEffect();
-    };
+      addShadowEffect()
+    }
 
-    addVisualCues();
+    addVisualCues()
 
     // Limpiar al desmontar
     return () => {
-      const shadowElement = document.getElementById(
-        "carousel-shadow-indicator"
-      );
+      const shadowElement = document.getElementById("carousel-shadow-indicator")
       if (shadowElement && shadowElement.parentElement) {
-        shadowElement.parentElement.removeChild(shadowElement);
+        shadowElement.parentElement.removeChild(shadowElement)
       }
-    };
-  }, [isMobile]);
+    }
+  }, [isMobile])
 
   // Añadir manejo de teclado para el carrusel
-  const handleKeyDown = (
-    e: React.KeyboardEvent,
-    carouselElement: HTMLDivElement | null
-  ) => {
-    if (!carouselElement) return;
+  const handleKeyDown = (e: React.KeyboardEvent, carouselElement: HTMLDivElement | null) => {
+    if (!carouselElement) return
 
     if (e.key === "ArrowLeft") {
       if (carouselElement) {
-        carouselElement.scrollLeft -= 300; // Ancho aproximado de una card
+        carouselElement.scrollLeft -= 300 // Ancho aproximado de una card
       }
-      e.preventDefault();
+      e.preventDefault()
     } else if (e.key === "ArrowRight") {
       if (carouselElement) {
-        carouselElement.scrollLeft += 300; // Ancho aproximado de una card
+        carouselElement.scrollLeft += 300 // Ancho aproximado de una card
       }
-      e.preventDefault();
+      e.preventDefault()
     }
-  };
+  }
 
   return (
-    <section
-      id="about-us"
-      ref={sectionRef}
-      className="relative bg-[#293B36] min-h-screen -mt-1 md:mt-0"
-    >
+    <section id="about-us" ref={sectionRef} className="relative bg-[#293B36] min-h-screen -mt-1 md:mt-0">
       {/* Aseguramos que el fondo sea consistente */}
       <div className="absolute inset-0 bg-[#293B36] z-0"></div>
 
       <div className="relative z-10 container mx-auto px-4 py-16 md:py-12 min-h-screen flex flex-col justify-center">
         {/* Title */}
-        <h2 className="text-4xl md:text-5xl font-bold text-center text-[#D4F57A] mb-4">
-          {t("home.about.title")}
-        </h2>
-        <p className="text-[#F5F2EB]/80 text-lg max-w-2xl mx-auto mb-6 text-center">
-          {t("home.about.subtitle")}
-        </p>
+        <div ref={titleRef}>
+          <h2 className="text-4xl md:text-5xl font-bold text-center text-[#D4F57A] mb-4">{t("home.about.title")}</h2>
+          <p className="text-[#F5F2EB]/80 text-lg max-w-2xl mx-auto mb-6 text-center">{t("home.about.subtitle")}</p>
+        </div>
 
         {/* Team Members Grid */}
-        <div
-          ref={teamSectionRef}
-          className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto"
-        >
+        <div ref={teamSectionRef} className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
           {teamMembers.map((member, index) => (
             <div key={index} className="flex flex-col items-center">
               <div className="relative mb-6">
-                <div className="w-[270px] h-[270px] rounded-full border-4 border-[#D4F57A] overflow-hidden">
-                  <LazyLoad>
-                    <DisintegrationEffect
-                      imageSrc={member.image}
-                      altText={member.name}
-                      index={index}
-                      scrollTriggerEnabled={!isMobile}
-                    />
-                  </LazyLoad>
+                <div className="w-[320px] h-[320px] rounded-full border-4 border-[#D4F57A] overflow-hidden flex items-center justify-center">
+                  <DisintegrationEffect
+                    imageSrc={member.image}
+                    altText={member.name}
+                    index={index}
+                    scrollTriggerEnabled={!isMobile}
+                  />
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-white mb-2">
-                {member.name}
-              </h3>
+              <h3 className="text-2xl font-bold text-white mb-2">{member.name}</h3>
               <p className="text-[#F5F2EB]/80">{member.role}</p>
             </div>
           ))}
@@ -534,23 +487,17 @@ export default function AboutUs() {
           ref={valuesSectionRef}
           className={`transition-all duration-700 ${
             isMobile ? "hidden" : "absolute inset-0"
-          } flex flex-col justify-center items-center ${
-            showValues ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+          } flex flex-col justify-center items-center ${showValues ? "opacity-100" : "opacity-0 pointer-events-none"}`}
         >
           <div className="max-w-8xl mx-auto w-full px-4">
             <div className="flex flex-col md:flex-row gap-8 md:gap-16">
               {/* Left side - Title */}
               <div className="md:w-1/3">
                 <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                  <span className="text-[#D4F57A]">
-                    {t("home.about.values.title")}
-                  </span>
+                  <span className="text-[#D4F57A]">{t("home.about.values.title")}</span>
                 </h2>
                 <div className="w-16 h-1.5 bg-[#D4F57A] rounded-full mb-8"></div>
-                <p className="text-[#F5F2EB]/80 text-lg mb-6">
-                  {t("home.about.values.subtitle")}
-                </p>
+                <p className="text-[#F5F2EB]/80 text-lg mb-6">{t("home.about.values.subtitle")}</p>
                 <div className="hidden md:flex items-center gap-2">
                   <ScrollIndicator />
                 </div>
@@ -570,9 +517,9 @@ export default function AboutUs() {
                     overflowX: "auto",
                     position: "relative",
                   }}
-                  onMouseDown={(e) => handleMouseDown(e, carouselRef.current)}
+                  onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => handleMouseDown(e, carouselRef.current)}
                   onMouseUp={() => handleMouseUp(carouselRef.current)}
-                  onMouseMove={(e) => handleMouseMove(e, carouselRef.current)}
+                  onMouseMove={(e: React.MouseEvent<HTMLDivElement>) => handleMouseMove(e, carouselRef.current)}
                   onMouseLeave={() => handleMouseLeave(carouselRef.current)}
                   onKeyDown={(e) => handleKeyDown(e, carouselRef.current)}
                   tabIndex={0}
@@ -583,18 +530,15 @@ export default function AboutUs() {
                 </div>
                 <div className="hidden md:flex justify-between mt-4 gap-3">
                   <div className="text-white/80 text-sm">
-                    <span className="sr-only">
-                      Instrucciones de accesibilidad:{" "}
-                    </span>
-                    Usa las teclas de flecha izquierda y derecha para navegar
-                    por el carrusel
+                    <span className="sr-only">Instrucciones de accesibilidad: </span>
+                    Usa las teclas de flecha izquierda y derecha para navegar por el carrusel
                   </div>
                   <div className="flex gap-3 p-2">
                     <button
                       className="p-2 rounded-full bg-[#D4F57A]/10 hover:bg-[#D4F57A]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:ring-offset-2 focus:ring-offset-[#293B36]"
                       onClick={() => {
                         if (carouselRef.current) {
-                          carouselRef.current.scrollLeft -= 300; // Ancho aproximado de una card
+                          carouselRef.current.scrollLeft -= 300 // Ancho aproximado de una card
                         }
                       }}
                       aria-label="Desplazar a la izquierda"
@@ -618,7 +562,7 @@ export default function AboutUs() {
                       className="p-2 rounded-full bg-[#D4F57A]/10 hover:bg-[#D4F57A]/20 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:ring-offset-2 focus:ring-offset-[#293B36]"
                       onClick={() => {
                         if (carouselRef.current) {
-                          carouselRef.current.scrollLeft += 300; // Ancho aproximado de una card
+                          carouselRef.current.scrollLeft += 300 // Ancho aproximado de una card
                         }
                       }}
                       aria-label="Desplazar a la derecha"
@@ -649,14 +593,10 @@ export default function AboutUs() {
         {isMobile && (
           <div className="mt-24 mb-12">
             <h2 className="text-4xl font-bold text-white mb-4 text-center">
-              <span className="text-[#D4F57A]">
-                {t("home.about.values.title")}
-              </span>
+              <span className="text-[#D4F57A]">{t("home.about.values.title")}</span>
             </h2>
             <div className="w-16 h-1.5 bg-[#D4F57A] rounded-full mb-8 mx-auto"></div>
-            <p className="text-[#F5F2EB]/80 text-lg mb-6 text-center px-4">
-              {t("home.about.values.subtitle")}
-            </p>
+            <p className="text-[#F5F2EB]/80 text-lg mb-6 text-center px-4">{t("home.about.values.subtitle")}</p>
 
             <div className="overflow-hidden">
               <div
@@ -671,18 +611,14 @@ export default function AboutUs() {
                   overflowX: "auto",
                   position: "relative",
                 }}
-                onMouseDown={(e) =>
-                  handleMouseDown(e, mobileCarouselRef.current)
-                }
+                onMouseDown={(e: React.MouseEvent<HTMLDivElement>) => handleMouseDown(e, mobileCarouselRef.current)}
                 onMouseUp={() => handleMouseUp(mobileCarouselRef.current)}
-                onMouseMove={(e) =>
-                  handleMouseMove(e, mobileCarouselRef.current)
-                }
+                onMouseMove={(e: React.MouseEvent<HTMLDivElement>) => handleMouseMove(e, mobileCarouselRef.current)}
                 onMouseLeave={() => handleMouseLeave(mobileCarouselRef.current)}
                 onTouchStart={() => {
                   if (autoScrollInterval) {
-                    clearInterval(autoScrollInterval);
-                    setAutoScrollInterval(null);
+                    clearInterval(autoScrollInterval)
+                    setAutoScrollInterval(null)
                   }
                 }}
               >
@@ -698,5 +634,5 @@ export default function AboutUs() {
         )}
       </div>
     </section>
-  );
+  )
 }
