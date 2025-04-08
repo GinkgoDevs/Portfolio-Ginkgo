@@ -73,6 +73,12 @@ export default function DisintegrationEffect({
       const ctx = canvas.getContext("2d")
       if (!ctx) return
 
+      // Create circular clipping path
+      ctx.beginPath()
+      ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, 0, Math.PI * 2)
+      ctx.closePath()
+      ctx.clip()
+
       ctx.drawImage(img, 0, 0, img.width, img.height)
 
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
@@ -106,6 +112,12 @@ export default function DisintegrationEffect({
         const clonedCtx = clonedCanvas.getContext("2d")
 
         if (clonedCtx) {
+          // Create circular clipping path for each cloned canvas
+          clonedCtx.beginPath()
+          clonedCtx.arc(clonedCanvas.width / 2, clonedCanvas.height / 2, clonedCanvas.width / 2, 0, Math.PI * 2)
+          clonedCtx.closePath()
+          clonedCtx.clip()
+
           clonedCtx.putImageData(data, 0, 0)
           clonedCanvas.className = "absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full"
           containerRef.current?.appendChild(clonedCanvas)
@@ -173,20 +185,21 @@ export default function DisintegrationEffect({
   }, [canvasElements, onComplete, index, scrollTriggerEnabled, highContrast])
 
   return (
-    <div ref={containerRef} className="relative w-full h-full profile-image-container">
+    <div ref={containerRef} className="relative w-full h-full profile-image-container flex items-center justify-center">
       <Image
         ref={imageRef as any}
         src={imageSrc || "/placeholder.svg"}
         alt={altText}
-        width={300}
-        height={300}
+        width={600}
+        height={600}
         className={`object-cover w-full h-full rounded-full ${
           (isMobile && !scrollTriggerEnabled) || highContrast ? "opacity-100" : "opacity-0"
         }`}
         onLoad={() => setImageLoaded(true)}
         priority
+        quality={100}
+        style={{ objectFit: "cover", objectPosition: "center" }}
       />
     </div>
   )
 }
-
