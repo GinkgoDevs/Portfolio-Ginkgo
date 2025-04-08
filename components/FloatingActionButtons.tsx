@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
 import { MessageCircle, Calendar, X, Phone } from "lucide-react"
 import { useTranslation } from "@/contexts/TranslationContext"
 
@@ -90,61 +89,47 @@ export default function FloatingActionButtons() {
   return (
     <div className="fixed bottom-6 right-6 z-40">
       <div className="relative">
-        <AnimatePresence>
-          {isExpanded && (
-            <div className="absolute bottom-16 right-0 flex flex-col items-end space-y-3">
-              {/* WhatsApp Button */}
-              <motion.button
-                initial={{ opacity: 0, y: 20, scale: 0.8 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.8 }}
-                transition={{ duration: 0.2, delay: 0.1 }}
-                onClick={handleWhatsAppClick}
-                className="flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-white shadow-lg hover:bg-[#22c55e] focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 whitespace-nowrap"
-                aria-label={t("home.contact.whatsapp") || "WhatsApp"}
-              >
-                <MessageCircle size={20} />
-                <span className="font-medium">{t("home.contact.whatsapp") || "WhatsApp"}</span>
-              </motion.button>
+        <div
+          className={`absolute bottom-16 right-0 flex flex-col items-end space-y-3 transition-all duration-300 ${isExpanded ? "opacity-100 transform-none" : "opacity-0 translate-y-4 pointer-events-none"}`}
+        >
+          {/* WhatsApp Button */}
+          <button
+            onClick={handleWhatsAppClick}
+            className="flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-white shadow-lg hover:bg-[#22c55e] focus:outline-none focus:ring-2 focus:ring-[#25D366] focus:ring-offset-2 whitespace-nowrap transition-transform duration-200 hover:scale-105 active:scale-95"
+            aria-label={t("home.contact.whatsapp") || "WhatsApp"}
+            style={{
+              transitionDelay: "0.1s",
+            }}
+          >
+            <MessageCircle size={20} />
+            <span className="font-medium">{t("home.contact.whatsapp") || "WhatsApp"}</span>
+          </button>
 
-              {/* Schedule Call Button */}
-              <motion.button
-                initial={{ opacity: 0, y: 20, scale: 0.8 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 20, scale: 0.8 }}
-                transition={{ duration: 0.2 }}
-                onClick={handleScheduleClick}
-                className="flex items-center gap-2 rounded-full bg-[#D4F57A] px-4 py-3 text-[#293B36] shadow-lg hover:bg-[#c2e65c] focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:ring-offset-2 whitespace-nowrap"
-                aria-label={t("home.contact.scheduleCall") || "Schedule a call"}
-              >
-                <Calendar size={20} />
-                <span className="font-medium">{locale === "en" ? "Schedule a call" : "Agendar llamada"}</span>
-              </motion.button>
-            </div>
-          )}
-        </AnimatePresence>
+          {/* Schedule Call Button */}
+          <button
+            onClick={handleScheduleClick}
+            className="flex items-center gap-2 rounded-full bg-[#D4F57A] px-4 py-3 text-[#293B36] shadow-lg hover:bg-[#c2e65c] focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:ring-offset-2 whitespace-nowrap transition-transform duration-200 hover:scale-105 active:scale-95"
+            aria-label={t("home.contact.scheduleCall") || "Schedule a call"}
+          >
+            <Calendar size={20} />
+            <span className="font-medium">{locale === "en" ? "Schedule a call" : "Agendar llamada"}</span>
+          </button>
+        </div>
 
         {/* Main Toggle Button */}
-        <motion.button
+        <button
           onClick={toggleExpand}
-          className="flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 bg-[#D4F57A] text-[#293B36] focus:ring-[#D4F57A]"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          className="flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-[#D4F57A] text-[#293B36] focus:ring-[#D4F57A] hover:scale-105 active:scale-95"
           aria-label={isExpanded ? "Close menu" : "Open contact menu"}
           aria-expanded={isExpanded}
         >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={isExpanded ? "close" : "open"}
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              {isExpanded ? <X size={24} /> : <Phone size={24} />}
-            </motion.div>
-          </AnimatePresence>
-        </motion.button>
+          <div
+            className="transition-transform duration-300"
+            style={{ transform: isExpanded ? "rotate(0deg)" : "rotate(0deg)" }}
+          >
+            {isExpanded ? <X size={24} /> : <Phone size={24} />}
+          </div>
+        </button>
       </div>
     </div>
   )
