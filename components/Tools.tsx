@@ -1,7 +1,7 @@
 "use client"
 import { useRef, useState, useEffect } from "react"
 import { Code2, Database, Cloud, Laptop, Paintbrush, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react"
-import ScrollAnimation from "../ScrollAnimation"
+import ScrollAnimation from "./ScrollAnimation"
 import { useTranslation } from "@/contexts/TranslationContext"
 
 export default function Tools() {
@@ -21,17 +21,17 @@ export default function Tools() {
     {
       category: t("home.tools.categories.styles"),
       icon: <Paintbrush className="w-6 h-6" />,
-      items: ["CSS", "Tailwind CSS", "SASS", "Three.js", "UI/UX Design"],
+      items: ["CSS", "Tailwind CSS", "SASS", "Three.js",],
     },
     {
       category: t("home.tools.categories.backend"),
       icon: <Code2 className="w-6 h-6" />,
-      items: ["Node.js", "Express", "Nest.js", "REST APIs", "JavaScript"],
+      items: ["Node.js", "Express", "Nest.js", "REST APIs", "JavaScript","TypeScript"],
     },
     {
       category: t("home.tools.categories.databases"),
       icon: <Database className="w-6 h-6" />,
-      items: ["PostgreSQL", "MongoDB", "SQL", "TypeScript", "ORM/ODM"],
+      items: ["PostgreSQL", "MongoDB", "SQL", "ORM/ODM"],
     },
     {
       category: t("home.tools.categories.cms"),
@@ -41,7 +41,7 @@ export default function Tools() {
     {
       category: t("home.tools.categories.devops"),
       icon: <Cloud className="w-6 h-6" />,
-      items: ["Vercel", "Netlify", "Git", "GitHub", "CI/CD"],
+      items: ["Vercel", "Netlify", "Git", "GitHub",],
     },
   ]
 

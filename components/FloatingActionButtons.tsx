@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { MessageCircle, Calendar, X, Phone } from "lucide-react"
 import { useTranslation } from "@/contexts/TranslationContext"
+import { validateEnv } from "@/lib/env"
 
 export default function FloatingActionButtons() {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -10,6 +11,7 @@ export default function FloatingActionButtons() {
   const [shouldRender, setShouldRender] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { locale, t } = useTranslation()
+  const env = validateEnv()
 
   // Effect to set initial state based on device type (only runs once on mount)
   useEffect(() => {
@@ -63,10 +65,10 @@ export default function FloatingActionButtons() {
     setIsExpanded((prev) => !prev)
   }
 
-  // WhatsApp number - replace with your actual number
-  const whatsappNumber = "+5491112345678"
+  // WhatsApp number from environment variables
+  const whatsappNumber = env.contact.whatsappNumber
 
-  // Calendly link - replace with your actual Calendly link
+  // Calendly link - could also come from environment variables
   const calendlyLink = "https://calendly.com/ginkgodevs/30min"
 
   const handleWhatsAppClick = () => {

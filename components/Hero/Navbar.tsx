@@ -9,6 +9,7 @@ import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { useTranslation } from "@/contexts/TranslationContext"
 import { useAccessibility } from "@/components/AccessibilityProvider"
+import { validateEnv } from "@/lib/env"
 
 // Crear un contexto para el estado del menú
 export const MenuContext = createContext<{ isMenuOpen: boolean }>({ isMenuOpen: false })
@@ -24,6 +25,8 @@ export default function Navbar() {
   const { highContrast, toggleHighContrast, fontSize, increaseFontSize, decreaseFontSize, resetFontSize } =
     useAccessibility()
 
+  const env = validateEnv()
+
   // Define menu items with translations
   const menuItems = [
     { name: t("home.navbar.services"), href: "#services" },
@@ -34,10 +37,10 @@ export default function Navbar() {
   ]
 
   const socialLinks = [
-    { name: "Instagram", icon: Instagram, href: "#" },
-    { name: "Linkedin", icon: Linkedin, href: "#" },
-    { name: "Github", icon: Github, href: "#" },
-  ]
+    { name: "Instagram", icon: Instagram, href: env.socialLinks.instagram },
+    { name: "Linkedin", icon: Linkedin, href: env.socialLinks.linkedin },
+    { name: "Github", icon: Github, href: env.socialLinks.github },
+  ].filter((link) => link.href)
 
   // Handle scroll effect
   useEffect(() => {
@@ -338,6 +341,8 @@ export default function Navbar() {
                       <Link
                         key={link.name}
                         href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="text-[#293B36] hover:text-[#293B36]/70 transition-colors flex items-center gap-1 whitespace-nowrap"
                       >
                         <link.icon className="h-3 w-3" />
@@ -354,4 +359,3 @@ export default function Navbar() {
     </MenuContext.Provider>
   )
 }
-

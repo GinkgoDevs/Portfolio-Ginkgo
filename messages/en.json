@@ -27,7 +27,8 @@
       "strategies": "Digital Strategies",
       "strategiesDesc": "We maximize your online presence with intelligent solutions.",
       "quoteButton": "Quote your project",
-      "portfolioButton": "View portfolio"
+      "portfolioButton": "View portfolio",
+      "whatsappMessage": "Hello, I'm interested in your {service} service. Could you provide me with more information?"
     },
     "hero": {
       "title": "We build experiences",
@@ -106,4 +107,3 @@
     "backHome": "Back to home"
   }
 }
-

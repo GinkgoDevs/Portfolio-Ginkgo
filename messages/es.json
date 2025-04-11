@@ -27,7 +27,8 @@
       "strategies": "Estrategias Digitales",
       "strategiesDesc": "Maximizamos tu presencia online con soluciones inteligentes.",
       "quoteButton": "Cotiza tu proyecto",
-      "portfolioButton": "Ver portafolio"
+      "portfolioButton": "Ver portafolio",
+      "whatsappMessage": "Hola, estoy interesado en el servicio de {service} que ofrecen. ¿Podrían brindarme más información?"
     },
     "hero": {
       "title": "Construimos experiencias",
@@ -106,4 +107,3 @@
     "backHome": "Volver al inicio"
   }
 }
-

@@ -24,8 +24,8 @@ export function TranslationProvider({
   // Asegurarse de que locale sea un string
   const safeLocale = typeof locale === "string" ? locale : "es"
 
-  // Function to get nested translation values using dot notation
-  const t = (key: string): string => {
+  // Modificar la función t para que soporte interpolación de variables
+  const t = (key: string, replacements?: Record<string, string>): string => {
     if (!messages) return key
 
     // Asegurarse de que key sea un string
@@ -52,6 +52,13 @@ export function TranslationProvider({
       return safeKey
     }
 
+    // Si hay reemplazos, aplicarlos al texto
+    if (replacements) {
+      return Object.entries(replacements).reduce((text, [key, val]) => {
+        return text.replace(new RegExp(`\\{${key}\\}`, "g"), val)
+      }, value)
+    }
+
     return value
   }
 
@@ -61,4 +68,3 @@ export function TranslationProvider({
 export function useTranslation() {
   return useContext(TranslationContext)
 }
-
