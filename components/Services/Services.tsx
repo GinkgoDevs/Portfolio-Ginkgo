@@ -6,7 +6,9 @@ import { motion, useAnimation, useInView } from "framer-motion"
 import { Code, Settings, LineChart, ArrowRight } from "lucide-react"
 import Magnet from "../Hero/Magnet"
 import ScrollAnimation from "../ScrollAnimation"
+// Actualizar la definición del tipo TranslationContextType para incluir el parámetro de reemplazos
 import { useTranslation } from "@/contexts/TranslationContext"
+import { validateEnv } from "@/lib/env"
 
 interface ServiceCardProps {
   title: string
@@ -22,7 +24,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
   const cardRef = useRef(null)
   const isInView = useInView(cardRef, { once: true, amount: 0.3 })
   const [isHovered, setIsHovered] = useState(false)
+  // Asegurarse de que la función t se use correctamente con el nuevo parámetro
   const { t } = useTranslation()
+  const env = validateEnv()
 
   // Determine if this card should be highlighted (either by hover on desktop or by being centered on mobile)
   const isHighlighted = isMobile ? activeCardIndex === index : isHovered
@@ -44,6 +48,17 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
         ease: "easeOut",
       },
     },
+  }
+
+  const generateWhatsAppLink = (service: string) => {
+    // Usar el número de WhatsApp del entorno
+    const whatsappNumber = env.contact.whatsappNumber
+
+    // Crear mensaje personalizado según el servicio
+    const message = t("home.services.whatsappMessage", { service })
+
+    // Generar enlace de WhatsApp con número y mensaje codificado
+    return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
   }
 
   const ButtonWrapper = isMobile ? "div" : Magnet
@@ -83,14 +98,17 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
         {/* Button container fixed to bottom */}
         <div className="mt-auto">
           <ButtonWrapper padding={40} disabled={isMobile} magnetStrength={1.5}>
-            <motion.button
+            <motion.a
+              href={generateWhatsAppLink(title)}
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={isMobile ? {} : { scale: 1.05 }}
               whileTap={isMobile ? {} : { scale: 0.95 }}
               className="flex items-center gap-2 font-medium text-[#D4F57A] hover:text-white transition-colors duration-300"
             >
               <span>{t("home.services.quoteButton")}</span>
               <ArrowRight className="w-4 h-4" />
-            </motion.button>
+            </motion.a>
           </ButtonWrapper>
         </div>
       </div>
@@ -111,6 +129,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
 }
 
 export default function Services() {
+  // Asegurarse de que la función t se use correctamente con el nuevo parámetro
   const { t } = useTranslation()
   const [isMobile, setIsMobile] = useState(false)
   const [activeCardIndex, setActiveCardIndex] = useState(0)
@@ -227,17 +246,21 @@ export default function Services() {
 
         <ScrollAnimation className="mt-16 text-center">
           <Magnet padding={60} disabled={isMobile} magnetStrength={2}>
-            <motion.button
+            <motion.a
+              href="#projects"
+              onClick={(e) => {
+                e.preventDefault()
+                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
+              }}
               whileHover={isMobile ? {} : { scale: 1.05 }}
               whileTap={isMobile ? {} : { scale: 0.95 }}
-              className="bg-[#D4F57A] hover:bg-[#c2e65c] text-[#293B36] font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 font-inter"
+              className="bg-[#D4F57A] hover:bg-[#c2e65c] text-[#293B36] font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 font-inter inline-block"
             >
               {t("home.services.portfolioButton")}
-            </motion.button>
+            </motion.a>
           </Magnet>
         </ScrollAnimation>
       </div>
     </section>
   )
 }
-

@@ -16,7 +16,7 @@ export default function Footer() {
 
   // Filtrar solo las redes sociales que tienen URL
   const socialLinks = [
-    { icon: Linkedin, href: env.socialLinks.linkedin, label: "LinkedIn" },
+    { icon: Linkedin, href: "", label: "LinkedIn" },
     { icon: Instagram, href: env.socialLinks.instagram, label: "Instagram" },
     { icon: Github, href: env.socialLinks.github, label: "GitHub" },
   ].filter((link) => link.href)
@@ -307,4 +307,3 @@ export default function Footer() {
     </footer>
   )
 }
-

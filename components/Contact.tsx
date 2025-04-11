@@ -12,6 +12,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { Calendar, Mail, MessageSquare, Send } from "lucide-react"
 import ScrollAnimation from "./ScrollAnimation"
 import { useTranslation } from "@/contexts/TranslationContext"
+import { validateEnv } from "@/lib/env"
 
 // Form validation schema
 const formSchema = z.object({
@@ -31,6 +32,7 @@ export default function Contact() {
   const calendlyContainerRef = useRef<HTMLDivElement>(null)
   const { toast } = useToast()
   const { t, locale } = useTranslation()
+  const env = validateEnv()
 
   useEffect(() => {
     // Use a static CSRF token instead of fetching it
@@ -286,7 +288,8 @@ export default function Contact() {
                     {locale === "en" ? "Prefer email?" : "¿Prefieres el correo electrónico?"}
                   </p>
                   <p className="text-[#F5F2EB]/80 text-sm">
-                    {locale === "en" ? "Write to us at hello@ginkgodevs.com" : "Escríbenos a hello@ginkgodevs.com"}
+                    {locale === "en" ? "Write to us at " : "Escríbenos a "}
+                    {env.contact.email}
                   </p>
                 </div>
               </div>
@@ -297,4 +300,3 @@ export default function Contact() {
     </section>
   )
 }
-
