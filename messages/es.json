@@ -86,6 +86,8 @@
       "sending": "Enviando...",
       "success": "¡Mensaje enviado!",
       "successDesc": "Nos pondremos en contacto contigo lo antes posible.",
+      "error": "Error al enviar",
+      "errorDesc": "Hubo un problema al enviar tu mensaje. Por favor, intenta nuevamente.",
       "whatsapp": "WhatsApp",
       "scheduleCall": "Agendar una llamada"
     }

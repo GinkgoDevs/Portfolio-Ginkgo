@@ -8,8 +8,7 @@ import DOMPurify from "dompurify"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { useToast } from "@/components/ui/use-toast"
-import { Calendar, Mail, MessageSquare, Send } from "lucide-react"
+import { Calendar, Mail, MessageSquare, Send, CheckCircle, X, AlertCircle } from "lucide-react"
 import ScrollAnimation from "./ScrollAnimation"
 import { useTranslation } from "@/contexts/TranslationContext"
 import { validateEnv } from "@/lib/env"
@@ -23,6 +22,9 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>
 
+// Definir tipos para nuestro toast personalizado
+type ToastType = "success" | "error" | null
+
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [csrfToken, setCsrfToken] = useState("")
@@ -30,9 +32,46 @@ export default function Contact() {
   const [calendlyLoaded, setCalendlyLoaded] = useState(false)
   const [calendlyError, setCalendlyError] = useState(false)
   const calendlyContainerRef = useRef<HTMLDivElement>(null)
-  const { toast } = useToast()
   const { t, locale } = useTranslation()
   const env = validateEnv()
+
+  // Estado para nuestro toast personalizado
+  const [toast, setToast] = useState<{
+    visible: boolean
+    type: ToastType
+    title: string
+    message: string
+  }>({
+    visible: false,
+    type: null,
+    title: "",
+    message: "",
+  })
+
+  // Función para mostrar el toast
+  const showToast = (type: ToastType, title: string, message: string) => {
+    setToast({
+      visible: true,
+      type,
+      title,
+      message,
+    })
+
+    // Vibrar en dispositivos móviles si la API está disponible
+    if (navigator.vibrate) {
+      navigator.vibrate(200)
+    }
+
+    // Ocultar el toast después de 5 segundos
+    setTimeout(() => {
+      setToast((prev) => ({ ...prev, visible: false }))
+    }, 5000)
+  }
+
+  // Función para cerrar el toast manualmente
+  const closeToast = () => {
+    setToast((prev) => ({ ...prev, visible: false }))
+  }
 
   useEffect(() => {
     // Use a static CSRF token instead of fetching it
@@ -80,11 +119,7 @@ export default function Contact() {
     // Add listener for Calendly event
     const handleCalendlyEvent = (e: MessageEvent) => {
       if (e.data.event && e.data.event === "calendly.event_scheduled") {
-        toast({
-          title: t("home.contact.success"),
-          description: t("home.contact.successDesc"),
-          duration: 5000,
-        })
+        showToast("success", t("home.contact.success"), t("home.contact.successDesc"))
       }
     }
 
@@ -93,7 +128,7 @@ export default function Contact() {
     return () => {
       window.removeEventListener("message", handleCalendlyEvent)
     }
-  }, [toast, t])
+  }, [t])
 
   const {
     register,
@@ -111,25 +146,28 @@ export default function Contact() {
         name: DOMPurify.sanitize(data.name),
         email: DOMPurify.sanitize(data.email),
         message: DOMPurify.sanitize(data.message),
-        csrfToken: csrfToken,
       }
 
-      // Here would go the real logic to send the form with sanitized data and CSRF token
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      toast({
-        title: t("home.contact.success"),
-        description: t("home.contact.successDesc"),
-        duration: 5000,
+      // Enviar los datos al endpoint de la API
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sanitizedData),
       })
+
+      if (!response.ok) {
+        throw new Error("Error al enviar el mensaje")
+      }
+
+      // Mostrar toast de éxito
+      showToast("success", t("home.contact.success"), t("home.contact.successDesc"))
+
       reset()
     } catch (error) {
-      toast({
-        title: t("home.contact.error"),
-        description: t("home.contact.errorDesc"),
-        variant: "destructive",
-        duration: 5000,
-      })
+      // Mostrar toast de error
+      showToast("error", t("home.contact.error"), t("home.contact.errorDesc"))
       console.error("Error submitting form:", error)
     } finally {
       setIsSubmitting(false)
@@ -297,6 +335,40 @@ export default function Contact() {
           </ScrollAnimation>
         </div>
       </div>
+
+      {/* Toast personalizado v10 - Optimizado para móviles */}
+      {toast.visible && (
+        <div
+          className={`fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 p-4 rounded-lg shadow-lg flex items-start gap-3 w-[90%] max-w-md animate-in fade-in slide-in-from-bottom-5 md:w-auto ${
+            toast.type === "success"
+              ? "bg-[#D4F57A] text-[#293B36] border-l-4 border-green-600"
+              : "bg-red-100 text-red-900 border-l-4 border-red-600"
+          }`}
+          role="alert"
+          aria-live="assertive"
+        >
+          {toast.type === "success" ? (
+            <CheckCircle className="h-6 w-6 flex-shrink-0 text-green-600" />
+          ) : (
+            <AlertCircle className="h-6 w-6 flex-shrink-0 text-red-600" />
+          )}
+
+          <div className="flex-1">
+            <h3 className="font-semibold text-base">{toast.title}</h3>
+            <p className="text-sm mt-1">{toast.message}</p>
+          </div>
+
+          <button
+            onClick={closeToast}
+            className={`p-1.5 rounded-full hover:bg-black/10 transition-colors ${
+              toast.type === "success" ? "text-[#293B36]" : "text-red-900"
+            }`}
+            aria-label="Cerrar"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+      )}
     </section>
   )
 }
