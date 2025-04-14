@@ -5,6 +5,7 @@ import type React from "react"
 import { useInView } from "react-intersection-observer"
 import RotatingText from "./RotatingText"
 import FallingLeaves from "./FallingLeaves"
+import FallingLeavesOptimized from "./FallingLeavesOptimized"
 import Navbar from "./Navbar"
 import Magnet from "./Magnet"
 import { useEffect, useState, useCallback, useRef } from "react"
@@ -231,7 +232,10 @@ export default function Hero() {
 
   return (
     <div id="home" className="relative min-h-screen bg-[#293B36] pb-32 overflow-hidden">
-      {isMounted && <FallingLeaves />}
+      {/* Renderizar la versión optimizada para móviles y la versión original para escritorio */}
+      {isMounted && isMobile && <FallingLeavesOptimized mobileOnly={true} />}
+      {isMounted && !isMobile && <FallingLeaves />}
+
       <Navbar />
 
       <div className="relative z-10 flex flex-col justify-start md:justify-center items-center min-h-screen px-2 sm:px-4 md:px-16 lg:px-24 pt-16 md:pt-0 overflow-hidden">
@@ -337,4 +341,3 @@ export default function Hero() {
     </div>
   )
 }
-
