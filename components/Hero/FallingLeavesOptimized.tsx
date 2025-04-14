@@ -141,18 +141,7 @@ export default function FallingLeavesOptimized({ className = "", mobileOnly = fa
           />
         </div>
 
-        {/* Hojas en el suelo */}
-        <div className="absolute bottom-0 left-0 right-0 h-32">
-          <div className="relative w-full h-full">
-            <Image
-              src="/images/ground-leaves.svg"
-              alt=""
-              width={1920}
-              height={128}
-              className="w-full h-full object-cover opacity-30"
-            />
-          </div>
-        </div>
+      
       </div>
     </div>
   )
