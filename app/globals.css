@@ -149,6 +149,297 @@ html {
   cursor: grabbing !important;
 }
 
+/* Animaciones mejoradas para las hojas optimizadas */
+/* Animaciones de caída lenta con variaciones */
+@keyframes leaf-fall-slow-1 {
+  0% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(30px, 100vh, 0);
+    opacity: 0.5;
+  }
+}
+
+@keyframes leaf-fall-slow-2 {
+  0% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(-25px, 100vh, 0);
+    opacity: 0.45;
+  }
+}
+
+@keyframes leaf-fall-slow-3 {
+  0% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(20px, 100vh, 0);
+    opacity: 0.5;
+  }
+}
+
+/* Animaciones de caída media con variaciones */
+@keyframes leaf-fall-medium-1 {
+  0% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(-35px, 100vh, 0);
+    opacity: 0.45;
+  }
+}
+
+@keyframes leaf-fall-medium-2 {
+  0% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate3d(40px, 100vh, 0);
+    opacity: 0.5;
+  }
+}
+
+/* Animaciones de caída rápida con variaciones */
+@keyframes leaf-fall-fast-1 {
+  0% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate3d(25px, 100vh, 0);
+    opacity: 0.4;
+  }
+}
+
+@keyframes leaf-fall-fast-2 {
+  0% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(-30px, 100vh, 0);
+    opacity: 0.45;
+  }
+}
+
+@keyframes leaf-fall-fast-3 {
+  0% {
+    transform: translate3d(0, -10px, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate3d(35px, 100vh, 0);
+    opacity: 0.4;
+  }
+}
+
+/* Animaciones de rotación con diferentes velocidades */
+@keyframes leaf-spin-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes leaf-spin-reverse-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes leaf-spin-medium {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes leaf-spin-reverse-medium {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes leaf-spin-fast {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes leaf-spin-reverse-fast {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+
+/* Aplicar animaciones con diferentes duraciones */
+.animate-leaf-fall-slow-1 {
+  animation: leaf-fall-slow-1 20s linear infinite;
+  animation-delay: 0s;
+}
+
+.animate-leaf-fall-slow-2 {
+  animation: leaf-fall-slow-2 22s linear infinite;
+  animation-delay: 3s;
+}
+
+.animate-leaf-fall-slow-3 {
+  animation: leaf-fall-slow-3 21s linear infinite;
+  animation-delay: 1.5s;
+}
+
+.animate-leaf-fall-slow-4 {
+  animation: leaf-fall-slow-4 21s linear infinite;
+  animation-delay: 3s;
+}
+
+.animate-leaf-fall-slow-5 {
+  animation: leaf-fall-slow-5 17s linear infinite;
+  animation-delay: 2.5s;
+}
+
+.animate-leaf-fall-medium-1 {
+  animation: leaf-fall-medium-1 15s linear infinite;
+  animation-delay: 1s;
+}
+
+.animate-leaf-fall-medium-2 {
+  animation: leaf-fall-medium-2 16s linear infinite;
+  animation-delay: 2.5s;
+}
+
+.animate-leaf-fall-medium-3 {
+  animation: leaf-fall-medium-3 15s linear infinite;
+  animation-delay: 0.8s;
+}
+
+.animate-leaf-fall-medium-4 {
+  animation: leaf-fall-medium-4 12s linear infinite;
+  animation-delay: 2.2s;
+}
+
+.animate-leaf-fall-medium-5 {
+  animation: leaf-fall-medium-5 14.5s linear infinite;
+  animation-delay: 1.2s;
+}
+
+.animate-leaf-fall-fast-1 {
+  animation: leaf-fall-fast-1 11s linear infinite;
+  animation-delay: 0.5s;
+}
+
+.animate-leaf-fall-fast-2 {
+  animation: leaf-fall-fast-2 10s linear infinite;
+  animation-delay: 2s;
+}
+
+.animate-leaf-fall-fast-3 {
+  animation: leaf-fall-fast-3 12s linear infinite;
+  animation-delay: 1.2s;
+}
+
+.animate-leaf-fall-fast-4 {
+  animation: leaf-fall-fast-4 8s linear infinite;
+  animation-delay: 2.5s;
+}
+
+.animate-leaf-fall-fast-5 {
+  animation: leaf-fall-fast-5 10.5s linear infinite;
+  animation-delay: 1.3s;
+}
+
+.animate-leaf-fall-fast-6 {
+  animation: leaf-fall-fast-6 9.5s linear infinite;
+  animation-delay: 0.3s;
+}
+
+.animate-leaf-fall-fast-7 {
+  animation: leaf-fall-fast-7 8.5s linear infinite;
+  animation-delay: 1.7s;
+}
+
+.animate-leaf-fall-fast-8 {
+  animation: leaf-fall-fast-8 7.5s linear infinite;
+  animation-delay: 0.9s;
+}
+
+.animate-leaf-fall-fast-9 {
+  animation: leaf-fall-fast-9 9s linear infinite;
+  animation-delay: 2.1s;
+}
+
+.animate-leaf-spin-slow {
+  animation: leaf-spin-slow 18s linear infinite;
+}
+
+.animate-leaf-spin-reverse-slow {
+  animation: leaf-spin-reverse-slow 20s linear infinite;
+}
+
+.animate-leaf-spin-medium {
+  animation: leaf-spin-medium 14s linear infinite;
+}
+
+.animate-leaf-spin-reverse-medium {
+  animation: leaf-spin-reverse-medium 16s linear infinite;
+}
+
+.animate-leaf-spin-fast {
+  animation: leaf-spin-fast 10s linear infinite;
+}
+
+.animate-leaf-spin-reverse-fast {
+  animation: leaf-spin-reverse-fast 12s linear infinite;
+}
+
 @keyframes bounce {
   0%,
   100% {
@@ -385,7 +676,7 @@ body.no-scroll {
   height: 100%;
 }
 
-/* Modificar las reglas para el body para permitir scroll vertical pero no horizontal */
+/* Modificar las reglas para el body para permitir scroll vertical but not horizontal */
 html,
 body {
   overflow-x: hidden;
@@ -428,4 +719,3 @@ button,
 a {
   pointer-events: auto !important;
 }
-

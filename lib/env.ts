@@ -3,7 +3,6 @@
 export function validateEnv() {
   // Verificar variables de entorno requeridas
   const requiredEnvs = [
-    "NEXT_PUBLIC_SITE_URL",
     "NEXT_PUBLIC_INSTAGRAM_URL",
     "NEXT_PUBLIC_LINKEDIN_URL",
     "NEXT_PUBLIC_GITHUB_URL",
