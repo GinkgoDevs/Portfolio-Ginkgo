@@ -36,9 +36,25 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
   const lastMouseProcessTime = useRef(0)
   const animationFrameRef = useRef<number | null>(null)
 
-  // Modificar el manejador de eventos handleMouseMove para verificar si canvasRef.current existe
+  // Modificar el manejador de eventos handleMouseMove para verificar si el evento está dentro del hero
   const handleMouseMove = useCallback((event: MouseEvent) => {
     if (!canvasRef.current) return
+
+    // Verificar si el evento está dentro del hero section
+    const heroSection = document.getElementById("home")
+    if (!heroSection) return
+
+    const heroRect = heroSection.getBoundingClientRect()
+
+    // Si el evento está fuera del hero, ignorarlo
+    if (
+      event.clientY > heroRect.bottom ||
+      event.clientY < heroRect.top ||
+      event.clientX > heroRect.right ||
+      event.clientX < heroRect.left
+    ) {
+      return
+    }
 
     const rect = canvasRef.current.getBoundingClientRect()
     const currentTime = performance.now()
@@ -72,11 +88,28 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     lastTime.current = currentTime
   }, [])
 
-  // Modificar el manejador de eventos handleTouchMove para verificar si canvasRef.current existe
+  // Modificar el manejador de eventos handleTouchMove para verificar si el evento está dentro del hero
   const handleTouchMove = useCallback((event: TouchEvent) => {
     if (!canvasRef.current || event.touches.length === 0) return
 
     const touch = event.touches[0]
+
+    // Verificar si el toque está dentro del hero section
+    const heroSection = document.getElementById("home")
+    if (!heroSection) return
+
+    const heroRect = heroSection.getBoundingClientRect()
+
+    // Si el toque está fuera del hero, ignorarlo
+    if (
+      touch.clientY > heroRect.bottom ||
+      touch.clientY < heroRect.top ||
+      touch.clientX > heroRect.right ||
+      touch.clientX < heroRect.left
+    ) {
+      return
+    }
+
     const rect = canvasRef.current.getBoundingClientRect()
     const currentTime = performance.now()
     const deltaTime = (currentTime - lastTime.current) / 1000
@@ -445,14 +478,10 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
           const returnSpeed = 0.015
           leaf.position.lerp(userData.originalPosition, returnSpeed)
 
-          // Convert Euler to Quaternion for smooth interpolation
-          const targetQuaternion = new Euler(
-            userData.originalRotation.x,
-            userData.originalRotation.y,
-            userData.originalRotation.z,
-          )
-          const currentQuaternion = new Euler(leaf.rotation.x, leaf.rotation.y, leaf.rotation.z)
-          leaf.rotation.set(currentQuaternion.x, currentQuaternion.y, currentQuaternion.z)
+          // Simplificar la rotación para evitar problemas
+          leaf.rotation.x = leaf.rotation.x * (1 - returnSpeed) + userData.originalRotation.x * returnSpeed
+          leaf.rotation.y = leaf.rotation.y * (1 - returnSpeed) + userData.originalRotation.y * returnSpeed
+          leaf.rotation.z = leaf.rotation.z * (1 - returnSpeed) + userData.originalRotation.z * returnSpeed
 
           // Gentle sway for grounded leaves - mejorado
           const time = currentTime * 0.0004
@@ -466,6 +495,8 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
     animate()
 
+    // Función de redimensionamiento comentada correctamente
+    /*
     const handleResize = () => {
       if (cameraRef.current && rendererRef.current) {
         cameraRef.current.aspect = window.innerWidth / window.innerHeight
@@ -473,14 +504,15 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
         rendererRef.current.setSize(window.innerWidth, window.innerHeight)
       }
     }
+    */
 
-    window.addEventListener("resize", handleResize)
+    // window.addEventListener("resize", handleResize) // desactivado para evitar saltos en mobile
     // Modificar la parte donde se agregan los event listeners
     window.addEventListener("mousemove", handleMouseMove)
     window.addEventListener("touchmove", handleTouchMove)
 
     return () => {
-      window.removeEventListener("resize", handleResize)
+      // window.removeEventListener("resize", handleResize) // desactivado para evitar saltos en mobile
       // Modificar la parte donde se agregan los event listeners
       window.removeEventListener("mousemove", handleMouseMove)
       window.removeEventListener("touchmove", handleTouchMove)
@@ -499,6 +531,14 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     }
   }, [handleMouseMove, handleTouchMove])
 
-  return <canvas ref={canvasRef} className={`absolute inset-0 z-0 ${className}`} />
+  return (
+    <canvas
+      ref={canvasRef}
+      className={`absolute top-0 left-0 w-full h-full ${className}`}
+      style={{
+        zIndex: 5,
+        pointerEvents: "none",
+      }}
+    />
+  )
 }
-
