@@ -7,7 +7,7 @@ export const projects = [
     descriptionEs: "Una solución moderna de clonacion digital para generar contenido.",
     image: "/Projects/Bauketing.png",
     category: "next",
-    url: "https://bauketing.com",
+    url: "https://bauketing-ia-ginkgo-devs-projects.vercel.app/",
     overview:
       "Una solución moderna de comercio electrónico con características avanzadas para un minorista en línea en crecimiento.",
     overviewEn: "A modern e-commerce solution with advanced features for a growing online retailer.",
