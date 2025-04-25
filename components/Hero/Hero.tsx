@@ -200,26 +200,31 @@ export default function Hero() {
     const targetElement = document.getElementById(targetId)
 
     if (targetElement) {
+      // Unlock scroll if it was locked
+      if (isScrollLocked) {
+        setIsScrollLocked(false)
+        wasScrollLockedBeforeMenu.current = false
+
+        // Aplicar cambios de desbloqueo inmediatamente
+        applyScrollLock(false)
+      }
+
       // Calculate offset to account for navbar height
       const navHeight = 80
       const elementPosition = targetElement.getBoundingClientRect().top
       const offsetPosition = elementPosition + window.pageYOffset - navHeight
 
-      // Unlock scroll if it was locked
-      if (isScrollLocked) {
-        setIsScrollLocked(false)
-        wasScrollLockedBeforeMenu.current = false
-        document.body.style.overflow = "auto"
-      }
+      // Pequeño retraso para asegurar que el desbloqueo se ha aplicado
+      setTimeout(() => {
+        // Smooth scroll to section with offset
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        })
 
-      // Smooth scroll to section with offset
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: "smooth",
-      })
-
-      // Update URL without page reload
-      window.history.pushState(null, "", href)
+        // Update URL without page reload
+        window.history.pushState(null, "", href)
+      }, 50)
     }
   }
 
