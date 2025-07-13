@@ -113,6 +113,7 @@ export default function Tools() {
           ))}
         </div>
 
+
         {/* Vista para móvil - Carrusel */}
         <div
           className="md:hidden"
