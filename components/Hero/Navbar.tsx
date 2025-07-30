@@ -30,9 +30,9 @@ export default function Navbar() {
   // Define menu items with translations
   const menuItems = [
     { name: t("home.navbar.services"), href: "#services" },
+    { name: t("home.navbar.projects"), href: "#projects" },
     { name: t("home.navbar.about"), href: "#about-us" },
     { name: t("home.navbar.tools"), href: "#tools" },
-    { name: t("home.navbar.projects"), href: "#projects" },
     { name: t("home.navbar.contact"), href: "#contact" },
   ]
 
