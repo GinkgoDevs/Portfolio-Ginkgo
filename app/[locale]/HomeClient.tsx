@@ -10,6 +10,7 @@ import Footer from "@/components/Footer"
 import ScrollProgressBar from "@/components/ScrollProgressBar"
 import DynamicScrollWrapper from "./DynamicScrollWrapper"
 import { MenuContext } from "@/components/Hero/Navbar" // Importar el contexto del menú
+import Philosophy from "@/components/Philoshophy"
 
 export default function HomeClient() {
   // Proporcionar un valor por defecto para el contexto del menú
@@ -36,6 +37,7 @@ export default function HomeClient() {
           </h2>
           <Projects />
         </section>
+        
         
         <section aria-labelledby="nosotros-heading">
           <h2 id="nosotros-heading" className="sr-only">

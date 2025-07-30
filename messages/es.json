@@ -77,11 +77,13 @@
       "scrollInstructions": "Desliza o arrastra para navegar por los proyectos"
     },
     "contact": {
-      "title": "Haz crecer tu proyecto con nosotros",
-      "subtitle": "¿Listo para nutrir tus ideas y convertirlas en soluciones digitales prósperas? ¡Cultivemos el éxito juntos!",
+      "ctaBadge": "¿Listo para empezar?",
+      "title": "Tu proyecto digital",
+      "subtitle": "comienza aquí",
+      "description": "No importa si tienes una idea clara o solo una visión. Te ayudamos a convertir tus objetivos en una solución digital exitosa.",
       "name": "Nombre",
       "email": "Correo electrónico",
-      "message": "Mensaje",
+      "message": "Hablar por WhatsApp",
       "send": "Enviar mensaje",
       "sending": "Enviando...",
       "success": "¡Mensaje enviado!",
@@ -89,7 +91,12 @@
       "error": "Error al enviar",
       "errorDesc": "Hubo un problema al enviar tu mensaje. Por favor, intenta nuevamente.",
       "whatsapp": "WhatsApp",
-      "scheduleCall": "Agendar una llamada"
+      "scheduleCall": "Agendar una videollamada",
+      "indicatorcta1": "Consulta gratuita",
+      "indicatorcta2": "Sin compromiso",
+      "indicatorcta3": "Respuesta en 24hs",
+      "finaltexttitle": "Llegaste al final… pero para nosotros, es solo el comienzo 🌿",
+      "finaltextdesc": "Gracias por pasar, estamos listos para hacer crecer tu idea."
     }
   },
   "footer": {

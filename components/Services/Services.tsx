@@ -225,22 +225,7 @@ export default function Services() {
           ))}
         </div>
 
-        <ScrollAnimation className="mt-16 text-center">
-          <Magnet padding={60} disabled={isMobile} magnetStrength={2}>
-            <motion.a
-              href="#projects"
-              onClick={(e) => {
-                e.preventDefault()
-                document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" })
-              }}
-              whileHover={isMobile ? {} : { scale: 1.05 }}
-              whileTap={isMobile ? {} : { scale: 0.95 }}
-              className="bg-[#D4F57A] hover:bg-[#c2e65c] text-[#293B36] font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 font-inter inline-block"
-            >
-              {t("home.services.portfolioButton")}
-            </motion.a>
-          </Magnet>
-        </ScrollAnimation>
+        
       </div>
     </section>
   )
