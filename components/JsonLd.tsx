@@ -18,6 +18,11 @@ export default function JsonLd() {
   // Use the env values instead of process.env
   const baseUrl = env.siteUrl
 
+  // Extend env.socialLinks type to include facebook and twitter, or add type guard before accessing.
+  // Example:
+  const facebook = "facebook" in env.socialLinks ? env.socialLinks.facebook : undefined
+  const twitter = "twitter" in env.socialLinks ? env.socialLinks.twitter : undefined
+
   // Datos estructurados para la organización
   const organizationSchema = {
     "@context": "https://schema.org",
@@ -26,8 +31,8 @@ export default function JsonLd() {
     url: baseUrl,
     logo: `${baseUrl}/logo.png`,
     sameAs: [
-      env.socialLinks.facebook,
-      env.socialLinks.twitter,
+      facebook,
+      twitter,
       env.socialLinks.instagram,
       env.socialLinks.linkedin,
       env.socialLinks.github,

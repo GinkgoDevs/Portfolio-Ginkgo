@@ -16,7 +16,7 @@ export default function Projects() {
     id: project.id,
   }))
 
-  const handleProjectClick = (id) => {
+  const handleProjectClick = (id: string | number) => {
     // Buscar el proyecto por ID
     const project = projects.find((project) => project.id === id)
 

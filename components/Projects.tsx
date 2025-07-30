@@ -55,7 +55,9 @@ export default function Projects() {
           {filteredProjects.map((project, index) => (
             <Link href={`/projects/${project.id}`} key={project.id}>
               <motion.div
-                ref={(el) => (projectRefs.current[index] = el)}
+                ref={(el) => {
+                  projectRefs.current[index] = el
+                }}
                 className="relative overflow-hidden rounded-xl bg-white shadow-lg hover:shadow-xl transition-shadow duration-300"
                 onHoverStart={() => setHoveredProject(project.id)}
                 onHoverEnd={() => setHoveredProject(null)}

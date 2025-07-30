@@ -30,7 +30,7 @@ export default function ProjectPage({ params }: { params: { id: string } }) {
 
           <h2 className="text-2xl font-semibold mb-4 text-[#D4F57A]">Características</h2>
           <ul className="list-disc pl-5 mb-8 space-y-2">
-            {project.features.map((feature, index) => (
+            {project.features && project.features.map((feature, index) => (
               <li key={index}>{feature}</li>
             ))}
           </ul>
