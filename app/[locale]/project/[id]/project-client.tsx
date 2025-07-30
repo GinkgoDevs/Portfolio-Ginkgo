@@ -46,11 +46,21 @@ export default function ProjectClient({ project }: { project: any }) {
     keyFeatures: locale === "en" ? project.keyFeaturesEn || project.keyFeatures || [] : project.keyFeatures || [],
     challenges:
       locale === "en"
-        ? (project.challengesEn || project.challenges || []).map((challenge) => ({
-            title: challenge.titleEn || challenge.title,
-            description: challenge.descriptionEn || challenge.description,
-            solution: challenge.solutionEn || challenge.solution,
-          }))
+        ? (project.challengesEn || project.challenges || []).map((challenge: any) => {
+            if (typeof challenge === "object" && challenge !== null) {
+              return {
+                title: challenge.titleEn || challenge.title,
+                description: challenge.descriptionEn || challenge.description,
+                solution: challenge.solutionEn || challenge.solution,
+              }
+            } else {
+              return {
+                title: challenge,
+                description: "",
+                solution: "",
+              }
+            }
+          })
         : project.challenges || [],
     images: project.images || [project.image || "/placeholder.svg?height=600&width=800"],
     duration:
@@ -244,7 +254,7 @@ export default function ProjectClient({ project }: { project: any }) {
                 {/* Thumbnails */}
                 {projectWithDefaults.images.length > 1 && (
                   <div className="flex space-x-2 overflow-x-auto pb-2">
-                    {projectWithDefaults.images.map((image, index) => (
+                    {projectWithDefaults.images.map((image: string, index: number) => (
                       <button
                         key={index}
                         onClick={() => setActiveImage(index)}
@@ -341,7 +351,7 @@ export default function ProjectClient({ project }: { project: any }) {
                                       : phase
                               : phase}
                           </h3>
-                          <p className="text-white/70">{description}</p>
+                          <p className="text-white/70">{description as React.ReactNode}</p>
                         </div>
                       </div>
                     ))}
@@ -357,7 +367,7 @@ export default function ProjectClient({ project }: { project: any }) {
                   {locale === "en" ? "Key Features" : "Características Principales"}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {projectWithDefaults.keyFeatures.map((feature, index) => (
+                  {projectWithDefaults.keyFeatures.map((feature: string, index: number) => (
                     <div
                       key={index}
                       className="flex items-start gap-3 p-6 bg-white/5 backdrop-blur-sm rounded-xl hover:bg-white/10 transition-all duration-300 h-full border border-[#D4F57A]/10 group"
@@ -381,23 +391,23 @@ export default function ProjectClient({ project }: { project: any }) {
                   {locale === "en" ? "Challenges and Solutions" : "Desafíos y Soluciones"}
                 </h2>
                 <div className="space-y-8">
-                  {projectWithDefaults.challenges.map((challenge, index) => (
+                  {projectWithDefaults.challenges.map((challenge: string | { title: string, description: string, solution: string }, index: number) => (
                     <div
                       key={index}
                       className="bg-white/5 backdrop-blur-sm rounded-xl p-6 hover:bg-white/10 transition-all duration-300"
                     >
-                      <h3 className="text-xl font-semibold text-white mb-4">{challenge.title}</h3>
+                      <h3 className="text-xl font-semibold text-white mb-4">{typeof challenge === 'string' ? challenge : challenge.title}</h3>
                       <div className="mb-4">
                         <h4 className="text-[#D4F57A] font-medium mb-2">
                           {locale === "en" ? "Challenge:" : "Desafío:"}
                         </h4>
-                        <p className="text-white/70">{challenge.description}</p>
+                        <p className="text-white/70">{typeof challenge === 'string' ? challenge : challenge.description}</p>
                       </div>
                       <div>
                         <h4 className="text-[#D4F57A] font-medium mb-2">
                           {locale === "en" ? "Solution:" : "Solución:"}
                         </h4>
-                        <p className="text-white/70">{challenge.solution}</p>
+                        <p className="text-white/70">{typeof challenge === 'string' ? challenge : challenge.solution}</p>
                       </div>
                     </div>
                   ))}
@@ -489,7 +499,7 @@ export default function ProjectClient({ project }: { project: any }) {
                     {locale === "en" ? "Technologies Used" : "Tecnologías Utilizadas"}
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {projectWithDefaults.technologies.map((tech) => (
+                    {projectWithDefaults.technologies.map((tech: string, index: number) => (
                       <span
                         key={tech}
                         className="px-3 py-1.5 rounded-full bg-[#D4F57A]/10 text-[#D4F57A] text-sm border border-[#D4F57A]/20"

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import nodemailer from "nodemailer"
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 export async function POST(request: Request) {
   try {

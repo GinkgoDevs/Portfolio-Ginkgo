@@ -5,12 +5,8 @@ import PrivacyPolicyContent from "./privacity-policy-content"
 
 // Update the metadata to use dynamic locale-based titles
 export const metadata: Metadata = {
-  title: ({ params }) => {
-    return params?.locale === "en" ? "Privacy Policy | Ginkgo Devs" : "Política de Privacidad | Ginkgo Devs"
-  },
-  description: ({ params }) => {
-    return params?.locale === "en" ? "Privacy policy of Ginkgo Devs" : "Política de privacidad de Ginkgo Devs"
-  },
+  title: "Privacy Policy | Ginkgo Devs",
+  description: "Privacy policy of Ginkgo Devs",
 }
 
 export default function PrivacyPolicyPage({ params }: { params: { locale: string } }) {

@@ -2,33 +2,40 @@
 
 import { useRef, useEffect } from "react"
 import { Renderer, Camera, Transform, Plane, Mesh, Program, Texture } from "ogl"
+import type { OGLRenderingContext } from "ogl"
 
 import "./CircularGallery.css"
 
-function debounce(func, wait) {
-  let timeout
-  return function (...args) {
+function debounce<T extends (...args: any[]) => void>(func: T, wait: number): (...args: Parameters<T>) => void {
+  let timeout: ReturnType<typeof setTimeout>;
+  return function (this: unknown, ...args: Parameters<T>) {
     clearTimeout(timeout)
     timeout = setTimeout(() => func.apply(this, args), wait)
   }
 }
 
-function lerp(p1, p2, t) {
+function lerp(p1: number, p2: number, t: number): number {
   return p1 + (p2 - p1) * t
 }
 
-function autoBind(instance) {
+function autoBind(instance: object): void {
   const proto = Object.getPrototypeOf(instance)
   Object.getOwnPropertyNames(proto).forEach((key) => {
-    if (key !== "constructor" && typeof instance[key] === "function") {
-      instance[key] = instance[key].bind(instance)
+    if (key !== "constructor" && typeof (instance as any)[key] === "function") {
+      (instance as any)[key] = (instance as any)[key].bind(instance)
     }
   })
 }
 
-function createTextTexture(gl, text, font = "bold 30px monospace", color = "black") {
+function createTextTexture(
+  gl: OGLRenderingContext,
+  text: string,
+  font: string = "bold 30px monospace",
+  color: string = "black"
+): { texture: Texture; width: number; height: number } {
   const canvas = document.createElement("canvas")
   const context = canvas.getContext("2d")
+  if (!context) throw new Error("Could not get 2D context")
   context.font = font
   const metrics = context.measureText(text)
   const textWidth = Math.ceil(metrics.width)
@@ -47,7 +54,29 @@ function createTextTexture(gl, text, font = "bold 30px monospace", color = "blac
 }
 
 class Title {
-  constructor({ gl, plane, renderer, text, textColor = "#545050", font = "30px sans-serif" }) {
+  gl: OGLRenderingContext;
+  plane: Mesh;
+  renderer: Renderer;
+  text: string;
+  textColor: string;
+  font: string;
+  mesh!: Mesh;
+
+  constructor({
+    gl,
+    plane,
+    renderer,
+    text,
+    textColor = "#545050",
+    font = "30px sans-serif",
+  }: {
+    gl: OGLRenderingContext;
+    plane: Mesh;
+    renderer: Renderer;
+    text: string;
+    textColor?: string;
+    font?: string;
+  }) {
     autoBind(this)
     this.gl = gl
     this.plane = plane
@@ -95,7 +124,53 @@ class Title {
   }
 }
 
+interface MediaParams {
+  geometry: Plane;
+  gl: OGLRenderingContext;
+  image: string;
+  index: number;
+  length: number;
+  renderer: Renderer;
+  scene: Transform;
+  screen: { width: number; height: number };
+  text: string;
+  viewport: { width: number; height: number };
+  bend: number;
+  textColor?: string;
+  borderRadius?: number;
+  font?: string;
+  id?: string | number;
+}
+
 class Media {
+  geometry: Plane;
+  gl: OGLRenderingContext;
+  image: string;
+  index: number;
+  length: number;
+  renderer: Renderer;
+  scene: Transform;
+  screen: { width: number; height: number };
+  text: string;
+  viewport: { width: number; height: number };
+  bend: number;
+  textColor?: string;
+  borderRadius: number;
+  font?: string;
+  id?: string | number;
+  extra: number = 0;
+  program!: Program;
+  plane!: Mesh;
+  title!: Title;
+  scale: number = 1;
+  padding: number = 4;
+  width: number = 0;
+  widthTotal: number = 0;
+  x: number = 0;
+  speed: number = 0;
+  isBefore: boolean = false;
+  isAfter: boolean = false;
+
   constructor({
     geometry,
     gl,
@@ -112,8 +187,7 @@ class Media {
     borderRadius = 0,
     font,
     id,
-  }) {
-    this.extra = 0
+  }: MediaParams) {
     this.geometry = geometry
     this.gl = gl
     this.image = image
@@ -129,6 +203,7 @@ class Media {
     this.borderRadius = borderRadius
     this.font = font
     this.id = id
+    this.extra = 0
     this.createShader()
     this.createMesh()
     this.createTitle()
@@ -203,8 +278,8 @@ class Media {
     img.crossOrigin = "anonymous"
     img.src = this.image
     img.onload = () => {
-      texture.image = img
       this.program.uniforms.uImageSizes.value = [img.naturalWidth, img.naturalHeight]
+      texture.image = img
     }
   }
   createMesh() {
@@ -221,15 +296,13 @@ class Media {
       renderer: this.renderer,
       text: this.text,
       textColor: this.textColor,
-      fontFamily: this.font,
+      font: this.font,
     })
   }
-  update(scroll, direction) {
+  update(scroll: { current: number; last: number }, direction: string) {
     this.plane.position.x = this.x - scroll.current - this.extra
-
     const x = this.plane.position.x
     const H = this.viewport.width / 2
-
     if (this.bend === 0) {
       this.plane.position.y = 0
       this.plane.rotation.z = 0
@@ -237,7 +310,6 @@ class Media {
       const B_abs = Math.abs(this.bend)
       const R = (H * H + B_abs * B_abs) / (2 * B_abs)
       const effectiveX = Math.min(Math.abs(x), H)
-
       const arc = R - Math.sqrt(R * R - effectiveX * effectiveX)
       if (this.bend > 0) {
         this.plane.position.y = -arc
@@ -247,11 +319,9 @@ class Media {
         this.plane.rotation.z = Math.sign(x) * Math.asin(effectiveX / R)
       }
     }
-
     this.speed = scroll.current - scroll.last
     this.program.uniforms.uTime.value += 0.04
     this.program.uniforms.uSpeed.value = this.speed
-
     const planeOffset = this.plane.scale.x / 2
     const viewportOffset = this.viewport.width / 2
     this.isBefore = this.plane.position.x + planeOffset < -viewportOffset
@@ -265,7 +335,7 @@ class Media {
       this.isBefore = this.isAfter = false
     }
   }
-  onResize({ screen, viewport } = {}) {
+  onResize({ screen, viewport }: { screen?: { width: number; height: number }; viewport?: { width: number; height: number } } = {}) {
     if (screen) this.screen = screen
     if (viewport) {
       this.viewport = viewport
@@ -284,9 +354,51 @@ class Media {
   }
 }
 
+// Type definitions for gallery items and props
+interface GalleryItem {
+  image: string;
+  text: string;
+  id?: string | number;
+}
+
+interface AppOptions {
+  items?: GalleryItem[];
+  bend?: number;
+  textColor?: string;
+  borderRadius?: number;
+  font?: string;
+  onItemClick?: (id: string | number) => void;
+  initialIndex?: number;
+}
+
 class App {
+  container: HTMLElement;
+  renderer!: Renderer;
+  gl!: OGLRenderingContext;
+  camera!: Camera;
+  scene!: Transform;
+  planeGeometry!: Plane;
+  medias: Media[] = [];
+  mediasImages: GalleryItem[] = [];
+  screen!: { width: number; height: number };
+  viewport!: { width: number; height: number };
+  scroll: { ease: number; current: number; target: number; last: number; position?: number };
+  raf: number = 0;
+  onItemClick?: (id: string | number) => void;
+  initialIndex: number;
+  onCheckDebounce: () => void;
+  isDown: boolean = false;
+  lastTouchDown: number = 0;
+  start: number = 0;
+  dragDistance: number = 0;
+  boundOnResize!: () => void;
+  boundOnTouchDown!: (e: MouseEvent | TouchEvent) => void;
+  boundOnTouchMove!: (e: MouseEvent | TouchEvent) => void;
+  boundOnTouchUp!: (e: MouseEvent | TouchEvent) => void;
+  boundHandleClick!: (e: MouseEvent) => void;
+
   constructor(
-    container,
+    container: HTMLElement,
     {
       items,
       bend,
@@ -295,12 +407,12 @@ class App {
       font = "bold 30px DM Sans",
       onItemClick,
       initialIndex = 2,
-    } = {},
+    }: AppOptions = {},
   ) {
     document.documentElement.classList.remove("no-js")
     this.container = container
     this.scroll = { ease: 0.05, current: 0, target: 0, last: 0 }
-    this.onCheckDebounce = debounce(this.onCheck, 200)
+    this.onCheckDebounce = debounce(this.onCheck.bind(this), 200)
     this.onItemClick = onItemClick
     this.initialIndex = initialIndex
     this.createRenderer()
@@ -348,8 +460,14 @@ class App {
     })
   }
 
-  createMedias(items, bend = 1, textColor, borderRadius, font) {
-    const defaultItems = [
+  createMedias(
+    items?: GalleryItem[],
+    bend: number = 1,
+    textColor?: string,
+    borderRadius?: number,
+    font?: string,
+  ) {
+    const defaultItems: GalleryItem[] = [
       { image: `https://picsum.photos/seed/1/800/600?grayscale`, text: "Bridge" },
       { image: `https://picsum.photos/seed/2/800/600?grayscale`, text: "Desk Setup" },
       { image: `https://picsum.photos/seed/3/800/600?grayscale`, text: "Waterfall" },
@@ -365,7 +483,7 @@ class App {
     ]
     const galleryItems = items && items.length ? items : defaultItems
     this.mediasImages = galleryItems.concat(galleryItems)
-    this.medias = this.mediasImages.map((data, index) => {
+    this.medias = this.mediasImages.map((data: GalleryItem, index: number) => {
       return new Media({
         geometry: this.planeGeometry,
         gl: this.gl,
@@ -386,7 +504,7 @@ class App {
     })
   }
 
-  handleClick(e) {
+  handleClick(e: MouseEvent) {
     if (!this.onItemClick) return
 
     // Solo procesar el clic si no estamos arrastrando
@@ -405,25 +523,18 @@ class App {
       const normalizedY = -((y / rect.height) * 2 - 1) // Y invertido en WebGL
 
       // Encontrar el medio más cercano al punto de clic
-      let closestMedia = null
+      let closestMedia: Media | null = null
       let closestDistance = Number.POSITIVE_INFINITY
-
-      this.medias.forEach((media) => {
-        // Obtener la posición del plano en el espacio de la pantalla
+      for (let i = 0; i < this.medias.length; i++) {
+        const media = this.medias[i]
         const planeX = media.plane.position.x / (this.viewport.width / 2) // Normalizar a -1 a 1
-
-        // Calcular la distancia entre el clic y el centro del plano
         const distance = Math.abs(normalizedX - planeX)
-
-        // Verificar si el clic está dentro de los límites del plano
         const planeWidth = media.plane.scale.x / (this.viewport.width / 2) // Ancho normalizado
-
-        // Si el clic está dentro del plano y es el más cercano hasta ahora
         if (distance < planeWidth / 2 && distance < closestDistance) {
           closestDistance = distance
           closestMedia = media
         }
-      })
+      }
 
       if (closestMedia) {
         // Obtener el ID del proyecto
@@ -440,28 +551,28 @@ class App {
     }
   }
 
-  onTouchDown(e) {
+  onTouchDown(e: MouseEvent | TouchEvent) {
     this.isDown = true
     this.lastTouchDown = Date.now() // Registrar el tiempo del último toque
     this.scroll.position = this.scroll.current
-    this.start = e.touches ? e.touches[0].clientX : e.clientX
+    this.start = (e as TouchEvent).touches ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX
     this.dragDistance = 0 // Reiniciar la distancia de arrastre
   }
 
-  onTouchMove(e) {
+  onTouchMove(e: MouseEvent | TouchEvent) {
     if (!this.isDown) return
-    const x = e.touches ? e.touches[0].clientX : e.clientX
+    const x = (e as TouchEvent).touches ? (e as TouchEvent).touches[0].clientX : (e as MouseEvent).clientX
     this.dragDistance = this.start - x // Calcular la distancia de arrastre
     const distance = this.dragDistance * 0.05
-    this.scroll.target = this.scroll.position + distance
+    this.scroll.target = (this.scroll.position ?? 0) + distance
   }
 
-  onTouchUp() {
+  onTouchUp(_e?: MouseEvent | TouchEvent) {
     this.isDown = false
     this.onCheck()
   }
 
-  onWheel(e) {
+  onWheel(e: WheelEvent) {
     // Habilitar la funcionalidad de scroll para la galería
     if (e.deltaY > 0) {
       this.scroll.target += 1
@@ -550,8 +661,16 @@ export default function CircularGallery({
   font = "bold 30px DM Sans",
   onItemClick,
   initialIndex = 2,
+}: {
+  items?: GalleryItem[];
+  bend?: number;
+  textColor?: string;
+  borderRadius?: number;
+  font?: string;
+  onItemClick?: (id: string | number) => void;
+  initialIndex?: number;
 }) {
-  const containerRef = useRef(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!containerRef.current) return

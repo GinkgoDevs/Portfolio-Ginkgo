@@ -5,12 +5,8 @@ import CookiesPolicyContent from "./cookies-policy-content"
 
 // Update the metadata to use dynamic locale-based titles
 export const metadata: Metadata = {
-  title: ({ params }) => {
-    return params?.locale === "en" ? "Cookie Policy | Ginkgo Devs" : "Política de Cookies | Ginkgo Devs"
-  },
-  description: ({ params }) => {
-    return params?.locale === "en" ? "Cookie policy of Ginkgo Devs" : "Política de cookies de Ginkgo Devs"
-  },
+  title: "Cookie Policy | Ginkgo Devs",
+  description: "Cookie policy of Ginkgo Devs",
 }
 
 export default function CookiesPolicyPage({ params }: { params: { locale: string } }) {

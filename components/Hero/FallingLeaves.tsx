@@ -1,18 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useCallback } from "react"
-import {
-  Scene,
-  PerspectiveCamera,
-  WebGLRenderer,
-  Mesh,
-  ShapeGeometry,
-  MeshBasicMaterial,
-  Shape,
-  Vector2,
-  Vector3,
-  Euler,
-} from "three"
+import { Scene, PerspectiveCamera, WebGLRenderer, Mesh, Vector2, Vector3, Shape, ShapeGeometry, MeshBasicMaterial, Euler } from "three"
 
 interface FallingLeavesProps {
   className?: string
@@ -23,11 +12,11 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
   const mousePosition = useRef(new Vector2())
   const lastMousePosition = useRef(new Vector2())
   const mouseVelocity = useRef(new Vector2())
-  const sceneRef = useRef<Scene | null>(null)
-  const cameraRef = useRef<PerspectiveCamera | null>(null)
-  const rendererRef = useRef<WebGLRenderer | null>(null)
-  const leavesRef = useRef<Mesh[]>([])
-  const groundLeavesRef = useRef<Mesh[]>([])
+  const sceneRef = useRef<InstanceType<typeof Scene> | null>(null)
+  const cameraRef = useRef<InstanceType<typeof PerspectiveCamera> | null>(null)
+  const rendererRef = useRef<InstanceType<typeof WebGLRenderer> | null>(null)
+  const leavesRef = useRef<InstanceType<typeof Mesh>[]>([])
+  const groundLeavesRef = useRef<InstanceType<typeof Mesh>[]>([])
   const worldMousePosition = useRef(new Vector3())
   const lastUpdateTime = useRef(0)
   const isMouseMoving = useRef(false)
@@ -193,8 +182,8 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       groundLeavesPerLayer = Math.min(groundLeavesPerLayer, 50)
     }
 
-    const leaves: Mesh[] = []
-    const groundLeaves: Mesh[] = []
+    const leaves: InstanceType<typeof Mesh>[] = []
+    const groundLeaves: InstanceType<typeof Mesh>[] = []
 
     // Ground setup
     const groundY = -3.5
@@ -298,7 +287,7 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     leavesRef.current = leaves
     groundLeavesRef.current = groundLeaves
 
-    const resetLeaf = (leaf: Mesh) => {
+    const resetLeaf = (leaf: InstanceType<typeof Mesh>) => {
       leaf.position.set(Math.random() * 28 - 14, Math.random() * 8 + 5, Math.random() * 4 - 2)
       leaf.rotation.x = Math.random() * Math.PI
       leaf.rotation.y = Math.random() * Math.PI

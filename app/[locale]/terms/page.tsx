@@ -5,14 +5,8 @@ import TermsContent from "./terms-content"
 
 // Update the metadata to use dynamic locale-based titles
 export const metadata: Metadata = {
-  title: ({ params }) => {
-    return params?.locale === "en" ? "Terms and Conditions | Ginkgo Devs" : "Términos y Condiciones | Ginkgo Devs"
-  },
-  description: ({ params }) => {
-    return params?.locale === "en"
-      ? "Terms and conditions of Ginkgo Devs"
-      : "Términos y condiciones de uso de Ginkgo Devs"
-  },
+  title: "Terms and Conditions | Ginkgo Devs",
+  description: "Terms and conditions of Ginkgo Devs",
 }
 
 export default function TermsPage({ params }: { params: { locale: string } }) {

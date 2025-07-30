@@ -120,7 +120,7 @@ export default function Services() {
   const containerRef = useRef(null)
   const isInView = useInView(containerRef, { once: true, amount: 0.1 })
   const controls = useAnimation()
-  const cardsGridRef = useRef(null)
+  const cardsGridRef = useRef<HTMLDivElement | null>(null)
 
   const services = [
     {
@@ -159,14 +159,15 @@ export default function Services() {
     if (!isMobile || !cardsGridRef.current) return
 
     const findCenteredCard = () => {
-      const cards = cardsGridRef.current.querySelectorAll("[data-index]")
+      if (!cardsGridRef.current) return
+      const cards = Array.from(cardsGridRef.current.querySelectorAll("[data-index]")) as HTMLElement[]
       const viewportHeight = window.innerHeight
       const viewportCenter = window.scrollY + viewportHeight / 2
 
-      let closestCard = null
+      let closestCard: HTMLElement | null = null
       let closestDistance = Number.POSITIVE_INFINITY
 
-      cards.forEach((card) => {
+      cards.forEach((card: HTMLElement) => {
         const rect = card.getBoundingClientRect()
         const cardCenter = window.scrollY + rect.top + rect.height / 2
         const distance = Math.abs(viewportCenter - cardCenter)
@@ -177,8 +178,8 @@ export default function Services() {
         }
       })
 
-      if (closestCard && closestDistance < viewportHeight / 3) {
-        const index = Number.parseInt(closestCard.getAttribute("data-index"))
+      if (closestCard) {
+        const index = Number.parseInt((closestCard as HTMLElement).getAttribute("data-index") || "0")
         setActiveCardIndex(index)
       }
     }
