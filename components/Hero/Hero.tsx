@@ -270,7 +270,7 @@ export default function Hero() {
               {t("home.hero.subtitle")}
             </p>
             <ButtonWrapper padding={60} disabled={isMobile} magnetStrength={2}>
-              <Link href="#contact" onClick={(e) => handleSmoothScroll(e, "#contact")}>
+              <Link href="#contacto" onClick={(e) => handleSmoothScroll(e, "#contact")}>
                 <motion.button
                   whileHover={isMobile ? {} : { scale: 1.05 }}
                   whileTap={isMobile ? {} : { scale: 0.95 }}
@@ -281,6 +281,7 @@ export default function Hero() {
                 </motion.button>
               </Link>
             </ButtonWrapper>
+            
           </div>
         </div>
       </div>

@@ -77,11 +77,13 @@
       "scrollInstructions": "Swipe or drag to navigate through projects"
     },
     "contact": {
-      "title": "Grow Your Project with Us",
-      "subtitle": "Ready to nurture your ideas into thriving digital solutions? Let's cultivate success together!",
+      "ctaBadge": "Ready to start?",
+      "title": "Your digital project",
+      "subtitle": "starts here",
+      "description": "Whether you have a clear idea or just a vision, we help you turn your goals into a successful digital solution.",
       "name": "Name",
       "email": "Email",
-      "message": "Message",
+      "message": "Talk on WhatsApp",
       "send": "Send Message",
       "sending": "Sending...",
       "success": "Message sent!",
@@ -89,7 +91,12 @@
       "error": "Error sending message",
       "errorDesc": "There was a problem sending your message. Please try again.",
       "whatsapp": "WhatsApp",
-      "scheduleCall": "Schedule a call"
+      "scheduleCall": "Schedule a video call",
+      "indicatorcta1": "Free consultation",
+      "indicatorcta2": "No commitment",
+      "indicatorcta3": "Response within 24 hours",
+      "finaltexttitle": "You reached the end… but for us, it's just the beginning 🌿",
+      "finaltextdesc": "Thank you for stopping by, we are ready to grow your idea."
     }
   },
   "footer": {
