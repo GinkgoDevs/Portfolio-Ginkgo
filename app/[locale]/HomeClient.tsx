@@ -30,6 +30,13 @@ export default function HomeClient() {
           <Services />
         </section>
 
+        <section aria-labelledby="proyectos-heading">
+          <h2 id="proyectos-heading" className="sr-only">
+            Nuestros proyectos
+          </h2>
+          <Projects />
+        </section>
+        
         <section aria-labelledby="nosotros-heading">
           <h2 id="nosotros-heading" className="sr-only">
             Sobre nosotros
@@ -44,12 +51,6 @@ export default function HomeClient() {
           <Tools />
         </section>
 
-        <section aria-labelledby="proyectos-heading">
-          <h2 id="proyectos-heading" className="sr-only">
-            Nuestros proyectos
-          </h2>
-          <Projects />
-        </section>
 
         <section aria-labelledby="contacto-heading">
           <h2 id="contacto-heading" className="sr-only">

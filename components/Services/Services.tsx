@@ -6,7 +6,6 @@ import { motion, useAnimation, useInView } from "framer-motion"
 import { Code, Settings, LineChart, ArrowRight } from "lucide-react"
 import Magnet from "../Hero/Magnet"
 import ScrollAnimation from "../ScrollAnimation"
-// Actualizar la definición del tipo TranslationContextType para incluir el parámetro de reemplazos
 import { useTranslation } from "@/contexts/TranslationContext"
 import { validateEnv } from "@/lib/env"
 
@@ -24,11 +23,9 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
   const cardRef = useRef(null)
   const isInView = useInView(cardRef, { once: true, amount: 0.3 })
   const [isHovered, setIsHovered] = useState(false)
-  // Asegurarse de que la función t se use correctamente con el nuevo parámetro
   const { t } = useTranslation()
   const env = validateEnv()
 
-  // Determine if this card should be highlighted (either by hover on desktop or by being centered on mobile)
   const isHighlighted = isMobile ? activeCardIndex === index : isHovered
 
   useEffect(() => {
@@ -51,13 +48,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
   }
 
   const generateWhatsAppLink = (service: string) => {
-    // Usar el número de WhatsApp del entorno
     const whatsappNumber = env.contact.whatsappNumber
-
-    // Crear mensaje personalizado según el servicio
     const message = t("home.services.whatsappMessage", { service })
-
-    // Generar enlace de WhatsApp con número y mensaje codificado
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
   }
 
@@ -71,7 +63,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
       variants={variants}
       onMouseEnter={() => !isMobile && setIsHovered(true)}
       onMouseLeave={() => !isMobile && setIsHovered(false)}
-      className="relative overflow-hidden rounded-2xl transition-all duration-500 bg-white/10 backdrop-blur-sm text-white hover:bg-[#D4F57A]/10 h-[280px] flex flex-col"
+      className="relative overflow-hidden rounded-2xl transition-all duration-500 bg-white/10 backdrop-blur-sm text-white hover:bg-[#D4F57A]/10 h-[320px] flex flex-col"
       data-index={index}
       style={{
         boxShadow: isHighlighted ? "0 10px 25px rgba(212, 245, 122, 0.15)" : "none",
@@ -81,21 +73,15 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
       }}
     >
       <div className="flex flex-col h-full p-6 md:p-8">
-        {/* Icon container with fixed size */}
         <div className="rounded-full w-14 h-14 flex items-center justify-center mb-4 bg-[#D4F57A] text-[#293B36] shrink-0">
           {icon}
         </div>
 
-        {/* Content container with flex-grow */}
         <div className="flex flex-col flex-grow">
-          {/* Title with fixed height */}
-          <h3 className="text-xl md:text-2xl font-bold mb-3 min-h-[2rem] line-clamp-2">{title}</h3>
-
-          {/* Description with fixed height */}
-          <p className="text-[#F5F2EB]/80 mb-4 min-h-[2.5rem] line-clamp-2">{description}</p>
+          <h3 className="text-xl md:text-2xl font-bold mb-3 min-h-[3.5rem] flex items-start leading-tight">{title}</h3>
+          <p className="text-[#F5F2EB]/80 mb-6 flex-grow leading-relaxed">{description}</p>
         </div>
 
-        {/* Button container fixed to bottom */}
         <div className="mt-auto">
           <ButtonWrapper padding={40} disabled={isMobile} magnetStrength={1.5}>
             <motion.a
@@ -113,7 +99,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
         </div>
       </div>
 
-      {/* Decorative elements */}
       <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-br from-transparent to-white/5 pointer-events-none" />
       <motion.div
         initial={{ scale: 0.8, opacity: 0 }}
@@ -129,7 +114,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
 }
 
 export default function Services() {
-  // Asegurarse de que la función t se use correctamente con el nuevo parámetro
   const { t } = useTranslation()
   const [isMobile, setIsMobile] = useState(false)
   const [activeCardIndex, setActiveCardIndex] = useState(0)
@@ -171,11 +155,9 @@ export default function Services() {
     }
   }, [isInView, controls])
 
-  // Add vertical centering detection for mobile
   useEffect(() => {
     if (!isMobile || !cardsGridRef.current) return
 
-    // Function to find which card is closest to the center of the viewport
     const findCenteredCard = () => {
       const cards = cardsGridRef.current.querySelectorAll("[data-index]")
       const viewportHeight = window.innerHeight
@@ -201,7 +183,6 @@ export default function Services() {
       }
     }
 
-    // Call initially and on scroll
     findCenteredCard()
     window.addEventListener("scroll", findCenteredCard)
 
@@ -218,7 +199,6 @@ export default function Services() {
         background: "linear-gradient(180deg, #293B36 0%, #293B36 100%)",
       }}
     >
-      {/* Smooth transition overlay */}
       <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#293B36] to-transparent opacity-100" />
 
       <div className="container mx-auto px-4 relative z-10" ref={containerRef}>
