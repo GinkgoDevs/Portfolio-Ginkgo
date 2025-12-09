@@ -33,11 +33,12 @@ export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { locale: string }
-}): Metadata {
+  params: Promise<{ locale: string }>
+}): Promise<Metadata> {
+  const { locale } = await params
   return {
     title: "Ginkgo Devs",
     description: "Desarrollo Web y Soluciones Digitales",
@@ -63,10 +64,10 @@ export default async function LocaleLayout({
   params,
 }: {
   children: React.ReactNode
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }) {
   // Extraer locale de params y asegurarse de que sea un string
-  const locale = String(params.locale || "")
+  const { locale } = await params
 
   // Verificar si el locale es válido
   if (!locales.includes(locale as any)) {

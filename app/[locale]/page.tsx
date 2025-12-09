@@ -5,11 +5,11 @@ import { notFound } from "next/navigation"
 import type { Metadata } from "next"
 
 type Props = {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const locale = String(params.locale || "")
+  const { locale } = await params
 
   if (!locales.includes(locale as any)) {
     return {}
@@ -62,9 +62,9 @@ export function generateStaticParams() {
 export default async function LocalePage({
   params,
 }: {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }) {
-  const locale = String(params.locale || "")
+  const { locale } = await params
 
   if (!locales.includes(locale as any)) {
     notFound()
