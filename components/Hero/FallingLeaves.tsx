@@ -587,16 +587,33 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     animate()
 
     // Resize handler con debouncing para evitar saltos
+    // Resize handler optimizado para evitar saltos en móvil por la barra de dirección
+    let lastWidth = window.innerWidth
     let resizeTimeout: NodeJS.Timeout
+
     const handleResize = () => {
+      const currentWidth = window.innerWidth
+      const isMobile = currentWidth < 768
+
+      // En móvil, si el ancho no cambió (solo cambió el alto), es probable que sea la barra de dirección
+      // Ignoramos este evento para evitar el salto/teletransportación visual
+      if (isMobile && currentWidth === lastWidth) {
+        return
+      }
+
+      lastWidth = currentWidth
+
       clearTimeout(resizeTimeout)
       resizeTimeout = setTimeout(() => {
+        // En desktop actualizamos normal, en móvil solo si hubo cambio de ancho (rotación)
         if (cameraRef.current && rendererRef.current) {
           cameraRef.current.aspect = window.innerWidth / window.innerHeight
           cameraRef.current.updateProjectionMatrix()
           rendererRef.current.setSize(window.innerWidth, window.innerHeight)
+
+          // Opcional: ajustar pixelRatio si cambia entre pantallas, pero es costoso
         }
-      }, 250) // Debounce de 250ms
+      }, 200)
     }
 
     window.addEventListener("resize", handleResize)
