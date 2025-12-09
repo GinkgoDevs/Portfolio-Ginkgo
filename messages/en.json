@@ -30,6 +30,9 @@
       "portfolioButton": "View portfolio",
       "whatsappMessage": "Hello, I'm interested in your {service} service. Could you provide me with more information?"
     },
+    "testimonials": {
+      "title": "What Our Clients Say"
+    },
     "hero": {
       "title": "We build experiences",
       "titleSuffix": "digital with",
@@ -37,6 +40,36 @@
       "subtitle": "Custom solutions for businesses seeking impact and scalability",
       "ctaButton": "Let's talk about your project",
       "ctaButtonAriaLabel": "Contact to talk about your project"
+    },
+    "featuredProject": {
+      "label": "New Featured Project",
+      "title": "Discover how we built Ale Ducca Cristales - Campus",
+      "description": "A next-generation Full Stack educational platform with NestJS and Next.js 15.",
+      "cta": "View Case Study"
+    },
+    "leadMagnet": {
+      "label": "Limited Offer",
+      "title": "Is your website not generating sales?",
+      "subtitle": "Request a free diagnosis and discover how to boost your digital presence in 2025.",
+      "cta": "Request Free Audit",
+      "benefit1": "UX/UI Analysis",
+      "benefit2": "Performance Review",
+      "benefit3": "Basic SEO Strategy",
+      "steps": {
+        "url_label": "What is your current website?",
+        "url_placeholder": "example.com (or 'I don't have one')",
+        "email_label": "Where should we send the report?",
+        "email_placeholder": "you@email.com",
+        "goal_label": "What is your main goal?",
+        "goals": {
+          "sales": "Increase Sales",
+          "leads": "Get More Clients",
+          "brand": "Improve Brand Image"
+        },
+        "next": "Next",
+        "finish": "Request Audit on WhatsApp",
+        "back": "Back"
+      }
     },
     "about": {
       "title": "GinkGo Team",

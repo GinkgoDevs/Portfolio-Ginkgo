@@ -1,5 +1,5 @@
 import type React from "react"
-import { Inter } from "next/font/google"
+import { Inter, Outfit } from "next/font/google"
 import "../globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import SkipToContent from "@/components/SkipToContent"
@@ -14,11 +14,19 @@ import { getDictionary } from "@/lib/dictionary"
 import CookieConsent from "@/components/CookieConsent"
 import FloatingActionButtons from "@/components/FloatingActionButtons"
 import type { Metadata } from "next"
+import CustomCursor from "@/components/ui/CustomCursor"
+import ScrollProgress from "@/components/ui/ScrollProgress"
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+})
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-outfit",
 })
 
 export async function generateStaticParams() {
@@ -36,6 +44,16 @@ export function generateMetadata({
     icons: {
       icon: [{ url: "/favicon.ico" }],
       shortcut: "/favicon.ico",
+    },
+    openGraph: {
+      images: [
+        {
+          url: "/Logos/PNG/GGD_Imagotipo PRINCIPAL-5.png",
+          width: 1200,
+          height: 630,
+          alt: "Ginkgo Devs Logo",
+        },
+      ],
     },
   }
 }
@@ -58,7 +76,7 @@ export default async function LocaleLayout({
   const dictionary = await getDictionary(locale as any)
 
   return (
-    <html lang={locale} className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang={locale} className={`${inter.variable} ${outfit.variable} scroll-smooth`} suppressHydrationWarning>
       <head>
         {/* Google Tag Manager */}
         <script dangerouslySetInnerHTML={{
@@ -71,8 +89,13 @@ export default async function LocaleLayout({
         {/* End Google Tag Manager */}
         <link rel="icon" href="/favicon.ico" />
       </head>
+
       <body className={inter.className}>
-      {/* Google Tag Manager (noscript) */}
+        <ScrollProgress />
+        <div className="hidden md:block">
+          <CustomCursor />
+        </div>
+        {/* Google Tag Manager (noscript) */}
         <noscript dangerouslySetInnerHTML={{
           __html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KP3XLTJN"
           height="0" width="0" style="display:none;visibility:hidden"></iframe>`

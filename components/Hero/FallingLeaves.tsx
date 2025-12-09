@@ -149,34 +149,126 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobileDevice ? 1.5 : 2)) // Reducir pixel ratio en móvil
 
-    // Create custom Ginkgo leaf shape
-    const shape = new Shape()
-    shape.moveTo(0, 1)
-    shape.quadraticCurveTo(0.5, 0.8, 1, 0.5)
-    shape.quadraticCurveTo(0.5, 0.2, 0, 0)
-    shape.quadraticCurveTo(-0.5, 0.2, -1, 0.5)
-    shape.quadraticCurveTo(-0.5, 0.8, 0, 1)
+    // Create custom Ginkgo leaf shape based on the brand logo (5 separate floating lobes + stem)
+    const shapes: InstanceType<typeof Shape>[] = []
 
-    const leafGeometry = new ShapeGeometry(shape)
+    // Helper to rotate points around (0,0)
+    const rotate = (x: number, y: number, angleDeg: number) => {
+      const rad = (angleDeg * Math.PI) / 180
+      const cos = Math.cos(rad)
+      const sin = Math.sin(rad)
+      return {
+        x: x * cos - y * sin,
+        y: x * sin + y * cos,
+      }
+    }
+
+    // Common center point for the fan
+    const fanOriginY = -0.3
+
+    // 1. STEM
+    const stem = new Shape()
+    const stemW = 0.05
+    const stemH = 0.25
+    // Stem goes from bottom up to fanOriginY
+    stem.moveTo(-stemW, fanOriginY - stemH)
+    stem.lineTo(stemW, fanOriginY - stemH)
+    stem.quadraticCurveTo(stemW, fanOriginY - stemH * 0.5, 0.02, fanOriginY) // Taper slightly
+    stem.lineTo(-0.02, fanOriginY)
+    stem.quadraticCurveTo(-stemW, fanOriginY - stemH * 0.5, -stemW, fanOriginY - stemH)
+    shapes.push(stem)
+
+    // 2. LOBES
+    // Function to create a paddle-shaped lobe with optional curvature
+    // bend: positive bends right, negative bends left
+    const addLobe = (angleDeg: number, length: number, widthTop: number, bend: number = 0) => {
+      const lobe = new Shape()
+
+      // Define lobe upright relative to (0,0)
+      const widthBase = 0.015 // Very narrow base
+
+      // Base points
+      const pBaseL = { x: -widthBase, y: 0.08 } // Start higher to leave gap
+      const pBaseR = { x: widthBase, y: 0.08 }
+
+      // Top points - apply bend to x coordinates
+      const pTopL = { x: -widthTop / 2 + bend, y: length }
+      const pTopR = { x: widthTop / 2 + bend, y: length }
+
+      // Control points for the sides - add bend influence
+      // Midpoint curve should follow the bend direction
+      const cpSideY = length * 0.5
+      const cpLeft = { x: -widthTop / 4 + bend * 0.5, y: cpSideY }
+      const cpRight = { x: widthTop / 4 + bend * 0.5, y: cpSideY }
+
+      // Top rounded arch
+      // We calculate the top cap based on the tilted top vector
+      const topMid = { x: bend, y: length + widthTop * 0.3 }
+
+      // Rotate all points
+      const rBaseL = rotate(pBaseL.x, pBaseL.y, angleDeg)
+      const rBaseR = rotate(pBaseR.x, pBaseR.y, angleDeg)
+      const rTopL = rotate(pTopL.x, pTopL.y, angleDeg)
+      const rTopR = rotate(pTopR.x, pTopR.y, angleDeg)
+
+      const rCpLeft = rotate(cpLeft.x, cpLeft.y, angleDeg)
+      const rCpRight = rotate(cpRight.x, cpRight.y, angleDeg)
+
+      const rTopMid = rotate(topMid.x, topMid.y, angleDeg)
+
+      // Translate to fan origin
+      const tx = 0
+      const ty = fanOriginY
+
+      lobe.moveTo(rBaseL.x + tx, rBaseL.y + ty)
+
+      // Left side curve
+      lobe.quadraticCurveTo(rCpLeft.x + tx, rCpLeft.y + ty, rTopL.x + tx, rTopL.y + ty)
+
+      // Top rounded arch (simplified to one curve for smoothness)
+      lobe.quadraticCurveTo(rTopMid.x + tx, rTopMid.y + ty, rTopR.x + tx, rTopR.y + ty)
+
+      // Right side curve
+      lobe.quadraticCurveTo(rCpRight.x + tx, rCpRight.y + ty, rBaseR.x + tx, rBaseR.y + ty)
+
+      lobe.lineTo(rBaseL.x + tx, rBaseL.y + ty) // Close
+
+      shapes.push(lobe)
+    }
+
+    // Add 6 distinct lobes radiating (3 pairs)
+    // Angles: +/- 10, +/- 32, +/- 55
+
+    // Central Pair (Split in the middle)
+    addLobe(10, 0.95, 0.22, 0)      // Center Left
+    addLobe(-10, 0.95, 0.22, 0)     // Center Right
+
+    // Inner Pair
+    addLobe(32, 0.90, 0.21, 0.05)   // Inner Left
+    addLobe(-32, 0.90, 0.21, -0.05) // Inner Right
+
+    // Outer Pair
+    addLobe(58, 0.80, 0.19, 0.15)   // Outer Left
+    addLobe(-58, 0.80, 0.19, -0.15) // Outer Right
+
+    const leafGeometry = new ShapeGeometry(shapes)
 
     const leafColors = [
-      0xd4f57a, // Light green
-      0xc2e65c, // Medium green
-      0xb0d83e, // Darker green
-      0xa1c920, // Even darker green
+      0xd4f57a, // Brand Neon Lime
+      0xc2e65c, // Medium Lime
+      0xb0d83e, // Darker Lime
+      0xF5F2EB, // Brand Soft Beige (Accent - adds light/premium feel)
     ]
 
-    // Ajustar cantidad de hojas para móvil - aumentado ligeramente respecto a la versión anterior
-    let leavesCount = isMobileDevice ? 100 : 120 // Aumentado de 80 a 100 en móvil
-    let groundLayerCount = isMobileDevice ? 4 : 5 // Aumentado de 3 a 4 en móvil
-    let groundLeavesPerLayer = isMobileDevice ? 180 : 250 // Aumentado de 150 a 180 en móvil
+    // Cantidad de hojas optimizada para mejor performance
+    let leavesCount = isMobileDevice ? 30 : 50 // Reducido para mejor performance
+    let groundLayerCount = isMobileDevice ? 2 : 3 // Reducido para mejor performance
+    let groundLeavesPerLayer = isMobileDevice ? 60 : 100 // Reducido para mejor performance
 
     // Detectar preferencia de reducción de movimiento
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
     if (prefersReducedMotion) {
-      // Reducir significativamente la cantidad de hojas y efectos
-      // para respetar la preferencia del usuario
       leavesCount = Math.min(leavesCount, 20)
       groundLayerCount = Math.min(groundLayerCount, 2)
       groundLeavesPerLayer = Math.min(groundLeavesPerLayer, 50)
@@ -188,10 +280,11 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
     // Ground setup
     const groundY = -3.5
 
-    // Crear hojas del suelo con propiedades físicas
+    // Crear hojas del suelo
     for (let layer = 0; layer < groundLayerCount; layer++) {
       for (let i = 0; i < groundLeavesPerLayer; i++) {
-        const colorIndex = Math.floor(Math.random() * leafColors.length)
+        // Less beige on the ground to avoid noise
+        const colorIndex = Math.random() > 0.9 ? 3 : Math.floor(Math.random() * 3)
         const leafMaterial = new MeshBasicMaterial({
           color: leafColors[colorIndex],
           side: 2,
@@ -201,37 +294,33 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
         const groundLeaf = new Mesh(leafGeometry, leafMaterial)
 
-        // Distribute leaves in overlapping layers for denser coverage
         const x = Math.random() * 32 - 16
         const y = groundY + layer * 0.08 + Math.random() * 0.15
         const z = Math.random() * 0.5 - 0.25 + layer * 0.08
-
         groundLeaf.position.set(x, y, z)
 
-        // More varied rotation for natural look
+        // ... (rest of ground leaf setup remains similar, implied context) ...
         groundLeaf.rotation.x = Math.PI / 2 - Math.random() * 0.3
         groundLeaf.rotation.z = Math.random() * Math.PI * 2
 
-        // Varied scale for natural look
         const baseScale = 0.12 + Math.random() * 0.08
         const scaleX = baseScale * (0.7 + Math.random() * 0.6)
         const scaleY = baseScale * (1.0 + Math.random() * 0.8)
         groundLeaf.scale.set(scaleX, scaleY, baseScale)
 
-        // Add physics properties to userData
         groundLeaf.userData = {
           originalPosition: new Vector3(x, y, z),
           originalRotation: new Euler().copy(groundLeaf.rotation),
           originalScale: new Vector3().copy(groundLeaf.scale),
           velocity: new Vector3(0, 0, 0),
           angularVelocity: new Vector3(0, 0, 0),
-          mass: 0.3 + Math.random() * 0.7, // More varied masses
+          mass: 0.3 + Math.random() * 0.7,
           isLifted: false,
           liftTime: 0,
-          liftThreshold: 0.15 + Math.random() * 0.8, // Different lift thresholds for each leaf
+          liftThreshold: 0.15 + Math.random() * 0.8,
           restingTime: 0,
-          swayPhase: Math.random() * Math.PI * 2, // Fase aleatoria para el movimiento ondulante
-          swayAmplitude: 0.005 + Math.random() * 0.01, // Amplitud variable para el movimiento
+          swayPhase: Math.random() * Math.PI * 2,
+          swayAmplitude: 0.005 + Math.random() * 0.01,
         }
 
         scene.add(groundLeaf)
@@ -239,27 +328,40 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
       }
     }
 
-    // Crear hojas que caen
+    // Crear hojas que caen con profundidad de campo
     for (let i = 0; i < leavesCount; i++) {
-      const colorIndex = Math.floor(Math.random() * leafColors.length)
+      // 15% chance of Beige accent for floating leaves
+      const colorIndex = Math.random() > 0.85 ? 3 : Math.floor(Math.random() * 3)
+
+      const zPos = Math.random() * 5 - 2 // Depth range: -2 to 3 (closer to camera)
+
+      // Calculate opacity based on Z depth (Fake Depth of Field)
+      // Closer (z=3) -> Opacity 1.0
+      // Further (z=-2) -> Opacity 0.4
+      // Normalized Z from 0 to 1 roughly
+      const normalizedZ = (zPos + 2) / 5
+      const depthOpacity = 0.4 + (normalizedZ * 0.6)
+
       const leafMaterial = new MeshBasicMaterial({
         color: leafColors[colorIndex],
         side: 2,
         transparent: true,
-        opacity: 0.8,
+        opacity: depthOpacity,
       })
 
       const leaf = new Mesh(leafGeometry, leafMaterial)
 
-      // Posicionar las hojas con una velocidad inicial de caída más rápida
-      leaf.position.set(Math.random() * 28 - 14, Math.random() * 8 + 5, Math.random() * 4 - 2)
+      // Initial position
+      leaf.position.set(Math.random() * 28 - 14, Math.random() * 8 + 5, zPos)
       leaf.rotation.x = Math.random() * Math.PI
       leaf.rotation.y = Math.random() * Math.PI
       leaf.rotation.z = Math.random() * Math.PI
 
-      // Varied scale for more natural look
-      const scale = 0.15 + Math.random() * 0.15
-      leaf.scale.set(scale, scale, scale)
+      // Scale linked to depth (PerspectiveCamera does this, but we accent it)
+      const baseScale = 0.15 + Math.random() * 0.15
+      // Slight extra scale boost for closer items
+      const depthScale = baseScale * (1 + normalizedZ * 0.3)
+      leaf.scale.set(depthScale, depthScale, depthScale)
 
       // Velocidad inicial más rápida pero con física más suave después
       leaf.userData = {
@@ -395,9 +497,9 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
       // Update ground leaves with improved physics
       groundLeaves.forEach((leaf, index) => {
-        // En modo rendimiento, procesar menos hojas en móvil pero más que antes
-        if (performanceMode && isMobileDevice && index % 3 !== 0) return
-        if (performanceMode && !isMobileDevice && index % 4 !== 0) return
+        // En modo rendimiento, procesar menos hojas para mantener FPS
+        if (performanceMode && isMobileDevice && index % 2 !== 0) return
+        if (performanceMode && !isMobileDevice && index % 3 !== 0) return
 
         const userData = leaf.userData
         const distanceToMouse = leaf.position.distanceTo(worldMousePosition.current)
@@ -484,25 +586,26 @@ export default function FallingLeaves({ className = "" }: FallingLeavesProps) {
 
     animate()
 
-    // Función de redimensionamiento comentada correctamente
-    /*
+    // Resize handler con debouncing para evitar saltos
+    let resizeTimeout: NodeJS.Timeout
     const handleResize = () => {
-      if (cameraRef.current && rendererRef.current) {
-        cameraRef.current.aspect = window.innerWidth / window.innerHeight
-        cameraRef.current.updateProjectionMatrix()
-        rendererRef.current.setSize(window.innerWidth, window.innerHeight)
-      }
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(() => {
+        if (cameraRef.current && rendererRef.current) {
+          cameraRef.current.aspect = window.innerWidth / window.innerHeight
+          cameraRef.current.updateProjectionMatrix()
+          rendererRef.current.setSize(window.innerWidth, window.innerHeight)
+        }
+      }, 250) // Debounce de 250ms
     }
-    */
 
-    // window.addEventListener("resize", handleResize) // desactivado para evitar saltos en mobile
-    // Modificar la parte donde se agregan los event listeners
+    window.addEventListener("resize", handleResize)
     window.addEventListener("mousemove", handleMouseMove)
     window.addEventListener("touchmove", handleTouchMove)
 
     return () => {
-      // window.removeEventListener("resize", handleResize) // desactivado para evitar saltos en mobile
-      // Modificar la parte donde se agregan los event listeners
+      clearTimeout(resizeTimeout)
+      window.removeEventListener("resize", handleResize)
       window.removeEventListener("mousemove", handleMouseMove)
       window.removeEventListener("touchmove", handleTouchMove)
       if (mouseMovementTimer.current) {

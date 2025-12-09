@@ -6,9 +6,10 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { ArrowLeft, ExternalLink, Calendar, Users, Code, CheckCircle, Clock, Github } from "lucide-react"
+import { ArrowLeft, ExternalLink, Calendar, Users, Code, CheckCircle, Clock, Github, AlertTriangle, Lightbulb, ClipboardList, Palette, Rocket, Zap } from "lucide-react"
 import NavbarComponent from "@/components/Hero/Navbar"
 import { useTranslation } from "@/contexts/TranslationContext"
+import { projects } from "@/data/projects"
 
 export default function ProjectClient({ project }: { project: any }) {
   const [activeImage, setActiveImage] = useState(0)
@@ -32,35 +33,35 @@ export default function ProjectClient({ project }: { project: any }) {
     process:
       locale === "en"
         ? {
-            planning: project.process?.planningEn || "Information not available",
-            design: project.process?.designEn || "Information not available",
-            development: project.process?.developmentEn || "Information not available",
-            deployment: project.process?.deploymentEn || "Information not available",
-          }
+          planning: project.process?.planningEn || "Information not available",
+          design: project.process?.designEn || "Information not available",
+          development: project.process?.developmentEn || "Information not available",
+          deployment: project.process?.deploymentEn || "Information not available",
+        }
         : {
-            planning: project.process?.planning || "Información no disponible",
-            design: project.process?.design || "Información no disponible",
-            development: project.process?.development || "Información no disponible",
-            deployment: project.process?.deployment || "Información no disponible",
-          },
+          planning: project.process?.planning || "Información no disponible",
+          design: project.process?.design || "Información no disponible",
+          development: project.process?.development || "Información no disponible",
+          deployment: project.process?.deployment || "Información no disponible",
+        },
     keyFeatures: locale === "en" ? project.keyFeaturesEn || project.keyFeatures || [] : project.keyFeatures || [],
     challenges:
       locale === "en"
         ? (project.challengesEn || project.challenges || []).map((challenge: any) => {
-            if (typeof challenge === "object" && challenge !== null) {
-              return {
-                title: challenge.titleEn || challenge.title,
-                description: challenge.descriptionEn || challenge.description,
-                solution: challenge.solutionEn || challenge.solution,
-              }
-            } else {
-              return {
-                title: challenge,
-                description: "",
-                solution: "",
-              }
+          if (typeof challenge === "object" && challenge !== null) {
+            return {
+              title: challenge.titleEn || challenge.title,
+              description: challenge.descriptionEn || challenge.description,
+              solution: challenge.solutionEn || challenge.solution,
             }
-          })
+          } else {
+            return {
+              title: challenge,
+              description: "",
+              solution: "",
+            }
+          }
+        })
         : project.challenges || [],
     images: project.images || [project.image || "/placeholder.svg?height=600&width=800"],
     duration:
@@ -70,14 +71,14 @@ export default function ProjectClient({ project }: { project: any }) {
     team:
       locale === "en"
         ? project.teamEn ||
-          project.team?.replace("desarrolladores", "developers").replace("desarrollador", "developer") ||
-          "2 developers"
+        project.team?.replace("desarrolladores", "developers").replace("desarrollador", "developer") ||
+        "2 developers"
         : project.team || "2 desarrolladores",
     role:
       locale === "en"
         ? project.roleEn ||
-          (project.role === "Desarrollo completo" ? "Complete development" : project.role) ||
-          "Complete development"
+        (project.role === "Desarrollo completo" ? "Complete development" : project.role) ||
+        "Complete development"
         : project.role || "Desarrollo completo",
     year: project.year || "2023",
     url: project.url || null,
@@ -90,44 +91,20 @@ export default function ProjectClient({ project }: { project: any }) {
     projectWithDefaults.images = [projectWithDefaults.image || "/placeholder.svg?height=600&width=800"]
   }
 
-  // Sample related projects data - this would normally come from your data source
-  const relatedProjects = [
-    {
-      id: "1",
-      title: locale === "en" ? "E-commerce Platform" : "Plataforma de E-commerce",
-      description:
-        locale === "en"
-          ? "A modern e-commerce solution with advanced features"
-          : "Una solución moderna de comercio electrónico con características avanzadas",
-      image: "/placeholder.svg?height=400&width=600",
-      category: "shopify",
-    },
-    {
-      id: "2",
-      title: locale === "en" ? "Corporate Website" : "Sitio Web Corporativo",
-      description:
-        locale === "en"
-          ? "A responsive corporate website with a custom theme"
-          : "Un sitio web corporativo responsive con un tema personalizado",
-      image: "/placeholder.svg?height=400&width=600",
-      category: "wordpress",
-    },
-    {
-      id: "4",
-      title: locale === "en" ? "Fashion Store" : "Tienda de Moda",
-      description:
-        locale === "en"
-          ? "A premium fashion store with AR try-on features"
-          : "Una tienda de moda premium con funciones de prueba en AR",
-      image: "/placeholder.svg?height=400&width=600",
-      category: "shopify",
-    },
-  ]
-
-  // Filter related projects based on the current project's category
-  const filteredRelatedProjects = relatedProjects
+  // Get related projects from the data source
+  const relatedProjects = projects
     .filter((p) => p.id !== project.id && p.category === projectWithDefaults.category)
     .slice(0, 3)
+    .map((p) => ({
+      id: p.id,
+      title: locale === "en" ? p.title : p.titleEs || p.title,
+      description: locale === "en" ? p.description : p.descriptionEs || p.description,
+      image: p.image || "/placeholder.svg?height=400&width=600",
+      category: p.category,
+    }))
+
+  // Use filtered projects directly
+  const filteredRelatedProjects = relatedProjects
 
   // Animations
   const containerVariants = {
@@ -219,7 +196,7 @@ export default function ProjectClient({ project }: { project: any }) {
               <ArrowLeft className="w-4 h-4 mr-2" />
               {locale === "en" ? "Back to Projects" : "Volver a Proyectos"}
             </Link>
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{projectWithDefaults.title}</h1>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 font-heading">{projectWithDefaults.title}</h1>
             <p className="text-xl text-white/80 max-w-2xl">{projectWithDefaults.description}</p>
           </motion.div>
         </div>
@@ -237,7 +214,7 @@ export default function ProjectClient({ project }: { project: any }) {
           <div className="lg:col-span-8 space-y-16">
             {/* Project Gallery */}
             <motion.div variants={itemVariants}>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-6 font-heading">
                 {locale === "en" ? "Project Gallery" : "Galería del Proyecto"}
               </h2>
               <div className="space-y-4">
@@ -258,11 +235,10 @@ export default function ProjectClient({ project }: { project: any }) {
                       <button
                         key={index}
                         onClick={() => setActiveImage(index)}
-                        className={`relative w-24 h-16 rounded-lg overflow-hidden flex-shrink-0 transition-all ${
-                          activeImage === index
-                            ? "ring-2 ring-[#D4F57A] ring-offset-2 ring-offset-[#293B36]"
-                            : "opacity-70 hover:opacity-100"
-                        }`}
+                        className={`relative w-24 h-16 rounded-lg overflow-hidden flex-shrink-0 transition-all ${activeImage === index
+                          ? "ring-2 ring-[#D4F57A] ring-offset-2 ring-offset-[#293B36]"
+                          : "opacity-70 hover:opacity-100"
+                          }`}
                         aria-label={locale === "en" ? `View image ${index + 1}` : `Ver imagen ${index + 1}`}
                       >
                         <Image
@@ -280,7 +256,7 @@ export default function ProjectClient({ project }: { project: any }) {
 
             {/* Project Overview */}
             <motion.div className="mb-16" variants={itemVariants}>
-              <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-6">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-6 font-heading">
                 {locale === "en" ? "Overview" : "Descripción General"}
               </h2>
               <div className="prose prose-lg prose-invert max-w-none">
@@ -291,7 +267,7 @@ export default function ProjectClient({ project }: { project: any }) {
             {/* Project Process */}
             {Object.keys(projectWithDefaults.process).length > 0 && (
               <motion.div className="mb-16" variants={itemVariants}>
-                <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-8 font-heading">
                   {locale === "en" ? "Project Process" : "Proceso del Proyecto"}
                 </h2>
                 <div className="relative">
@@ -320,38 +296,66 @@ export default function ProjectClient({ project }: { project: any }) {
                     ></div>
                   </div>
 
-                  <div className="space-y-8">
+                  <div className="space-y-12">
                     {Object.entries(projectWithDefaults.process).map(([phase, description], index) => (
-                      <div key={phase} className="relative pl-24">
-                        {/* Point with effects */}
-                        <div className="absolute left-8 top-1/2 -translate-y-1/2 -translate-x-1/2">
+                      <div key={phase} className="relative pl-8 md:pl-24">
+                        {/* Connecting Line for mobile adjustments if needed, though the main line works */}
+
+                        {/* Point with effects - centered on the line */}
+                        <div className="absolute left-8 top-8 -translate-x-1/2 z-20">
                           <div className="relative">
                             {/* Main circle */}
-                            <div className="w-4 h-4 rounded-full bg-[#D4F57A] relative z-20">
-                              {/* Pulsing ring */}
-                              <div className="absolute -inset-2 rounded-full bg-[#D4F57A]/20 animate-ping"></div>
-                            </div>
+                            <div className="w-4 h-4 rounded-full bg-[#1E2C29] border-2 border-[#D4F57A] relative z-20 group-hover:scale-125 transition-transform" />
                             {/* Glow effect */}
-                            <div className="absolute -inset-4 bg-[#D4F57A]/10 rounded-full blur-xl"></div>
+                            <div className="absolute -inset-2 bg-[#D4F57A]/30 rounded-full blur-md" />
                           </div>
                         </div>
 
-                        {/* Content */}
-                        <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 hover:bg-white/10 transition-all duration-300 border border-[#D4F57A]/10 min-h-[120px] flex flex-col justify-center">
-                          <h3 className="text-xl font-semibold text-[#D4F57A] capitalize mb-3">
-                            {locale === "en"
-                              ? phase === "planning"
-                                ? "Planning"
-                                : phase === "design"
-                                  ? "Design"
-                                  : phase === "development"
-                                    ? "Development"
-                                    : phase === "deployment"
-                                      ? "Deployment"
-                                      : phase
-                              : phase}
-                          </h3>
-                          <p className="text-white/70">{description as React.ReactNode}</p>
+                        {/* Content Card */}
+                        <div className="bg-[#1E2C29]/60 backdrop-blur-md rounded-2xl p-6 md:p-8 border border-[#D4F57A]/10 hover:border-[#D4F57A]/40 transition-all duration-300 group relative overflow-hidden hover:shadow-2xl hover:shadow-[#D4F57A]/5 hover:-translate-y-1">
+
+                          {/* Large Watermark Number */}
+                          <div className="absolute -right-2 -bottom-6 text-9xl font-bold text-[#FFFFFF]/[0.03] font-heading select-none pointer-events-none group-hover:text-[#D4F57A]/10 transition-colors duration-500">
+                            0{index + 1}
+                          </div>
+
+                          <div className="flex flex-col md:flex-row gap-6 relative z-10">
+                            {/* Icon Box */}
+                            <div className="flex-shrink-0">
+                              <div className="p-4 rounded-xl bg-gradient-to-br from-[#D4F57A]/20 to-[#D4F57A]/5 text-[#D4F57A] border border-[#D4F57A]/20 shadow-lg shadow-[#D4F57A]/5 ring-1 ring-[#D4F57A]/20 group-hover:scale-110 transition-transform duration-500">
+                                {phase === 'planning' && <ClipboardList className="w-8 h-8" />}
+                                {phase === 'design' && <Palette className="w-8 h-8" />}
+                                {phase === 'development' && <Code className="w-8 h-8" />}
+                                {phase === 'deployment' && <Rocket className="w-8 h-8" />}
+                                {!['planning', 'design', 'development', 'deployment'].includes(phase) && <CheckCircle className="w-8 h-8" />}
+                              </div>
+                            </div>
+
+                            <div className="flex-1 pt-1">
+                              <h3 className="text-2xl font-bold text-white capitalize mb-3 font-heading flex items-center gap-3">
+                                {locale === "en"
+                                  ? phase === "planning"
+                                    ? "Planning & Strategy"
+                                    : phase === "design"
+                                      ? "UI/UX Design"
+                                      : phase === "development"
+                                        ? "Development"
+                                        : phase === "deployment"
+                                          ? "Deployment & Launch"
+                                          : phase
+                                  : phase === "planning"
+                                    ? "Planificación y Estrategia"
+                                    : phase === "design"
+                                      ? "Diseño UI/UX"
+                                      : phase === "development"
+                                        ? "Desarrollo"
+                                        : phase === "deployment"
+                                          ? "Despliegue y Lanzamiento"
+                                          : phase}
+                              </h3>
+                              <p className="text-[#F5F2EB]/80 leading-relaxed text-lg">{description as React.ReactNode}</p>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -363,20 +367,27 @@ export default function ProjectClient({ project }: { project: any }) {
             {/* Key Features */}
             {projectWithDefaults.keyFeatures && projectWithDefaults.keyFeatures.length > 0 && (
               <motion.div className="mb-16" variants={itemVariants}>
-                <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-8">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-8 font-heading">
                   {locale === "en" ? "Key Features" : "Características Principales"}
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {projectWithDefaults.keyFeatures.map((feature: string, index: number) => (
                     <div
                       key={index}
-                      className="flex items-start gap-3 p-6 bg-white/5 backdrop-blur-sm rounded-xl hover:bg-white/10 transition-all duration-300 h-full border border-[#D4F57A]/10 group"
+                      className="group relative p-6 bg-[#1E2C29]/50 backdrop-blur-md rounded-2xl border border-[#D4F57A]/10 hover:border-[#D4F57A]/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-[#D4F57A]/5 overflow-hidden"
                     >
-                      <div className="mt-1">
-                        <CheckCircle className="w-5 h-5 text-[#D4F57A] transition-transform duration-300 group-hover:scale-110" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-white/80">{feature}</p>
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-[#D4F57A]/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 group-hover:bg-[#D4F57A]/10 transition-all duration-500" />
+
+                      <div className="flex items-start gap-4 relative z-10">
+                        <div className="flex-shrink-0 p-3 rounded-xl bg-[#D4F57A]/10 text-[#D4F57A] group-hover:scale-110 transition-transform duration-300 border border-[#D4F57A]/10">
+                          <Zap className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="text-white font-bold mb-2 font-heading text-lg">
+                            {locale === "en" ? `Feature ${index + 1}` : `Característica ${index + 1}`}
+                          </h4>
+                          <p className="text-[#F5F2EB]/80 leading-relaxed">{feature}</p>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -387,27 +398,52 @@ export default function ProjectClient({ project }: { project: any }) {
             {/* Challenges and Solutions */}
             {projectWithDefaults.challenges && projectWithDefaults.challenges.length > 0 && (
               <motion.div variants={itemVariants}>
-                <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-6">
+                <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-6 font-heading">
                   {locale === "en" ? "Challenges and Solutions" : "Desafíos y Soluciones"}
                 </h2>
-                <div className="space-y-8">
+                <div className="space-y-6">
                   {projectWithDefaults.challenges.map((challenge: string | { title: string, description: string, solution: string }, index: number) => (
                     <div
                       key={index}
-                      className="bg-white/5 backdrop-blur-sm rounded-xl p-6 hover:bg-white/10 transition-all duration-300"
+                      className="bg-[#1E2C29]/50 backdrop-blur-md rounded-2xl p-8 border border-[#D4F57A]/10 hover:border-[#D4F57A]/30 transition-all duration-300 group overflow-hidden relative"
                     >
-                      <h3 className="text-xl font-semibold text-white mb-4">{typeof challenge === 'string' ? challenge : challenge.title}</h3>
-                      <div className="mb-4">
-                        <h4 className="text-[#D4F57A] font-medium mb-2">
-                          {locale === "en" ? "Challenge:" : "Desafío:"}
-                        </h4>
-                        <p className="text-white/70">{typeof challenge === 'string' ? challenge : challenge.description}</p>
-                      </div>
-                      <div>
-                        <h4 className="text-[#D4F57A] font-medium mb-2">
-                          {locale === "en" ? "Solution:" : "Solución:"}
-                        </h4>
-                        <p className="text-white/70">{typeof challenge === 'string' ? challenge : challenge.solution}</p>
+                      {/* Decorative gradient blob */}
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4F57A]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 group-hover:bg-[#D4F57A]/10 transition-all duration-500" />
+
+                      <h3 className="text-xl font-bold text-white mb-6 font-heading relative z-10">
+                        {typeof challenge === 'string' ? challenge : challenge.title}
+                      </h3>
+
+                      <div className="grid md:grid-cols-2 gap-8 relative z-10">
+                        {/* Challenge Side */}
+                        <div className="bg-red-500/5 rounded-xl p-5 border border-red-500/10">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="p-2 rounded-lg bg-red-500/10 text-red-400">
+                              <AlertTriangle className="w-5 h-5" />
+                            </div>
+                            <h4 className="text-red-300/90 font-bold font-heading uppercase text-sm tracking-wider">
+                              {locale === "en" ? "The Challenge" : "El Desafío"}
+                            </h4>
+                          </div>
+                          <p className="text-white/80 leading-relaxed">
+                            {typeof challenge === 'string' ? challenge : challenge.description}
+                          </p>
+                        </div>
+
+                        {/* Solution Side */}
+                        <div className="bg-[#D4F57A]/5 rounded-xl p-5 border border-[#D4F57A]/10">
+                          <div className="flex items-center gap-3 mb-3">
+                            <div className="p-2 rounded-lg bg-[#D4F57A]/10 text-[#D4F57A]">
+                              <Lightbulb className="w-5 h-5" />
+                            </div>
+                            <h4 className="text-[#D4F57A] font-bold font-heading uppercase text-sm tracking-wider">
+                              {locale === "en" ? "Our Solution" : "La Solución"}
+                            </h4>
+                          </div>
+                          <p className="text-white/80 leading-relaxed">
+                            {typeof challenge === 'string' ? challenge : challenge.solution}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -421,53 +457,66 @@ export default function ProjectClient({ project }: { project: any }) {
             <div className="sticky top-24">
               {/* Project Details Card */}
               <motion.div
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 mb-8"
+                className="bg-[#1E2C29]/60 backdrop-blur-md rounded-2xl p-8 border border-[#D4F57A]/10 mb-8 overflow-hidden relative"
                 variants={itemVariants}
                 initial="hidden"
                 animate="visible"
               >
-                <h3 className="text-xl font-bold text-white mb-6">
+                <div className="absolute top-0 right-0 w-40 h-40 bg-[#D4F57A]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+
+                <h3 className="text-xl font-bold text-white mb-6 font-heading sticky z-10 border-b border-[#D4F57A]/10 pb-4">
                   {locale === "en" ? "Project Details" : "Detalles del Proyecto"}
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 text-[#D4F57A]" />
+                <div className="space-y-6 relative z-10">
+                  <div className="flex items-start gap-4 group">
+                    <div className="p-2 rounded-lg bg-[#D4F57A]/10 text-[#D4F57A] group-hover:scale-110 transition-transform">
+                      <Calendar className="w-5 h-5" />
+                    </div>
                     <div>
-                      <p className="text-white/50 text-sm">{locale === "en" ? "Year" : "Año"}</p>
-                      <p className="text-white">{projectWithDefaults.year}</p>
+                      <p className="text-[#F5F2EB]/50 text-sm font-medium uppercase tracking-wider mb-1">{locale === "en" ? "Year" : "Año"}</p>
+                      <p className="text-white font-bold text-lg">{projectWithDefaults.year}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Clock className="w-5 h-5 text-[#D4F57A]" />
+
+                  <div className="flex items-start gap-4 group">
+                    <div className="p-2 rounded-lg bg-[#D4F57A]/10 text-[#D4F57A] group-hover:scale-110 transition-transform">
+                      <Clock className="w-5 h-5" />
+                    </div>
                     <div>
-                      <p className="text-white/50 text-sm">{locale === "en" ? "Duration" : "Duración"}</p>
-                      <p className="text-white">{projectWithDefaults.duration}</p>
+                      <p className="text-[#F5F2EB]/50 text-sm font-medium uppercase tracking-wider mb-1">{locale === "en" ? "Duration" : "Duración"}</p>
+                      <p className="text-white font-bold text-lg">{projectWithDefaults.duration}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Users className="w-5 h-5 text-[#D4F57A]" />
+
+                  <div className="flex items-start gap-4 group">
+                    <div className="p-2 rounded-lg bg-[#D4F57A]/10 text-[#D4F57A] group-hover:scale-110 transition-transform">
+                      <Users className="w-5 h-5" />
+                    </div>
                     <div>
-                      <p className="text-white/50 text-sm">{locale === "en" ? "Team" : "Equipo"}</p>
-                      <p className="text-white">{projectWithDefaults.team}</p>
+                      <p className="text-[#F5F2EB]/50 text-sm font-medium uppercase tracking-wider mb-1">{locale === "en" ? "Team" : "Equipo"}</p>
+                      <p className="text-white font-bold text-lg">{projectWithDefaults.team}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Code className="w-5 h-5 text-[#D4F57A]" />
+
+                  <div className="flex items-start gap-4 group">
+                    <div className="p-2 rounded-lg bg-[#D4F57A]/10 text-[#D4F57A] group-hover:scale-110 transition-transform">
+                      <Code className="w-5 h-5" />
+                    </div>
                     <div>
-                      <p className="text-white/50 text-sm">{locale === "en" ? "Role" : "Rol"}</p>
-                      <p className="text-white">{projectWithDefaults.role}</p>
+                      <p className="text-[#F5F2EB]/50 text-sm font-medium uppercase tracking-wider mb-1">{locale === "en" ? "Role" : "Rol"}</p>
+                      <p className="text-white font-bold text-lg">{projectWithDefaults.role}</p>
                     </div>
                   </div>
                 </div>
 
                 {/* Project Links */}
-                <div className="mt-8 space-y-3">
+                <div className="mt-8 space-y-3 relative z-10">
                   {projectWithDefaults.url && (
                     <a
                       href={projectWithDefaults.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full py-3 bg-[#D4F57A] text-[#293B36] rounded-lg font-medium hover:bg-[#D4F57A]/90 transition-colors"
+                      className="flex items-center justify-center gap-2 w-full py-3 bg-[#D4F57A] text-[#293B36] rounded-xl font-bold font-heading hover:bg-[#c2e65c] transition-all hover:shadow-[0_0_20px_rgba(212,245,122,0.3)] hover:-translate-y-0.5"
                     >
                       <ExternalLink className="w-4 h-4" />
                       {locale === "en" ? "View Live Project" : "Ver Proyecto en Vivo"}
@@ -478,7 +527,7 @@ export default function ProjectClient({ project }: { project: any }) {
                       href={projectWithDefaults.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full py-3 bg-white/10 text-white rounded-lg font-medium hover:bg-white/20 transition-colors"
+                      className="flex items-center justify-center gap-2 w-full py-3 bg-white/5 text-white border border-white/10 rounded-xl font-medium hover:bg-white/10 transition-all hover:-translate-y-0.5"
                     >
                       <Github className="w-4 h-4" />
                       {locale === "en" ? "View Source Code" : "Ver Código Fuente"}
@@ -490,19 +539,19 @@ export default function ProjectClient({ project }: { project: any }) {
               {/* Technologies Used */}
               {projectWithDefaults.technologies.length > 0 && (
                 <motion.div
-                  className="bg-white/5 backdrop-blur-sm rounded-xl p-6"
+                  className="bg-[#1E2C29]/60 backdrop-blur-md rounded-2xl p-8 border border-[#D4F57A]/10"
                   variants={itemVariants}
                   initial="hidden"
                   animate="visible"
                 >
-                  <h3 className="text-xl font-bold text-white mb-6">
+                  <h3 className="text-xl font-bold text-white mb-6 font-heading">
                     {locale === "en" ? "Technologies Used" : "Tecnologías Utilizadas"}
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {projectWithDefaults.technologies.map((tech: string, index: number) => (
                       <span
                         key={tech}
-                        className="px-3 py-1.5 rounded-full bg-[#D4F57A]/10 text-[#D4F57A] text-sm border border-[#D4F57A]/20"
+                        className="px-4 py-2 rounded-lg bg-[#293B36] text-[#D4F57A] text-sm font-medium border border-[#D4F57A]/20 hover:border-[#D4F57A]/50 hover:shadow-[0_0_15px_rgba(212,245,122,0.1)] transition-all cursor-default"
                       >
                         {tech}
                       </span>
@@ -518,7 +567,7 @@ export default function ProjectClient({ project }: { project: any }) {
                 initial="hidden"
                 animate="visible"
               >
-                <h3 className="text-xl font-bold text-white mb-3">
+                <h3 className="text-xl font-bold text-white mb-3 font-heading">
                   {locale === "en" ? "Did you like this project?" : "¿Te gustó este proyecto?"}
                 </h3>
                 <p className="text-white/70 mb-4">
@@ -554,7 +603,7 @@ export default function ProjectClient({ project }: { project: any }) {
           animate="visible"
           transition={{ delay: 0.5 }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#D4F57A] mb-8 font-heading">
             {locale === "en" ? "Related Projects" : "Proyectos Relacionados"}
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -570,7 +619,7 @@ export default function ProjectClient({ project }: { project: any }) {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#293B36] to-transparent opacity-70" />
                     <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h3 className="text-lg font-bold text-white">{relatedProject.title}</h3>
+                      <h3 className="text-lg font-bold text-white font-heading">{relatedProject.title}</h3>
                       <p className="text-sm text-white/70 line-clamp-1">{relatedProject.description}</p>
                     </div>
                   </div>

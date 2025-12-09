@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Shield, Users, Target, Heart } from "lucide-react"
+import ParallaxImage from "@/components/ui/ParallaxImage"
 
 
 export default function Philosophy() {
@@ -45,7 +46,7 @@ export default function Philosophy() {
           <Badge variant="outline" className="mb-4 border-[#D4F57A] text-[#D4F57A] bg-transparent">
             Nuestra Filosofía
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6 font-heading">
             Diseñamos con resiliencia,
             <span className="text-[#D4F57A] block">como el ginkgo</span>
           </h2>
@@ -61,14 +62,15 @@ export default function Philosophy() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-[#F5F2EB] rounded-2xl p-8 md:p-12 mb-16"
+          className="relative bg-[#293B36] border border-[#D4F57A]/20 rounded-2xl p-8 md:p-12 mb-16 overflow-hidden group"
         >
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="absolute inset-0 bg-[#D4F57A]/5 blur-3xl rounded-full opacity-20 pointer-events-none group-hover:opacity-30 transition-opacity duration-1000"></div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
             <div>
-              <h3 className="text-2xl md:text-3xl font-bold text-[#293B36] mb-6">
+              <h3 className="text-2xl md:text-3xl font-bold text-white mb-6 font-heading">
                 Más que desarrolladores, somos arquitectos del futuro digital
               </h3>
-              <div className="space-y-4 text-gray-600">
+              <div className="space-y-4 text-gray-300">
                 <p>
                   Nacimos de la convicción de que la tecnología debe ser una extensión natural de los objetivos humanos.
                   No creamos código por crear código; construimos puentes entre las ideas y su materialización digital.
@@ -83,15 +85,15 @@ export default function Philosophy() {
                 </p>
               </div>
             </div>
-            <div className="relative">
-                <img
-                    src="/MockUps/9.16.png"
-                    alt="Historia del Ginkgo"
-                    className="w-full h-[500px] rounded-lg shadow-lg object-cover"
-                ></img>
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-[#293B36] rounded-full flex items-center justify-center">
+            <div className="relative h-[500px] w-full rounded-2xl overflow-hidden border border-[#D4F57A]/20 shadow-2xl">
+              <ParallaxImage
+                src="/MockUps/9.16.png"
+                alt="Historia del Ginkgo"
+                className="w-full h-full"
+              />
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-[#293B36] border border-[#D4F57A]/30 rounded-full flex items-center justify-center backdrop-blur-md z-20">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-[#D4F57A]">5+</div>
+                  <div className="text-2xl font-bold text-[#D4F57A] font-heading">5+</div>
                   <div className="text-xs text-white">Años</div>
                 </div>
               </div>
@@ -99,9 +101,9 @@ export default function Philosophy() {
           </div>
         </motion.div>
 
-    
 
-        
+
+
       </div>
     </section>
   )

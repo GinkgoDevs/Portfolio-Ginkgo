@@ -91,5 +91,19 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Mejorar accesibilidad con focus visible */
+  *:focus-visible {
+    outline: 2px solid #D4F57A;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  
+  /* Asegurar que los botones y enlaces tengan buen focus */
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid #D4F57A;
+    outline-offset: 2px;
+  }
 }
 

@@ -22,7 +22,8 @@ const ScrollAnimation: React.FC<ScrollAnimationProps> = ({ children, className =
           controls.start("visible")
         } else {
           setIsVisible(false)
-          controls.start("hidden")
+          // Optional: Only reset if you want it to animate every time
+          // controls.start("hidden")
         }
       },
       {

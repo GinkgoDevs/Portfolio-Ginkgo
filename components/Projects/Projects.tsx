@@ -17,27 +17,15 @@ export default function Projects() {
   }))
 
   const handleProjectClick = (id: string | number) => {
-    // Buscar el proyecto por ID
-    const project = projects.find((project) => project.id === id)
-
-    if (project && project.url) {
-      // Si el proyecto tiene una URL, redirigir a ella
-      window.open(project.url, "_blank", "noopener,noreferrer")
-    } else {
-      // Mantener la lógica existente para la navegación interna (para uso futuro)
-      // Comentado para evitar que se ejecute ahora
-      // router.push(`/${locale}/project/${id}`);
-
-      // Por ahora, si no hay URL, simplemente mostrar un mensaje en consola
-      console.log(`Proyecto ${id} no tiene URL externa definida`)
-    }
+    // Navigate to internal project page
+    router.push(`/${locale}/project/${id}`)
   }
 
   return (
     <section id="projects" className="py-20 relative bg-[#293B36]">
       <div className="w-full px-0 mx-0">
         <ScrollAnimation>
-          <h2 className="text-4xl sm:text-5xl font-bold text-center text-[#D4F57A] ">{t("home.projects.title")}</h2>
+          <h2 className="text-4xl sm:text-5xl font-bold text-center text-[#D4F57A] font-heading">{t("home.projects.title")}</h2>
         </ScrollAnimation>
 
         <ScrollAnimation>
@@ -48,7 +36,7 @@ export default function Projects() {
                 bend={2}
                 textColor="#D4F57A"
                 borderRadius={0.05}
-                font="bold 16px DM Sans"
+                font="bold 16px Outfit, sans-serif"
                 onItemClick={handleProjectClick}
               />
             </div>
