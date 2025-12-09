@@ -3,9 +3,10 @@ import { notFound } from "next/navigation"
 import { projects } from "@/data/projects"
 import ProjectClient from "./project-client"
 
-export async function generateMetadata({ params }: { params: { id: string; locale: string } }): Promise<Metadata> {
-  const project = projects.find((p) => p.id === Number.parseInt(params.id))
-  const isEnglish = params.locale === "en"
+export async function generateMetadata({ params }: { params: Promise<{ id: string; locale: string }> }): Promise<Metadata> {
+  const { id, locale } = await params
+  const project = projects.find((p) => p.id === Number.parseInt(id))
+  const isEnglish = locale === "en"
 
   if (!project) {
     return {
@@ -38,8 +39,9 @@ export async function generateMetadata({ params }: { params: { id: string; local
   }
 }
 
-export default function ProjectPage({ params }: { params: { id: string; locale: string } }) {
-  const projectId = Number.parseInt(params.id)
+export default async function ProjectPage({ params }: { params: Promise<{ id: string; locale: string }> }) {
+  const { id } = await params
+  const projectId = Number.parseInt(id)
   const project = projects.find((p) => p.id === projectId)
 
   if (!project) {
