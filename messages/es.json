@@ -18,17 +18,19 @@
       "closeButton": "CERRAR"
     },
     "services": {
-      "title": "Soluciones digitales que transforman.",
-      "subtitle": "Creamos experiencias digitales que impulsan el crecimiento de tu empresa",
+      "title": "Nuestros Servicios",
+      "subtitle": "Soluciones tech premium para marcas ambiciosas",
       "webDevelopment": "Desarrollo Web",
-      "webDevelopmentDesc": "Sitios web escalables, rápidos y optimizados.",
-      "optimization": "Optimización y Mantenimiento",
-      "optimizationDesc": "Mejoramos tu web para que rinda al máximo.",
+      "webDevelopmentDesc": "Sitios de alto rendimiento diseñados para convertir.",
+      "optimization": "Optimización de Escala",
+      "optimizationDesc": "Mejoramos la velocidad y eficiencia para negocios en crecimiento.",
       "strategies": "Estrategias Digitales",
-      "strategiesDesc": "Maximizamos tu presencia online con soluciones inteligentes.",
-      "quoteButton": "Cotiza tu proyecto",
-      "portfolioButton": "Ver portafolio",
-      "whatsappMessage": "Hola, estoy interesado en el servicio de {service} que ofrecen. ¿Podrían brindarme más información?"
+      "strategiesDesc": "Consultoría basada en datos para maximizar tu alcance.",
+      "whatsappMessage": "Hola! Me interesa su servicio de: {service}",
+      "quoteButton": "Cotizar"
+    },
+    "testimonials": {
+      "title": "Lo que dicen nuestros clientes"
     },
     "hero": {
       "title": "Construimos experiencias",
@@ -37,6 +39,36 @@
       "subtitle": "Soluciones a medida para negocios que buscan impacto y escalabilidad",
       "ctaButton": "Hablemos de tu proyecto",
       "ctaButtonAriaLabel": "Contactar para hablar sobre tu proyecto"
+    },
+    "featuredProject": {
+      "label": "Nuevo Proyecto Destacado",
+      "title": "Descubre cómo creamos la Ale Ducca Cristales - Campus",
+      "description": "Una plataforma educativa Full Stack de última generación con NestJS y Next.js 15.",
+      "cta": "Ver Caso de Estudio"
+    },
+    "leadMagnet": {
+      "label": "Oferta Limitada",
+      "title": "¿Tu web no está generando ventas?",
+      "subtitle": "Solicita un diagnóstico gratuito y descubre cómo potenciar tu presencia digital en 2025.",
+      "benefit1": "Análisis de UX/UI",
+      "benefit2": "Revisión de Performance",
+      "benefit3": "Estrategia SEO Básica",
+      "cta": "Solicitar Auditoría Gratis",
+      "steps": {
+        "url_label": "¿Cuál es tu sitio web actual?",
+        "url_placeholder": "ejemplo.com (o 'No tengo')",
+        "email_label": "¿A qué email te enviamos el reporte?",
+        "email_placeholder": "tu@email.com",
+        "goal_label": "¿Cuál es tu objetivo principal?",
+        "goals": {
+          "sales": "Aumentar Ventas",
+          "leads": "Conseguir Más Clientes",
+          "brand": "Mejorar Imagen de Marca"
+        },
+        "next": "Siguiente",
+        "finish": "Solicitar Auditoría en WhatsApp",
+        "back": "Atrás"
+      }
     },
     "about": {
       "title": "Nuestro Equipo",

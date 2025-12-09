@@ -145,11 +145,11 @@ export default function DisintegrationEffect({
     const timeline = gsap.timeline({
       scrollTrigger: scrollTriggerEnabled
         ? {
-            trigger: containerRef.current,
-            start: "top 20%", // Comienza cuando la imagen está más arriba en la pantalla
-            end: "bottom top", // Termina cuando la imagen sale por arriba
-            scrub: 1.5, // Suavizado
-          }
+          trigger: containerRef.current,
+          start: "top 20%", // Comienza cuando la imagen está más arriba en la pantalla
+          end: "bottom top", // Termina cuando la imagen sale por arriba
+          scrub: 1.5, // Suavizado
+        }
         : null,
       onComplete: () => onComplete?.(), // Moved onComplete to the timeline level
     })
@@ -192,9 +192,8 @@ export default function DisintegrationEffect({
         alt={altText}
         width={600}
         height={600}
-        className={`object-cover w-full h-full rounded-full ${
-          (isMobile && !scrollTriggerEnabled) || highContrast ? "opacity-100" : "opacity-0"
-        }`}
+        className={`object-cover w-full h-full rounded-full ${!scrollTriggerEnabled || highContrast ? "opacity-100" : "opacity-0"
+          }`}
         onLoad={() => setImageLoaded(true)}
         priority
         quality={100}

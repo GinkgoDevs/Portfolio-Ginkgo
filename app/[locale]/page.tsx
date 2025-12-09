@@ -22,18 +22,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const description =
     locale === "es"
-      ? "Soluciones digitales a medida para negocios que buscan impacto y escalabilidad."
-      : "Custom digital solutions for businesses seeking impact and scalability."
+      ? "Desarrollo web profesional en Tucumán, Argentina. Creamos sitios web modernos, rápidos y optimizados para SEO. Especialistas en Next.js, React y soluciones digitales a medida para impulsar tu negocio."
+      : "Professional web development in Tucumán, Argentina. We create modern, fast, and SEO-optimized websites. Specialists in Next.js, React, and custom digital solutions to boost your business."
 
   return {
     title,
     description,
+    keywords:
+      locale === "es"
+        ? "desarrollo web, diseño web, Tucumán, Argentina, Next.js, React, SEO, optimización web, sitios web modernos, desarrollo frontend, backend, soluciones digitales"
+        : "web development, web design, Tucumán, Argentina, Next.js, React, SEO, web optimization, modern websites, frontend development, backend, digital solutions",
     alternates: {
       canonical: `/${locale}`,
       languages: {
         en: "/en",
         es: "/es",
       },
+    },
+    openGraph: {
+      title,
+      description,
+      url: `https://ginkgodevs.com/${locale}`,
+      siteName: "Ginkgo Devs",
+      locale: locale === "es" ? "es_AR" : "en_US",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
     },
   }
 }

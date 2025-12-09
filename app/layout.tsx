@@ -17,7 +17,16 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
   },
-
+  openGraph: {
+    images: [
+      {
+        url: "/Logos/PNG/GGD_Imagotipo PRINCIPAL-5.png",
+        width: 1200,
+        height: 630,
+        alt: "Ginkgo Devs Logo",
+      },
+    ],
+  },
 }
 
 export default function RootLayout({
@@ -26,11 +35,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/favicon.ico" />
-      </head>
-      <body className={inter.className}>{children}</body>
-    </html>
+    <>
+      {children}
+    </>
   )
 }

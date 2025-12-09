@@ -82,7 +82,7 @@ export default function Tools() {
       <div className="container mx-auto px-4">
         <ScrollAnimation>
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-heading">
               <span className="text-[#D4F57A]">{t("home.tools.title")}</span>
             </h2>
             <p className="text-[#F5F2EB]/80 text-lg max-w-2xl mx-auto text-balance">{t("home.tools.subtitle")}</p>
@@ -96,7 +96,7 @@ export default function Tools() {
               <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 h-full hover:bg-white/10 transition-all duration-300">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="p-2 rounded-lg bg-[#D4F57A] text-[#293B36]">{tech.icon}</div>
-                  <h3 className="text-xl font-semibold text-white">{tech.category}</h3>
+                  <h3 className="text-xl font-semibold text-white font-heading">{tech.category}</h3>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {tech.items.map((item) => (
@@ -180,7 +180,7 @@ export default function Tools() {
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-2 rounded-lg bg-[#D4F57A] text-[#293B36]">{technologies[activeCategory].icon}</div>
-                <h3 className="text-xl font-semibold text-white">{technologies[activeCategory].category}</h3>
+                <h3 className="text-xl font-semibold text-white font-heading">{technologies[activeCategory].category}</h3>
               </div>
               <div className="flex flex-wrap gap-2">
                 {technologies[activeCategory].items.map((item) => (

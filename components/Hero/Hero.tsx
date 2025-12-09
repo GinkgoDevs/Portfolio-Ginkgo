@@ -4,13 +4,18 @@ import { motion } from "framer-motion"
 import type React from "react"
 import { useInView } from "react-intersection-observer"
 import RotatingText from "./RotatingText"
-import FallingLeaves from "./FallingLeaves"
+import dynamic from "next/dynamic"
 import Navbar from "./Navbar"
 import Magnet from "./Magnet"
-import { useEffect, useState, useCallback, useRef } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useTranslation } from "@/contexts/TranslationContext"
-import { Lock, Unlock, ChevronDown } from "lucide-react"
+
+// Lazy load FallingLeaves para mejorar performance inicial
+const FallingLeaves = dynamic(() => import("./FallingLeaves"), {
+  ssr: false,
+  loading: () => null,
+})
 
 export default function Hero() {
   const { t } = useTranslation()
@@ -20,122 +25,22 @@ export default function Hero() {
   })
   const [isMobile, setIsMobile] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
-  const [isScrollLocked, setIsScrollLocked] = useState(true)
-  const [showLockButton, setShowLockButton] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  // Referencia para rastrear el estado real del scroll
-  const wasScrollLockedBeforeMenu = useRef(true)
-
-  // Añadir una función para aplicar clases CSS que bloqueen el desplazamiento
-  const applyScrollLock = useCallback((lock: boolean) => {
-    if (lock) {
-      document.body.classList.add("no-scroll")
-      document.documentElement.classList.add("no-scroll")
-      document.body.style.overflow = "hidden"
-      document.documentElement.style.overflow = "hidden"
-      // Forzar la posición de desplazamiento a 0
-      window.scrollTo(0, 0)
-    } else {
-      document.body.classList.remove("no-scroll")
-      document.documentElement.classList.remove("no-scroll")
-      document.body.style.overflow = "auto"
-      document.documentElement.style.overflow = "auto"
-      document.body.style.overflowX = "hidden"
-      document.documentElement.style.overflowX = "hidden"
-    }
-  }, [])
-
-  // Modificar la función toggleScrollLock para usar la nueva función
-  const toggleScrollLock = useCallback(() => {
-    setIsScrollLocked((prev) => !prev)
-
-    if (isScrollLocked) {
-      // Unlock scroll and scroll to services section
-      applyScrollLock(false)
-      const servicesSection = document.getElementById("services")
-      if (servicesSection) {
-        servicesSection.scrollIntoView({ behavior: "smooth" })
-      }
-    } else {
-      // Lock scroll and go back to hero
-      window.scrollTo({ top: 0, behavior: "smooth" })
-      // Pequeño retraso para aplicar el bloqueo después de que termine la animación
-      setTimeout(() => {
-        applyScrollLock(true)
-      }, 500)
-    }
-  }, [isScrollLocked, applyScrollLock])
-
-  // Modificar la función handleScroll para mostrar el botón de candado cuando se vuelve al Hero
-  const handleScroll = useCallback(() => {
-    const heroSection = document.getElementById("home")
-    if (heroSection) {
-      const heroRect = heroSection.getBoundingClientRect()
-      const isHeroFullyVisible = heroRect.top >= 0 && heroRect.bottom <= window.innerHeight
-
-      // Only show the lock button when the hero is fully visible and scroll is not locked
-      if (isHeroFullyVisible && !isScrollLocked) {
-        setShowLockButton(true)
-      } else {
-        setShowLockButton(false)
-      }
-    }
-  }, [isScrollLocked])
 
   // Manejar los cambios de estado del menú
   useEffect(() => {
     const handleMenuStateChange = (e: CustomEvent) => {
       const menuIsOpening = e.detail.isOpen
-
-      if (menuIsOpening) {
-        // Si el menú se está abriendo, guardar el estado actual del scroll
-        wasScrollLockedBeforeMenu.current = isScrollLocked
-        // El menú manejará el bloqueo del scroll
-        setIsMenuOpen(true)
-      } else {
-        // Si el menú se está cerrando, restaurar el estado del scroll
-        setIsMenuOpen(false)
-
-        // Esperar a que termine la animación del menú antes de restaurar el scroll
-        setTimeout(() => {
-          if (wasScrollLockedBeforeMenu.current) {
-            // Si estaba bloqueado antes, volver a bloquear
-            document.body.style.overflow = "hidden"
-          } else {
-            // Si no estaba bloqueado, mantenerlo desbloqueado
-            document.body.style.overflow = "auto"
-          }
-        }, 300) // Ajustar este tiempo según la duración de la animación del menú
-      }
+      setIsMenuOpen(menuIsOpening)
     }
 
-    // Añadir el event listener para el evento personalizado
     document.addEventListener("menuStateChange", handleMenuStateChange as EventListener)
 
     return () => {
       document.removeEventListener("menuStateChange", handleMenuStateChange as EventListener)
     }
-  }, [isScrollLocked])
-
-  // Añadir un event listener para detectar cuando el scroll se desbloquea desde el menú
-  useEffect(() => {
-    const handleScrollUnlocked = (e: CustomEvent) => {
-      if (e.detail.unlocked) {
-        setIsScrollLocked(false)
-        wasScrollLockedBeforeMenu.current = false
-      }
-    }
-
-    // Añadir el event listener para el evento personalizado
-    document.addEventListener("scrollUnlocked", handleScrollUnlocked as EventListener)
-
-    return () => {
-      document.removeEventListener("scrollUnlocked", handleScrollUnlocked as EventListener)
-    }
   }, [])
 
-  // Modificar el useEffect para usar la nueva función
   useEffect(() => {
     setIsMounted(true)
     const checkMobile = () => {
@@ -144,52 +49,20 @@ export default function Hero() {
     checkMobile()
     window.addEventListener("resize", checkMobile)
 
-    // Apply initial scroll lock on mobile
-    if (window.innerWidth < 768) {
-      applyScrollLock(isScrollLocked)
-    } else {
-      document.body.style.overflow = "auto" // Always enable scroll on desktop
-      document.documentElement.style.overflow = "auto"
-      document.body.style.overflowX = "hidden" // Mantener hidden solo para el eje X
-      document.documentElement.style.overflowX = "hidden"
-    }
-
-    // Add scroll event listener
-    window.addEventListener("scroll", handleScroll)
+    // Siempre permitir scroll natural
+    document.body.style.overflow = "auto"
+    document.documentElement.style.overflow = "auto"
+    document.body.style.overflowX = "hidden"
+    document.documentElement.style.overflowX = "hidden"
 
     return () => {
       window.removeEventListener("resize", checkMobile)
-      window.removeEventListener("scroll", handleScroll)
-      document.body.classList.remove("no-scroll")
-      document.documentElement.classList.remove("no-scroll")
-      document.body.style.overflow = "auto" // Reset on unmount
+      document.body.style.overflow = "auto"
       document.documentElement.style.overflow = "auto"
-      document.body.style.overflowX = "hidden" // Mantener hidden solo para el eje X
+      document.body.style.overflowX = "hidden"
       document.documentElement.style.overflowX = "hidden"
     }
-  }, [isScrollLocked, handleScroll, applyScrollLock])
-
-  // Añadir un efecto para restablecer el estado cuando se vuelve al Hero
-  useEffect(() => {
-    const checkIfInHero = () => {
-      if (window.scrollY < 50) {
-        // Si estamos en la parte superior de la página, mostrar el botón de candado
-        // pero solo si el scroll no está bloqueado
-        if (!isScrollLocked) {
-          setShowLockButton(true)
-        }
-      }
-    }
-
-    window.addEventListener("scroll", checkIfInHero)
-
-    // También verificar al montar el componente
-    checkIfInHero()
-
-    return () => {
-      window.removeEventListener("scroll", checkIfInHero)
-    }
-  }, [isScrollLocked])
+  }, [])
 
   // Function to handle smooth scrolling to sections
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -200,31 +73,19 @@ export default function Hero() {
     const targetElement = document.getElementById(targetId)
 
     if (targetElement) {
-      // Unlock scroll if it was locked
-      if (isScrollLocked) {
-        setIsScrollLocked(false)
-        wasScrollLockedBeforeMenu.current = false
-
-        // Aplicar cambios de desbloqueo inmediatamente
-        applyScrollLock(false)
-      }
-
       // Calculate offset to account for navbar height
       const navHeight = 80
       const elementPosition = targetElement.getBoundingClientRect().top
       const offsetPosition = elementPosition + window.pageYOffset - navHeight
 
-      // Pequeño retraso para asegurar que el desbloqueo se ha aplicado
-      setTimeout(() => {
-        // Smooth scroll to section with offset
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-        })
+      // Smooth scroll to section with offset
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      })
 
-        // Update URL without page reload
-        window.history.pushState(null, "", href)
-      }, 50)
+      // Update URL without page reload
+      window.history.pushState(null, "", href)
     }
   }
 
@@ -243,10 +104,10 @@ export default function Hero() {
       )}
       <Navbar />
 
-      <div className="relative z-10 flex flex-col justify-start md:justify-center items-center min-h-screen px-2 sm:px-4 md:px-16 lg:px-24 pt-16 md:pt-0 overflow-hidden">
+      <div className="relative z-10 flex flex-col justify-start md:justify-center items-center min-h-screen px-4 sm:px-6 md:px-16 lg:px-24 pt-16 md:pt-0 overflow-hidden">
         <div className="w-full max-w-7xl mt-20 md:mt-0">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-2 md:mb-4">
+            <h1 className="text-4xl sm:text-6xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-2 md:mb-4 font-heading">
               <span className="block mb-2 md:mb-0">{t("home.hero.title")}</span>
               <div className="flex flex-col md:flex-row justify-center items-center gap-2">
                 <span className="md:mr-2">{t("home.hero.titleSuffix")}</span>
@@ -266,7 +127,7 @@ export default function Hero() {
                 </div>
               </div>
             </h1>
-            <p className="text-base sm:text-lg md:text-2xl mt-4 md:mt-8 mb-4 md:mb-8 text-[#F5F2EB] max-w-2xl mx-auto px-4">
+            <p className="text-base sm:text-lg md:text-2xl mt-4 md:mt-8 mb-4 md:mb-8 text-[#F5F2EB]/90 max-w-2xl mx-auto px-4">
               {t("home.hero.subtitle")}
             </p>
             <ButtonWrapper padding={60} disabled={isMobile} magnetStrength={2}>
@@ -281,66 +142,10 @@ export default function Hero() {
                 </motion.button>
               </Link>
             </ButtonWrapper>
-            
+
           </div>
         </div>
       </div>
-
-      {/* Mobile scroll lock/unlock button - Centrado y alargado */}
-      {isMobile && !isMenuOpen && (
-        <div className="fixed bottom-0 left-0 right-0 z-40 flex justify-center items-center pb-6">
-          <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ delay: 1, duration: 0.5 }}
-            className="relative"
-          >
-            {isScrollLocked ? (
-              <motion.button
-                onClick={toggleScrollLock}
-                className="flex flex-col items-center justify-center bg-[#D4F57A] text-[#293B36] px-4 py-3 rounded-full shadow-lg"
-                whileTap={{ scale: 0.95 }}
-                style={{
-                  boxShadow: "0 4px 20px rgba(212, 245, 122, 0.3)",
-                }}
-              >
-                <Unlock size={22} className="mb-1" strokeWidth={2.5} />
-                <motion.div
-                  animate={{
-                    y: [0, 4, 0],
-                    opacity: [1, 0.8, 1],
-                  }}
-                  transition={{
-                    repeat: Number.POSITIVE_INFINITY,
-                    duration: 1.5,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <ChevronDown size={18} strokeWidth={2.5} />
-                </motion.div>
-                <span className="sr-only">{t("home.hero.unlockScreen")}</span>
-              </motion.button>
-            ) : (
-              showLockButton && (
-                <motion.button
-                  onClick={toggleScrollLock}
-                  className="flex items-center justify-center bg-[#D4F57A] text-[#293B36] w-14 h-14 rounded-full shadow-lg"
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  style={{
-                    boxShadow: "0 4px 20px rgba(212, 245, 122, 0.3)",
-                  }}
-                >
-                  <Lock size={22} strokeWidth={2.5} />
-                  <span className="sr-only">{t("home.hero.lockScreen")}</span>
-                </motion.button>
-              )
-            )}
-          </motion.div>
-        </div>
-      )}
 
       {/* Gradient transition at the bottom */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-[#293B36] pointer-events-none" />

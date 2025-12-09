@@ -66,33 +66,33 @@ export default function Footer() {
   const links =
     locale === "en"
       ? [
-          {
-            title: "Services",
-            items: ["Web Development", "Optimization and Maintenance", "Digital Strategies"],
-          },
-          {
-            title: "Company",
-            items: ["About Us", "Projects"],
-          },
-          {
-            title: "Resources",
-            items: ["Contact"],
-          },
-        ]
+        {
+          title: "Services",
+          items: ["Web Development", "Optimization and Maintenance", "Digital Strategies"],
+        },
+        {
+          title: "Company",
+          items: ["About Us", "Projects"],
+        },
+        {
+          title: "Resources",
+          items: ["Contact"],
+        },
+      ]
       : [
-          {
-            title: "Servicios",
-            items: ["Desarrollo Web", "Optimización y Mantenimiento", "Estrategias Digitales"],
-          },
-          {
-            title: "Empresa",
-            items: ["Nosotros", "Proyectos"],
-          },
-          {
-            title: "Recursos",
-            items: ["Contacto"],
-          },
-        ]
+        {
+          title: "Servicios",
+          items: ["Desarrollo Web", "Optimización y Mantenimiento", "Estrategias Digitales"],
+        },
+        {
+          title: "Empresa",
+          items: ["Nosotros", "Proyectos"],
+        },
+        {
+          title: "Recursos",
+          items: ["Contacto"],
+        },
+      ]
 
   // Modificar la función getLinkHref para que funcione con ambos idiomas
   const getLinkHref = (item: string) => {
@@ -158,7 +158,7 @@ export default function Footer() {
           <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-3 gap-8">
             {links.map((section) => (
               <div key={section.title}>
-                <h3 className="text-[#D4F57A] font-semibold mb-4">{section.title}</h3>
+                <h3 className="text-[#D4F57A] font-semibold mb-4 font-heading">{section.title}</h3>
                 <ul className="space-y-2">
                   {section.items.map((item) => (
                     <li key={item}>
@@ -179,7 +179,7 @@ export default function Footer() {
           {/* Contact Info - 2 columns */}
           <div className="lg:col-span-2">
             {/* Reemplazar el título de la sección de contacto con texto condicional según el locale */}
-            <h3 className="text-[#D4F57A] font-semibold mb-4">
+            <h3 className="text-[#D4F57A] font-semibold mb-4 font-heading">
               {locale === "en" ? "Contact Information" : "Información de contacto"}
             </h3>
             <ul className="space-y-4">
@@ -244,7 +244,7 @@ export default function Footer() {
                 >
                   {/* Modificar las secciones que muestran las claves de traducción directamente
                   Reemplazar los títulos de sección */}
-                  <h3 className="text-[#D4F57A] font-semibold text-sm">{section.title}</h3>
+                  <h3 className="text-[#D4F57A] font-semibold text-sm font-heading">{section.title}</h3>
                   {expandedSection === section.title ? (
                     <ChevronUp className="w-4 h-4 text-[#D4F57A]" aria-hidden="true" />
                   ) : (

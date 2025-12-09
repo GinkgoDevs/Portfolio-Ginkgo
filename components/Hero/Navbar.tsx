@@ -29,11 +29,11 @@ export default function Navbar() {
 
   // Define menu items with translations
   const menuItems = [
-    { name: t("home.navbar.services"), href: "#services" },
-    { name: t("home.navbar.projects"), href: "#projects" },
-    { name: t("home.navbar.about"), href: "#about-us" },
-    { name: t("home.navbar.tools"), href: "#tools" },
-    { name: t("home.navbar.contact"), href: "#contact" },
+    { name: t("home.navbar.services"), href: `/${locale}/#services` },
+    { name: t("home.navbar.projects"), href: `/${locale}/#projects` },
+    { name: t("home.navbar.about"), href: `/${locale}/#about-us` },
+    { name: t("home.navbar.tools"), href: `/${locale}/#tools` },
+    { name: t("home.navbar.contact"), href: `/${locale}/#contact` },
   ]
 
   const socialLinks = [
@@ -118,13 +118,17 @@ export default function Navbar() {
 
   // Modificar la función handleSmoothScroll para que no afecte al estado de FloatingActionButtons
   const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault()
+    // Extraer el ID de la sección del href si existe
+    let targetId = href
+    if (href.includes("#")) {
+      targetId = href.split("#")[1]
+    }
 
-    // Extraer el ID de la sección del href
-    const targetId = href.startsWith("#") ? href.substring(1) : href
     const targetElement = document.getElementById(targetId)
 
     if (targetElement) {
+      e.preventDefault()
+
       // Desbloquear el scroll si está bloqueado
       // Esto asegura que podamos navegar a la sección seleccionada
       document.body.classList.remove("no-scroll")
@@ -151,11 +155,11 @@ export default function Navbar() {
 
       // Actualizar la URL sin recargar la página
       window.history.pushState(null, "", href)
+    }
 
-      // Cerrar el menú si está abierto
-      if (isOpen) {
-        closeMenu()
-      }
+    // Cerrar el menú si está abierto
+    if (isOpen) {
+      closeMenu()
     }
   }
 
@@ -181,9 +185,8 @@ export default function Navbar() {
     <MenuContext.Provider value={{ isMenuOpen: isOpen }}>
       {/* Main Navbar */}
       <nav
-        className={`fixed w-full z-40 transition-all duration-300 ${
-          isScrolled ? "bg-[#293B36]/80 backdrop-blur-md" : "bg-[#293B36]"
-        }`}
+        className={`fixed w-full z-40 transition-all duration-300 ${isScrolled ? "bg-[#293B36]/80 backdrop-blur-md" : "bg-[#293B36]"
+          }`}
         style={{
           boxShadow: isScrolled ? "0 4px 20px rgba(0, 0, 0, 0.1)" : "none",
         }}
@@ -199,7 +202,7 @@ export default function Navbar() {
                   width={200}
                   height={129}
                   priority
-                  className="w-42 sm:w-40 md:w-[250px]"
+                  className="w-32 sm:w-40 md:w-[220px] lg:w-[250px] transition-all duration-300"
                 />
               </Link>
             </div>
@@ -264,7 +267,7 @@ export default function Navbar() {
                         <Link
                           href={item.href}
                           onClick={(e) => handleSmoothScroll(e, item.href)}
-                          className="text-[#293B36] text-lg font-medium hover:text-[#293B36]/70 transition-colors block w-full py-1"
+                          className="text-[#293B36] text-lg font-bold font-heading hover:text-[#293B36]/70 transition-colors block w-full py-1"
                         >
                           {item.name}
                         </Link>
@@ -283,17 +286,15 @@ export default function Navbar() {
                       <span className="text-[#293B36] text-sm">{t("accessibility.highContrast")}</span>
                       <button
                         onClick={toggleHighContrast}
-                        className={`relative w-10 h-5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#293B36] ${
-                          highContrast ? "bg-[#293B36]" : "bg-[#293B36]/20"
-                        }`}
+                        className={`relative w-10 h-5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#293B36] ${highContrast ? "bg-[#293B36]" : "bg-[#293B36]/20"
+                          }`}
                         aria-label={highContrast ? "Desactivar alto contraste" : "Activar alto contraste"}
                         aria-pressed={highContrast}
                         role="switch"
                       >
                         <span
-                          className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-[#D4F57A] transition-transform ${
-                            highContrast ? "translate-x-5" : "translate-x-0"
-                          }`}
+                          className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-[#D4F57A] transition-transform ${highContrast ? "translate-x-5" : "translate-x-0"
+                            }`}
                         />
                       </button>
                     </div>

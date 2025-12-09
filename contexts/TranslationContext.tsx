@@ -3,7 +3,7 @@
 import { createContext, useContext, type ReactNode } from "react"
 
 type TranslationContextType = {
-  t: (key: string) => string
+  t: (key: string, replacements?: Record<string, string>) => string
   locale: string
 }
 

@@ -63,7 +63,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
       variants={variants}
       onMouseEnter={() => !isMobile && setIsHovered(true)}
       onMouseLeave={() => !isMobile && setIsHovered(false)}
-      className="relative overflow-hidden rounded-2xl transition-all duration-500 bg-white/10 backdrop-blur-sm text-white hover:bg-[#D4F57A]/10 h-[320px] flex flex-col"
+      className="relative overflow-hidden rounded-2xl transition-all duration-500 bg-white/10 backdrop-blur-sm text-white hover:bg-[#D4F57A]/10 h-[320px] flex flex-col border border-white/10"
       data-index={index}
       style={{
         boxShadow: isHighlighted ? "0 10px 25px rgba(212, 245, 122, 0.15)" : "none",
@@ -78,8 +78,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
         </div>
 
         <div className="flex flex-col flex-grow">
-          <h3 className="text-xl md:text-2xl font-bold mb-3 min-h-[3.5rem] flex items-start leading-tight">{title}</h3>
-          <p className="text-[#F5F2EB]/80 mb-6 flex-grow leading-relaxed">{description}</p>
+          <h3 className="text-xl md:text-2xl font-bold mb-3 min-h-[3.5rem] flex items-start leading-tight font-heading">{title}</h3>
+          <p className="text-[#F5F2EB]/90 mb-6 flex-grow leading-relaxed">{description}</p>
         </div>
 
         <div className="mt-auto">
@@ -205,8 +205,8 @@ export default function Services() {
       <div className="container mx-auto px-4 relative z-10" ref={containerRef}>
         <ScrollAnimation>
           <div className="text-center mb-16 pt-16 md:pt-24">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">{t("home.services.title")}</h2>
-            <p className="text-[#F5F2EB]/80 max-w-2xl mx-auto text-lg">{t("home.services.subtitle")}</p>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-heading">{t("home.services.title")}</h2>
+            <p className="text-[#F5F2EB]/90 max-w-2xl mx-auto text-lg">{t("home.services.subtitle")}</p>
           </div>
         </ScrollAnimation>
 
@@ -225,7 +225,7 @@ export default function Services() {
           ))}
         </div>
 
-        
+
       </div>
     </section>
   )

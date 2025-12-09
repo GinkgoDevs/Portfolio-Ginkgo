@@ -33,7 +33,7 @@ const guarantees = [
 ]
 
 export default function CTASection() {
-    const { t } = useTranslation()
+  const { t } = useTranslation()
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -61,7 +61,7 @@ export default function CTASection() {
               {t("home.contact.ctaBadge")}
             </Badge>
 
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 font-heading">
               {t("home.contact.title")}
               <span className="text-[#D4F57A] block">{t("home.contact.subtitle")}</span>
             </h2>
@@ -121,14 +121,14 @@ export default function CTASection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-center mb-12"
         >
-          <h3 className="text-3xl font-bold text-[#293B36] mb-4">{t("home.contact.finaltexttitle")}</h3>
+          <h3 className="text-3xl font-bold text-[#293B36] mb-4 font-heading">{t("home.contact.finaltexttitle")}</h3>
           <p className="text-gray-600 max-w-2xl mx-auto">
             {t("home.contact.finaltextdesc")}
           </p>
         </motion.div>
 
-        
-       
+
+
       </div>
     </section>
   )
