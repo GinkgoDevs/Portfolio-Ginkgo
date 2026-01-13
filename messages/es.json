@@ -65,6 +65,7 @@
           "leads": "Conseguir Más Clientes",
           "brand": "Mejorar Imagen de Marca"
         },
+        "stepCounter": "Paso {current} de {total}",
         "next": "Siguiente",
         "finish": "Solicitar Auditoría en WhatsApp",
         "back": "Atrás"
@@ -106,7 +107,18 @@
     },
     "projects": {
       "title": "Nuestros Proyectos",
-      "scrollInstructions": "Desliza o arrastra para navegar por los proyectos"
+      "subtitle": "Innovación y calidad en cada línea de código",
+      "scrollInstructions": "Desliza o arrastra para navegar por los proyectos",
+      "viewProject": "Ver Proyecto",
+      "loadMore": "Cargar más proyectos",
+      "viewAll": "Ver todos los proyectos",
+      "categories": {
+        "all": "Todos",
+        "next": "Next.js / React",
+        "wordpress": "WordPress",
+        "shopify": "Shopify",
+        "ai": "IA / Machine Learning"
+      }
     },
     "contact": {
       "ctaBadge": "¿Listo para empezar?",
@@ -124,6 +136,8 @@
       "errorDesc": "Hubo un problema al enviar tu mensaje. Por favor, intenta nuevamente.",
       "whatsapp": "WhatsApp",
       "scheduleCall": "Agendar una videollamada",
+      "openMenu": "Abrir menú de contacto",
+      "closeMenu": "Cerrar menú de contacto",
       "indicatorcta1": "Consulta gratuita",
       "indicatorcta2": "Sin compromiso",
       "indicatorcta3": "Respuesta en 24hs",

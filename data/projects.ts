@@ -1,16 +1,327 @@
 export const projects = [
   {
+    id: 8,
+    title: "Ale Ducca Cristales - Campus",
+    titleEs: "Ale Ducca Cristales - Campus",
+    description: "A next-generation Full Stack educational platform using NestJS and Next.js 15.",
+    descriptionEs: "Plataforma educativa Full Stack de última generación con NestJS y Next.js 15.",
+    image: "/Projects/aleducca.png",
+    category: "next",
+    url: "https://alejandraduccacristales.com",
+    overview:
+      "Una plataforma educativa que compite en calidad técnica con grandes productos SaaS, combinando lo mejor del mundo empresarial (NestJS) con la vanguardia del frontend (Next.js 15, React 19).",
+    overviewEn:
+      "An educational platform that competes in technical quality with major SaaS products, combining the best of the enterprise world (NestJS) with the bleeding edge of frontend (Next.js 15, React 19).",
+    process: {
+      planning: "Definimos una arquitectura modular y requisitos de seguridad de grado bancario.",
+      planningEn: "Defined a modular architecture and bank-grade security requirements.",
+      design: "Diseño moderno utilizando Tailwind CSS v4, Radix UI y Framer Motion para una experiencia premium.",
+      designEn: "Modern design using Tailwind CSS v4, Radix UI, and Framer Motion for a premium experience.",
+      development: "Implementación robusta con NestJS 11 para el backend y Next.js 15 con Server Components para el frontend.",
+      developmentEn: "Robust implementation with NestJS 11 for the backend and Next.js 15 with Server Components for the frontend.",
+      deployment: "Infraestructura escalable preparada para alto rendimiento.",
+      deploymentEn: "Scalable infrastructure prepared for high performance.",
+    },
+    technologies: [
+      "Next.js 15",
+      "NestJS 11",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS 4",
+      "PostgreSQL",
+      "MercadoPago",
+      "Puppeteer",
+      "Zustand",
+      "TanStack Query",
+    ],
+    keyFeatures: [
+      "Plataforma Educativa Completa (Cursos, Lecciones, Progreso)",
+      "E-commerce Integrado con MercadoPago",
+      "Certificación Automática (Generación de PDF)",
+      "Sistema de Comunidad y Comentarios",
+      "Blog y CMS Integrado",
+    ],
+    keyFeaturesEn: [
+      "Complete Educational Platform (Courses, Lessons, Progress)",
+      "Integrated E-commerce with MercadoPago",
+      "Automatic Certification (PDF Generation)",
+      "Community and Comment System",
+      "Integrated Blog and CMS",
+    ],
+    challenges: [
+      {
+        title: "Seguridad y Autenticación Avanzada",
+        titleEn: "Advanced Security & Authentication",
+        description:
+          "Implementar un sistema de autenticación seguro que no solo use JWT, sino que maneje sesiones de forma robusta.",
+        descriptionEn:
+          "Implementing a secure authentication system that not only uses JWT but handles sessions robustly.",
+        solution:
+          "Implementamos OAuth con Google y autenticación tradicional con hashing Argon2. Desarrollamos un sistema de Refresh Tokens con rotación y revocación para máxima seguridad.",
+        solutionEn:
+          "Implemented OAuth with Google and traditional authentication with Argon2 hashing. Developed a Refresh Token system with rotation and revocation for maximum security.",
+      },
+      {
+        title: "Generación Dinámica de Certificados",
+        titleEn: "Dynamic Certificate Generation",
+        description:
+          "Generar PDFs de certificados al vuelo de manera eficiente y compatible con diferentes entornos de despliegue.",
+        descriptionEn:
+          "Generating certificate PDFs on the fly efficiently and compatibly with different deployment environments.",
+        solution:
+          "Utilizamos Puppeteer (Chrome headless) con lógica inteligente para detectar el entorno (Linux/Windows) y usar el ejecutable correcto, optimizando recursos.",
+        solutionEn:
+          "Used Puppeteer (headless Chrome) with smart logic to detect the environment (Linux/Windows) and use the correct executable, optimizing resources.",
+      },
+      {
+        title: "Pagos Resilientes",
+        titleEn: "Resilient Payments",
+        description:
+          "Manejar los errores y estados inciertos de las pasarelas de pago para asegurar que ninguna transacción se pierda.",
+        descriptionEn:
+          "Handling errors and uncertain states of payment gateways to ensure no transaction is lost.",
+        solution:
+          "Integramos MercadoPago con lógica de reintentos automáticos y verificación de estado para manejar errores del entorno sandbox y producción.",
+        solutionEn:
+          "Integrated MercadoPago with automatic retry logic and status verification to handle sandbox and production environment errors.",
+      },
+    ],
+    duration: "4 meses",
+    durationEn: "4 months",
+    team: "1 desarrollador",
+    teamEn: "1 developer",
+    role: "Full Stack Developer",
+    roleEn: "Full Stack Developer",
+    year: "2025",
+    strategies: [
+      {
+        title: "Arquitectura Modular",
+        titleEn: "Modular Architecture",
+        description: "Uso de NestJS Modules para separar dominios y facilitar la escalabilidad.",
+        descriptionEn: "Use of NestJS Modules to separate domains and facilitate scalability."
+      },
+      {
+        title: "Seguridad en Capas",
+        titleEn: "Layered Security",
+        description: "Implementación de múltiples barreras de seguridad (Auth Guards, Zod validation, Sanitization).",
+        descriptionEn: "Implementation of multiple security barriers (Auth Guards, Zod validation, Sanitization)."
+      }
+    ],
+    developmentTools: ["VS Code", "Insomnia", "Docker", "Figma", "GitHub Actions"]
+  },
+  {
+    id: 9,
+    title: "Shok360 - Media Platform",
+    titleEs: "Shok360 - Plataforma Multimedia",
+    description:
+      "A Headless WordPress media platform powered by GraphQL for high-performance content delivery.",
+    descriptionEs:
+      "Plataforma multimedia basada en WordPress Headless con GraphQL para entrega de contenido de alto rendimiento.",
+    image: "/Projects/shok360.jpg",
+    category: ["next", "wordpress"],
+    url: "https://www.shok360.com",
+
+    overview:
+      "A digital media platform built with a Headless WordPress architecture, decoupling content management from the frontend to enable scalability, performance and multi-channel distribution.",
+    overviewEs:
+      "Plataforma de medios digitales construida con una arquitectura WordPress Headless, desacoplando la gestión de contenidos del frontend para permitir escalabilidad, rendimiento y distribución multicanal.",
+
+    process: {
+      planning:
+        "Definición de una arquitectura desacoplada para permitir consumo de contenido desde múltiples canales.",
+      planningEn:
+        "Definition of a decoupled architecture to enable content consumption across multiple channels.",
+
+      design:
+        "Diseño enfocado en consumo rápido de contenido, programas y streaming en tiempo real.",
+      designEn:
+        "Design focused on fast content consumption, shows and real-time streaming.",
+
+      development:
+        "Configuración de WordPress como CMS Headless utilizando WPGraphQL y consumo de datos desde el frontend.",
+      developmentEn:
+        "Configured WordPress as a Headless CMS using WPGraphQL and frontend data consumption.",
+
+      deployment:
+        "Infraestructura preparada para alto tráfico y consumo intensivo de contenido multimedia.",
+      deploymentEn:
+        "Infrastructure prepared for high traffic and intensive multimedia consumption.",
+    },
+
+    technologies: [
+      "WordPress Headless",
+      "WPGraphQL",
+      "GraphQL",
+      "JavaScript",
+      "Streaming Audio",
+      "REST / GraphQL APIs"
+    ],
+
+    keyFeatures: [
+      "WordPress desacoplado como CMS",
+      "Consumo de contenido vía GraphQL",
+      "Radio en Vivo",
+      "Programas y Shows Dinámicos",
+      "Sección de Noticias Administrable",
+      "Arquitectura preparada para multicanal"
+    ],
+    keyFeaturesEn: [
+      "Decoupled WordPress CMS",
+      "Content consumption via GraphQL",
+      "Live Radio Streaming",
+      "Dynamic Shows and Programs",
+      "Admin-managed News Section",
+      "Multi-channel Ready Architecture"
+    ],
+
+    challenges: [
+      {
+        title: "Desacople Total del CMS",
+        titleEn: "Full CMS Decoupling",
+        description:
+          "Separar completamente WordPress del frontend sin perder flexibilidad editorial.",
+        descriptionEn:
+          "Fully decoupling WordPress from the frontend without losing editorial flexibility.",
+        solution:
+          "Uso de WPGraphQL para exponer el contenido de forma estructurada y tipada.",
+        solutionEn:
+          "Used WPGraphQL to expose content in a structured and typed manner.",
+      },
+      {
+        title: "Performance en Contenido Multimedia",
+        titleEn: "Multimedia Performance",
+        description:
+          "Servir contenido dinámico y streaming sin afectar tiempos de carga.",
+        descriptionEn:
+          "Serving dynamic content and streaming without impacting load times.",
+        solution:
+          "Optimización de queries GraphQL y cacheo a nivel de infraestructura.",
+        solutionEn:
+          "Optimized GraphQL queries and infrastructure-level caching.",
+      },
+    ],
+
+    duration: "2 meses",
+    durationEn: "2 months",
+
+    team: "3 desarrolladores",
+    teamEn: "3 developers",
+
+    role: "Full Stack Developer",
+    roleEn: "Full Stack Developer",
+
+    year: "2025",
+
+    strategies: [
+      {
+        title: "Arquitectura Headless",
+        titleEn: "Headless Architecture",
+        description:
+          "Separación total entre CMS y frontend para mayor escalabilidad y mantenimiento.",
+        descriptionEn:
+          "Complete separation between CMS and frontend for scalability and maintainability.",
+      },
+      {
+        title: "GraphQL First",
+        titleEn: "GraphQL First",
+        description:
+          "Uso de GraphQL como contrato único de datos entre WordPress y el frontend.",
+        descriptionEn:
+          "Using GraphQL as the single data contract between WordPress and frontend.",
+      },
+    ],
+
+    developmentTools: [
+      "WordPress",
+      "WPGraphQL",
+      "GraphiQL",
+      "Docker",
+      "VS Code"
+    ]
+  },
+  {
+    id: 7,
+    title: "Hormigón Conecta - Quoting Platform",
+    titleEs: "Hormigón Conecta - Plataforma de Cotizaciones",
+    description: "B2B platform for concrete quoting and order management, developed with Next.js for optimal performance and user experience.",
+    descriptionEs:
+      "Plataforma B2B para la cotización y gestión de pedidos de hormigón, desarrollada con Next.js para un rendimiento y experiencia de usuario óptimos.",
+    image: "/Projects/HormigonConecta.png",
+    category: "next", // Cambiado de 'shopify' a 'next'
+    url: "https://www.hormigonconecta.com", // Actualizado desde HormigonConecta.csv
+    overview: "Una aplicación de alto rendimiento para conectar proveedores y compradores de hormigón, utilizando el ecosistema moderno de React y Next.js.",
+    overviewEn: "A high-performance application to connect concrete suppliers and buyers, utilizing the modern React and Next.js ecosystem.",
+    process: {
+      planning:
+        "Definimos la lógica de cotización y los requisitos de la interfaz de usuario B2B en talleres con el cliente.",
+      planningEn: "Defined quoting logic and B2B user interface requirements in workshops with the client.",
+      design: "Diseño de wireframes y prototipos centrándose en la usabilidad del flujo de cotización complejo.",
+      designEn: "Wireframing and prototyping focusing on the usability of the complex quoting flow.",
+      development:
+        "Implementado con Next.js, React y PHP para la lógica de backend. Se usó Tailwind CSS y Radix UI/shadcn/ui para componentes de interfaz.", // Actualizado
+      developmentEn: "Implemented using Next.js, React, and PHP for backend logic. Tailwind CSS and Radix UI/shadcn/ui were used for interface components.", // Actualizado
+      deployment: "Despliegue en Vercel, configurando un entorno de servidor robusto para manejar la lógica de negocio con PHP.",
+      deploymentEn: "Deployed on Vercel, setting up a robust server environment to handle business logic with PHP.",
+    },
+    technologies: ["React", "Next.js", "Webpack", "Lucide", "Radix UI", "Tailwind CSS", "shadcn/ui", "PHP"], // Actualizado desde HormigonConecta.csv
+    keyFeatures: [
+      "Calculadora de cotizaciones en tiempo real",
+      "Diseño modular con Radix UI/shadcn/ui",
+      "Gestión de usuarios B2B",
+      "Alta velocidad de carga con Next.js",
+      "Integración de backend con PHP",
+    ],
+    keyFeaturesEn: [
+      "Real-time quoting calculator",
+      "Modular design with Radix UI/shadcn/ui",
+      "B2B user management",
+      "High load speed with Next.js",
+      "Backend integration with PHP",
+    ],
+    challenges: [
+      {
+        title: "Manejo de Lógica de Negocio Compleja",
+        titleEn: "Handling Complex Business Logic",
+        description:
+          "La lógica de cotización, que dependía de múltiples variables (ubicación, proveedor, volumen, tipo de hormigón), era compleja de modelar y mantener.",
+        descriptionEn: "The quoting logic, which depended on multiple variables (location, supplier, volume, concrete type), was complex to model and maintain.",
+        solution:
+          "Se diseñó un sistema de servicios de backend en PHP robusto para aislar y gestionar la lógica de negocio, y se comunicó con el front-end de Next.js mediante una API RESTful limpia.",
+        solutionEn:
+          "A robust PHP backend services system was designed to isolate and manage the business logic, communicating with the Next.js front-end via a clean RESTful API.",
+      },
+      {
+        title: "Consistencia de la Interfaz B2B",
+        titleEn: "B2B Interface Consistency",
+        description:
+          "Asegurar una interfaz de usuario coherente y reutilizable para el panel de administración B2B.",
+        descriptionEn: "Ensuring a consistent and reusable user interface for the B2B administration panel.",
+        solution:
+          "La adopción de Radix UI y shadcn/ui junto con Tailwind CSS permitió construir un sistema de diseño sólido y componentes reutilizables de alta calidad.",
+        solutionEn:
+          "The adoption of Radix UI and shadcn/ui along with Tailwind CSS allowed for building a solid design system and high-quality reusable components.",
+      },
+    ],
+    duration: "2 meses",
+    durationEn: "2 months",
+    team: "1 desarrollador",
+    teamEn: "1 developer",
+    role: "Desarrollo completo",
+    roleEn: "Complete development",
+    year: "2025",
+  },
+  {
     id: 1,
     title: "Bauketing AI",
     titleEs: "Plataforma de Clonación Digital",
-    description: "A modern e-commerce solution with advanced features for a growing online retailer.",
+    description: "Innovative AI digital cloning platform for automated content generation.",
     descriptionEs: "Una solución moderna de clonacion digital para generar contenido.",
     image: "/Projects/Bauketing.png",
     category: "next",
     url: "https://bauketing-ia-ginkgo-devs-projects.vercel.app/",
     overview:
-      "Una solución moderna de comercio electrónico con características avanzadas para un minorista en línea en crecimiento.",
-    overviewEn: "A modern e-commerce solution with advanced features for a growing online retailer.",
+      "Una plataforma innovadora que permite la creación de contenido automatizado a través de la clonación digital con Inteligencia Artificial.",
+    overviewEn: "An innovative platform allowing for automated content creation through AI digital cloning.",
     process: {
       planning: "Definimos historias de usuario y requisitos técnicos a través de talleres colaborativos.",
       planningEn: "Defined user stories and technical requirements through collaborative workshops.",
@@ -446,186 +757,4 @@ export const projects = [
     roleEn: "Complete development",
     year: "2024",
   },
-  {
-    id: 7,
-    title: "Hormigón Conecta - Quoting Platform",
-    titleEs: "Hormigón Conecta - Plataforma de Cotizaciones",
-    description: "B2B platform for concrete quoting and order management, developed with Next.js for optimal performance and user experience.",
-    descriptionEs:
-      "Plataforma B2B para la cotización y gestión de pedidos de hormigón, desarrollada con Next.js para un rendimiento y experiencia de usuario óptimos.",
-    image: "/Projects/HormigonConecta.png",
-    category: "next", // Cambiado de 'shopify' a 'next'
-    url: "https://www.hormigonconecta.com", // Actualizado desde HormigonConecta.csv
-    overview: "Una aplicación de alto rendimiento para conectar proveedores y compradores de hormigón, utilizando el ecosistema moderno de React y Next.js.",
-    overviewEn: "A high-performance application to connect concrete suppliers and buyers, utilizing the modern React and Next.js ecosystem.",
-    process: {
-      planning:
-        "Definimos la lógica de cotización y los requisitos de la interfaz de usuario B2B en talleres con el cliente.",
-      planningEn: "Defined quoting logic and B2B user interface requirements in workshops with the client.",
-      design: "Diseño de wireframes y prototipos centrándose en la usabilidad del flujo de cotización complejo.",
-      designEn: "Wireframing and prototyping focusing on the usability of the complex quoting flow.",
-      development:
-        "Implementado con Next.js, React y PHP para la lógica de backend. Se usó Tailwind CSS y Radix UI/shadcn/ui para componentes de interfaz.", // Actualizado
-      developmentEn: "Implemented using Next.js, React, and PHP for backend logic. Tailwind CSS and Radix UI/shadcn/ui were used for interface components.", // Actualizado
-      deployment: "Despliegue en Vercel, configurando un entorno de servidor robusto para manejar la lógica de negocio con PHP.",
-      deploymentEn: "Deployed on Vercel, setting up a robust server environment to handle business logic with PHP.",
-    },
-    technologies: ["React", "Next.js", "Webpack", "Lucide", "Radix UI", "Tailwind CSS", "shadcn/ui", "PHP"], // Actualizado desde HormigonConecta.csv
-    keyFeatures: [
-      "Calculadora de cotizaciones en tiempo real",
-      "Diseño modular con Radix UI/shadcn/ui",
-      "Gestión de usuarios B2B",
-      "Alta velocidad de carga con Next.js",
-      "Integración de backend con PHP",
-    ],
-    keyFeaturesEn: [
-      "Real-time quoting calculator",
-      "Modular design with Radix UI/shadcn/ui",
-      "B2B user management",
-      "High load speed with Next.js",
-      "Backend integration with PHP",
-    ],
-    challenges: [
-      {
-        title: "Manejo de Lógica de Negocio Compleja",
-        titleEn: "Handling Complex Business Logic",
-        description:
-          "La lógica de cotización, que dependía de múltiples variables (ubicación, proveedor, volumen, tipo de hormigón), era compleja de modelar y mantener.",
-        descriptionEn: "The quoting logic, which depended on multiple variables (location, supplier, volume, concrete type), was complex to model and maintain.",
-        solution:
-          "Se diseñó un sistema de servicios de backend en PHP robusto para aislar y gestionar la lógica de negocio, y se comunicó con el front-end de Next.js mediante una API RESTful limpia.",
-        solutionEn:
-          "A robust PHP backend services system was designed to isolate and manage the business logic, communicating with the Next.js front-end via a clean RESTful API.",
-      },
-      {
-        title: "Consistencia de la Interfaz B2B",
-        titleEn: "B2B Interface Consistency",
-        description:
-          "Asegurar una interfaz de usuario coherente y reutilizable para el panel de administración B2B.",
-        descriptionEn: "Ensuring a consistent and reusable user interface for the B2B administration panel.",
-        solution:
-          "La adopción de Radix UI y shadcn/ui junto con Tailwind CSS permitió construir un sistema de diseño sólido y componentes reutilizables de alta calidad.",
-        solutionEn:
-          "The adoption of Radix UI and shadcn/ui along with Tailwind CSS allowed for building a solid design system and high-quality reusable components.",
-      },
-    ],
-    duration: "2 meses",
-    durationEn: "2 months",
-    team: "1 desarrollador",
-    teamEn: "1 developer",
-    role: "Desarrollo completo",
-    roleEn: "Complete development",
-    year: "2025",
-  },
-  {
-    id: 8,
-    title: "Ale Ducca Cristales - Campus",
-    titleEs: "Ale Ducca Cristales - Campus",
-    description: "A next-generation Full Stack educational platform using NestJS and Next.js 15.",
-    descriptionEs: "Plataforma educativa Full Stack de última generación con NestJS y Next.js 15.",
-    image: "/Projects/aleducca.png",
-    category: "next",
-    url: "https://aleduccacristales.site",
-    overview:
-      "Una plataforma educativa que compite en calidad técnica con grandes productos SaaS, combinando lo mejor del mundo empresarial (NestJS) con la vanguardia del frontend (Next.js 15, React 19).",
-    overviewEn:
-      "An educational platform that competes in technical quality with major SaaS products, combining the best of the enterprise world (NestJS) with the bleeding edge of frontend (Next.js 15, React 19).",
-    process: {
-      planning: "Definimos una arquitectura modular y requisitos de seguridad de grado bancario.",
-      planningEn: "Defined a modular architecture and bank-grade security requirements.",
-      design: "Diseño moderno utilizando Tailwind CSS v4, Radix UI y Framer Motion para una experiencia premium.",
-      designEn: "Modern design using Tailwind CSS v4, Radix UI, and Framer Motion for a premium experience.",
-      development: "Implementación robusta con NestJS 11 para el backend y Next.js 15 con Server Components para el frontend.",
-      developmentEn: "Robust implementation with NestJS 11 for the backend and Next.js 15 with Server Components for the frontend.",
-      deployment: "Infraestructura escalable preparada para alto rendimiento.",
-      deploymentEn: "Scalable infrastructure prepared for high performance.",
-    },
-    technologies: [
-      "Next.js 15",
-      "NestJS 11",
-      "React 19",
-      "TypeScript",
-      "Tailwind CSS 4",
-      "PostgreSQL",
-      "MercadoPago",
-      "Puppeteer",
-      "Zustand",
-      "TanStack Query",
-    ],
-    keyFeatures: [
-      "Plataforma Educativa Completa (Cursos, Lecciones, Progreso)",
-      "E-commerce Integrado con MercadoPago",
-      "Certificación Automática (Generación de PDF)",
-      "Sistema de Comunidad y Comentarios",
-      "Blog y CMS Integrado",
-    ],
-    keyFeaturesEn: [
-      "Complete Educational Platform (Courses, Lessons, Progress)",
-      "Integrated E-commerce with MercadoPago",
-      "Automatic Certification (PDF Generation)",
-      "Community and Comment System",
-      "Integrated Blog and CMS",
-    ],
-    challenges: [
-      {
-        title: "Seguridad y Autenticación Avanzada",
-        titleEn: "Advanced Security & Authentication",
-        description:
-          "Implementar un sistema de autenticación seguro que no solo use JWT, sino que maneje sesiones de forma robusta.",
-        descriptionEn:
-          "Implementing a secure authentication system that not only uses JWT but handles sessions robustly.",
-        solution:
-          "Implementamos OAuth con Google y autenticación tradicional con hashing Argon2. Desarrollamos un sistema de Refresh Tokens con rotación y revocación para máxima seguridad.",
-        solutionEn:
-          "Implemented OAuth with Google and traditional authentication with Argon2 hashing. Developed a Refresh Token system with rotation and revocation for maximum security.",
-      },
-      {
-        title: "Generación Dinámica de Certificados",
-        titleEn: "Dynamic Certificate Generation",
-        description:
-          "Generar PDFs de certificados al vuelo de manera eficiente y compatible con diferentes entornos de despliegue.",
-        descriptionEn:
-          "Generating certificate PDFs on the fly efficiently and compatibly with different deployment environments.",
-        solution:
-          "Utilizamos Puppeteer (Chrome headless) con lógica inteligente para detectar el entorno (Linux/Windows) y usar el ejecutable correcto, optimizando recursos.",
-        solutionEn:
-          "Used Puppeteer (headless Chrome) with smart logic to detect the environment (Linux/Windows) and use the correct executable, optimizing resources.",
-      },
-      {
-        title: "Pagos Resilientes",
-        titleEn: "Resilient Payments",
-        description:
-          "Manejar los errores y estados inciertos de las pasarelas de pago para asegurar que ninguna transacción se pierda.",
-        descriptionEn:
-          "Handling errors and uncertain states of payment gateways to ensure no transaction is lost.",
-        solution:
-          "Integramos MercadoPago con lógica de reintentos automáticos y verificación de estado para manejar errores del entorno sandbox y producción.",
-        solutionEn:
-          "Integrated MercadoPago with automatic retry logic and status verification to handle sandbox and production environment errors.",
-      },
-    ],
-    duration: "4 meses",
-    durationEn: "4 months",
-    team: "1 desarrollador",
-    teamEn: "1 developer",
-    role: "Full Stack Developer",
-    roleEn: "Full Stack Developer",
-    year: "2025",
-    strategies: [
-      {
-        title: "Arquitectura Modular",
-        titleEn: "Modular Architecture",
-        description: "Uso de NestJS Modules para separar dominios y facilitar la escalabilidad.",
-        descriptionEn: "Use of NestJS Modules to separate domains and facilitate scalability."
-      },
-      {
-        title: "Seguridad en Capas",
-        titleEn: "Layered Security",
-        description: "Implementación de múltiples barreras de seguridad (Auth Guards, Zod validation, Sanitization).",
-        descriptionEn: "Implementation of multiple security barriers (Auth Guards, Zod validation, Sanitization)."
-      }
-    ],
-    developmentTools: ["VS Code", "Insomnia", "Docker", "Figma", "GitHub Actions"]
-  },
 ];
-

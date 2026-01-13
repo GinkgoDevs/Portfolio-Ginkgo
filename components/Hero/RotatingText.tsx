@@ -42,28 +42,50 @@ const RotatingText: React.FC<RotatingTextProps> = ({
   const currentText = texts[currentTextIndex]
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.span key={currentTextIndex} className={mainClassName} initial="hidden" animate="visible" exit="exit">
-        {currentText.split("").map((char, index) => (
-          <motion.span
-            key={index}
-            className={splitLevelClassName}
-            variants={{
-              hidden: { ...initial },
-              visible: { ...animate },
-              exit: { ...exit },
-            }}
-            transition={{
-              ...transition,
-              delay:
-                staggerFrom === "first" ? index * staggerDuration : (currentText.length - 1 - index) * staggerDuration,
-            }}
-          >
-            {char}
-          </motion.span>
+    <div className="relative inline-flex items-center justify-center">
+      <div className="grid invisible select-none pointer-events-none" aria-hidden="true">
+        {texts.map((text, i) => (
+          <div key={i} className={`${splitLevelClassName} whitespace-nowrap col-start-1 row-start-1`}>
+            {text}
+          </div>
         ))}
-      </motion.span>
-    </AnimatePresence>
+      </div>
+
+      <div className="absolute inset-0 flex items-center justify-center">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={currentTextIndex}
+            className={`${mainClassName} inline-flex`}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {currentText.split("").map((char, index) => (
+              <motion.span
+                key={index}
+                className={`${splitLevelClassName} inline-block whitespace-pre`}
+                variants={{
+                  hidden: { ...initial, opacity: 0 },
+                  visible: { ...animate, opacity: 1 },
+                  exit: { ...exit, opacity: 0 },
+                }}
+                transition={{
+                  ...transition,
+                  delay:
+                    staggerFrom === "first"
+                      ? index * staggerDuration
+                      : (currentText.length - 1 - index) * staggerDuration,
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </motion.span>
+        </AnimatePresence>
+      </div>
+    </div>
   )
 }
 

@@ -7,6 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MessageCircle, Calendar, ArrowRight, CheckCircle, Users, Clock, Shield, Zap } from "lucide-react"
 import { useTranslation } from "@/contexts/TranslationContext"
+import { validateEnv } from "@/lib/env"
 
 
 const guarantees = [
@@ -33,7 +34,7 @@ const guarantees = [
 ]
 
 export default function CTASection() {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -75,9 +76,12 @@ export default function CTASection() {
               <Button
                 size="lg"
                 className="bg-[#D4F57A] text-[#293B36] hover:bg-[#D4F57A]/90 font-semibold px-8 py-4 text-lg"
-                onClick={() =>
-                  window.open("https://wa.me/549381155667690?text=Hola! Quiero iniciar un proyecto digital", "_blank")
-                }
+                onClick={() => {
+                  const env = validateEnv()
+                  const whatsappNumber = env.contact.whatsappNumber
+                  const message = locale === "en" ? "Hello! I'm interested in starting a digital project" : "¡Hola! Quiero iniciar un proyecto digital"
+                  window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, "_blank")
+                }}
               >
                 <MessageCircle className="mr-2 h-5 w-5" />
                 {t("home.contact.message")}

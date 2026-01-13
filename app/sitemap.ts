@@ -1,9 +1,10 @@
 import { locales } from "@/i18n.config"
 import { projects } from "@/data/projects"
+import { validateEnv } from "@/lib/env"
 
 export default async function sitemap() {
-  // Hardcoded baseUrl instead of using environment variable
-  const baseUrl = "https://www.ginkgodevs.com"
+  const env = validateEnv()
+  const baseUrl = env.siteUrl
 
   // Generar URLs para cada proyecto y cada idioma
   const projectRoutes = projects.flatMap((project) => {

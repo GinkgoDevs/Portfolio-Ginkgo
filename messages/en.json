@@ -66,6 +66,7 @@
           "leads": "Get More Clients",
           "brand": "Improve Brand Image"
         },
+        "stepCounter": "Step {current} of {total}",
         "next": "Next",
         "finish": "Request Audit on WhatsApp",
         "back": "Back"
@@ -107,7 +108,18 @@
     },
     "projects": {
       "title": "Our Projects",
-      "scrollInstructions": "Swipe or drag to navigate through projects"
+      "subtitle": "Innovation and quality in every line of code",
+      "scrollInstructions": "Swipe or drag to navigate through projects",
+      "viewProject": "View Project",
+      "loadMore": "Load more projects",
+      "viewAll": "View all projects",
+      "categories": {
+        "all": "All",
+        "next": "Next.js / React",
+        "wordpress": "WordPress",
+        "shopify": "Shopify",
+        "ai": "AI / Machine Learning"
+      }
     },
     "contact": {
       "ctaBadge": "Ready to start?",
@@ -125,6 +137,8 @@
       "errorDesc": "There was a problem sending your message. Please try again.",
       "whatsapp": "WhatsApp",
       "scheduleCall": "Schedule a video call",
+      "openMenu": "Open contact menu",
+      "closeMenu": "Close contact menu",
       "indicatorcta1": "Free consultation",
       "indicatorcta2": "No commitment",
       "indicatorcta3": "Response within 24 hours",

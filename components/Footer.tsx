@@ -2,12 +2,14 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Instagram, Linkedin, Github, Mail, MapPin, Phone, ChevronDown, ChevronUp } from "lucide-react"
 import { validateEnv } from "@/lib/env"
 import { useTranslation } from "@/contexts/TranslationContext"
+import Magnet from "./Hero/Magnet"
+import { motion } from "framer-motion"
 
 export default function Footer() {
   const env = validateEnv()
@@ -16,7 +18,7 @@ export default function Footer() {
 
   // Filtrar solo las redes sociales que tienen URL
   const socialLinks = [
-    { icon: Linkedin, href: "", label: "LinkedIn" },
+    { icon: Linkedin, href: env.socialLinks.linkedin, label: "LinkedIn" },
     { icon: Instagram, href: env.socialLinks.instagram, label: "Instagram" },
     { icon: Github, href: env.socialLinks.github, label: "GitHub" },
   ].filter((link) => link.href)
@@ -28,6 +30,14 @@ export default function Footer() {
   ]
 
   const [expandedSection, setExpandedSection] = useState<string | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   const toggleSection = (title: string) => {
     if (expandedSection === title) {
@@ -123,33 +133,38 @@ export default function Footer() {
         <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-12 gap-8 pb-8">
           {/* Logo and Social - 4 columns */}
           <div className="lg:col-span-4">
-            <Link href="#home" onClick={(e) => handleSmoothScroll(e, "#home")}>
-              <Image
-                src="/Logos/SVG/logo-footer.svg"
-                alt="Ginkgo Devs Logo"
-                width={200}
-                height={129}
-                className="mb-6"
-              />
-            </Link>
-            {/* Reemplazar el texto de la descripción del footer con texto condicional según el locale */}
-            <p className="text-[#F5F2EB]/60 mb-6">
+            <Magnet disabled={isMobile} padding={20} magnetStrength={2}>
+              <Link href="#home" onClick={(e) => handleSmoothScroll(e, "#home")} className="inline-block group">
+                <div className="relative">
+                  <Image
+                    src="/Logos/SVG/logo-footer.svg"
+                    alt="Ginkgo Devs Logo"
+                    width={200}
+                    height={129}
+                    className="mb-6 transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-x-0 bottom-4 h-1 bg-[#D4F57A] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left blur-[2px]" />
+                </div>
+              </Link>
+            </Magnet>
+            <p className="text-[#F5F2EB]/60 mb-8 max-w-sm leading-relaxed">
               {locale === "en"
-                ? "Transforming ideas into functional and attractive web solutions"
-                : "Transformando ideas en soluciones web funcionales y atractivas"}
+                ? "Transforming ideas into functional and attractive web solutions that drive growth."
+                : "Transformando ideas en soluciones web funcionales y atractivas que impulsan el crecimiento."}
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-6">
               {socialLinks.map((social) => (
-                <Link
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[#F5F2EB]/60 hover:text-[#D4F57A] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D4F57A]"
-                  aria-label={`Visitar ${social.label}`}
-                >
-                  <social.icon className="w-5 h-5" aria-hidden="true" />
-                </Link>
+                <Magnet key={social.label} disabled={isMobile} padding={10} magnetStrength={3}>
+                  <Link
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-[#F5F2EB]/60 hover:text-[#D4F57A] hover:bg-[#D4F57A]/10 transition-all focus:outline-none focus:ring-2 focus:ring-[#D4F57A] group"
+                    aria-label={`Visitar ${social.label}`}
+                  >
+                    <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
+                  </Link>
+                </Magnet>
               ))}
             </div>
           </div>
@@ -186,7 +201,16 @@ export default function Footer() {
               {contactInfo.map((info) => (
                 <li key={info.text} className="flex items-center gap-2 text-[#F5F2EB]/60">
                   <info.icon className="w-4 h-4 text-[#D4F57A]" />
-                  <span>{info.text}</span>
+                  {info.text && (info.text.includes("@") || info.text.startsWith("+") || /\d/.test(info.text)) ? (
+                    <a
+                      href={info.text.includes("@") ? `mailto:${info.text}` : `tel:${info.text.replace(/\s+/g, "")}`}
+                      className="hover:text-[#D4F57A] transition-colors"
+                    >
+                      {info.text}
+                    </a>
+                  ) : (
+                    <span>{info.text}</span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -227,7 +251,16 @@ export default function Footer() {
             {contactInfo.map((info) => (
               <div key={info.text} className="flex items-center gap-1 text-[#F5F2EB]/60 text-sm">
                 <info.icon className="w-3 h-3 text-[#D4F57A]" />
-                <span>{info.text}</span>
+                {info.text && (info.text.includes("@") || info.text.startsWith("+") || /\d/.test(info.text)) ? (
+                  <a
+                    href={info.text.includes("@") ? `mailto:${info.text}` : `tel:${info.text.replace(/\s+/g, "")}`}
+                    className="hover:text-[#D4F57A] transition-colors"
+                  >
+                    {info.text}
+                  </a>
+                ) : (
+                  <span>{info.text}</span>
+                )}
               </div>
             ))}
           </div>

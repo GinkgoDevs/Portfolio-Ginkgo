@@ -3,6 +3,7 @@ import HomeClient from "./HomeClient"
 import { locales } from "@/i18n.config"
 import { notFound } from "next/navigation"
 import type { Metadata } from "next"
+import { validateEnv } from "@/lib/env"
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {}
   }
 
+  const env = validateEnv()
   const title =
     locale === "es"
       ? "Inicio | Ginkgo Devs - Desarrollo Web y Soluciones Digitales"
@@ -33,16 +35,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? "desarrollo web, diseño web, Tucumán, Argentina, Next.js, React, SEO, optimización web, sitios web modernos, desarrollo frontend, backend, soluciones digitales"
         : "web development, web design, Tucumán, Argentina, Next.js, React, SEO, web optimization, modern websites, frontend development, backend, digital solutions",
     alternates: {
-      canonical: `/${locale}`,
+      canonical: `${env.siteUrl}/${locale}`,
       languages: {
-        en: "/en",
-        es: "/es",
+        en: `${env.siteUrl}/en`,
+        es: `${env.siteUrl}/es`,
       },
     },
     openGraph: {
       title,
       description,
-      url: `https://ginkgodevs.com/${locale}`,
+      url: `${env.siteUrl}/${locale}`,
       siteName: "Ginkgo Devs",
       locale: locale === "es" ? "es_AR" : "en_US",
       type: "website",

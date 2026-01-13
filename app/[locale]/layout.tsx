@@ -39,23 +39,50 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
+  const siteUrl = "https://ginkgodevs.com" // Update with real URL if known
+
   return {
-    title: "Ginkgo Devs",
-    description: "Desarrollo Web y Soluciones Digitales",
-    icons: {
-      icon: [{ url: "/favicon.ico" }],
-      shortcut: "/favicon.ico",
+    title: {
+      default: "Ginkgo Devs | Desarrollo Web y Soluciones Digitales",
+      template: "%s | Ginkgo Devs",
+    },
+    description: "Expertos en soluciones digitales, desarrollo web a medida y transformación tecnológica.",
+    metadataBase: new URL(siteUrl),
+    alternates: {
+      canonical: "/",
+      languages: {
+        "es-ES": "/es",
+        "en-US": "/en",
+      },
     },
     openGraph: {
+      type: "website",
+      locale: locale === "es" ? "es_ES" : "en_US",
+      url: siteUrl,
+      siteName: "Ginkgo Devs",
+      title: "Ginkgo Devs | Desarrollo Web a Medida",
+      description: "Transformamos tus ideas en realidades digitales de alto impacto.",
       images: [
         {
           url: "/Logos/PNG/GGD_Imagotipo PRINCIPAL-5.png",
           width: 1200,
           height: 630,
-          alt: "Ginkgo Devs Logo",
+          alt: "Ginkgo Devs - Soluciones Digitales",
         },
       ],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: "Ginkgo Devs | Soluciones Digitales",
+      description: "Desarrollo web moderno con foco en rendimiento y diseño.",
+      images: ["/Logos/PNG/GGD_Imagotipo PRINCIPAL-5.png"],
+    },
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+    manifest: "/site.webmanifest",
   }
 }
 

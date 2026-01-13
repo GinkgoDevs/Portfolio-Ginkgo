@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next"
+import { validateEnv } from "@/lib/env"
 
 export default function robots(): MetadataRoute.Robots {
-  // Hardcoded baseUrl instead of using environment variable
-  const baseUrl = "https://www.ginkgodevs.com"
+  const env = validateEnv()
+  const baseUrl = env.siteUrl
 
   return {
     rules: {

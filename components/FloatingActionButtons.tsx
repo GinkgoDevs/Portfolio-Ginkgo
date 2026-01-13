@@ -14,12 +14,9 @@ export default function FloatingActionButtons() {
   const env = validateEnv()
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Effect to set initial state based on device type (only runs once on mount)
+  // Effect to set initial state (always closed by default)
   useEffect(() => {
-    // Detect if PC or mobile
-    const isMobileDevice = window.innerWidth < 768
-    // On PC: expanded by default, on mobile: closed by default
-    setIsExpanded(!isMobileDevice)
+    setIsExpanded(false)
   }, [])
 
   // Effect to check cookie consent
@@ -143,7 +140,7 @@ export default function FloatingActionButtons() {
         <button
           onClick={toggleExpand}
           className="flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 bg-[#D4F57A] text-[#293B36] focus:ring-[#D4F57A] hover:scale-105 active:scale-95 relative z-20"
-          aria-label={isExpanded ? "Close menu" : "Open contact menu"}
+          aria-label={isExpanded ? (t("home.contact.closeMenu") || "Close menu") : (t("home.contact.openMenu") || "Open contact menu")}
           aria-expanded={isExpanded}
         >
           <div className="transition-transform duration-300">{isExpanded ? <X size={24} /> : <Phone size={24} />}</div>

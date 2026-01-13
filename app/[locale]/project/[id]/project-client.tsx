@@ -93,7 +93,24 @@ export default function ProjectClient({ project }: { project: any }) {
 
   // Get related projects from the data source
   const relatedProjects = projects
-    .filter((p) => p.id !== project.id && p.category === projectWithDefaults.category)
+    .filter((p) => {
+      if (p.id === project.id) return false;
+      const pCat = p.category;
+      const currentCat = projectWithDefaults.category;
+
+      if (Array.isArray(currentCat)) {
+        if (Array.isArray(pCat)) {
+          return currentCat.some(cat => pCat.includes(cat));
+        }
+        return currentCat.includes(pCat);
+      }
+
+      if (Array.isArray(pCat)) {
+        return pCat.includes(currentCat);
+      }
+
+      return pCat === currentCat;
+    })
     .slice(0, 3)
     .map((p) => ({
       id: p.id,
