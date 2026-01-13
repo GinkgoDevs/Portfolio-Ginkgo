@@ -28,33 +28,55 @@ self.addEventListener("activate", (event) => {
   )
 })
 
-// Estrategia de caching: Network first, fallback to cache
+// Estrategia de caching optimizada
 self.addEventListener("fetch", (event) => {
+  const url = new URL(event.request.url);
+
+  // Cache First para recursos estáticos (imágenes, fuentes, scripts de terceros que no cambian)
+  if (
+    event.request.destination === "image" ||
+    event.request.destination === "font" ||
+    url.pathname.includes("/_next/static/")
+  ) {
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) return cachedResponse;
+
+        return fetch(event.request).then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
+        });
+      })
+    );
+    return;
+  }
+
+  // Network First para el resto (páginas HTML, API, etc)
   event.respondWith(
     fetch(event.request)
       .then((response) => {
-        // Si la respuesta es válida, clonarla y guardarla en cache
         if (event.request.method === "GET" && response.status === 200) {
-          const responseToCache = response.clone()
+          const responseToCache = response.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache)
-          })
+            cache.put(event.request, responseToCache);
+          });
         }
-        return response
+        return response;
       })
       .catch(() => {
-        // Si falla la red, intentar desde cache
         return caches.match(event.request).then((response) => {
-          if (response) {
-            return response
-          }
+          if (response) return response;
 
-          // Si el recurso no está en cache y es una página HTML, mostrar offline.html
           if (event.request.headers.get("accept").includes("text/html")) {
-            return caches.match("/offline.html")
+            return caches.match("/offline.html");
           }
-        })
-      }),
-  )
-})
+        });
+      })
+  );
+});
 

@@ -178,9 +178,10 @@ export default function DisintegrationEffect({
         }
       })
 
-      if (scrollTriggerEnabled) {
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+      if (timeline.scrollTrigger) {
+        timeline.scrollTrigger.kill()
       }
+      timeline.kill()
     }
   }, [canvasElements, onComplete, index, scrollTriggerEnabled, highContrast])
 

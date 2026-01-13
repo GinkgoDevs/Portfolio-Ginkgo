@@ -8,7 +8,6 @@ import Hero from "@/components/Hero/Hero"
 import Services from "@/components/Services/Services"
 import AboutUs from "@/components/AboutUs/AboutUs"
 import Footer from "@/components/Footer"
-import ScrollProgressBar from "@/components/ScrollProgressBar"
 import DynamicScrollWrapper from "./DynamicScrollWrapper"
 import { MenuContext } from "@/components/Hero/Navbar"
 import StructuredData from "@/components/StructuredData"
@@ -22,7 +21,6 @@ export default function HomeClient() {
   return (
     <MenuContext.Provider value={{ isMenuOpen }}>
       <StructuredData />
-      <ScrollProgressBar />
       <DynamicScrollWrapper />
 
       <main id="main-content" className="bg-gradient-to-b from-green-100 to-white">

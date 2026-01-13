@@ -241,33 +241,28 @@ export default function Navbar() {
               animate="open"
               exit="closed"
               variants={menuVariants}
-              className="fixed top-4 bottom-4 right-4 w-[90vw] max-w-[320px] bg-[#D4F57A]/95 shadow-lg rounded-3xl overflow-hidden z-50"
-              style={{
-                boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
-                backdropFilter: "blur(5px)",
-              }}
+              className="fixed top-0 bottom-0 right-0 w-[85vw] max-w-[400px] bg-[#D4F57A] shadow-2xl z-50 flex flex-col pt-10 pb-10 px-8"
             >
-              <div className="h-full flex flex-col p-5">
-                {/* Close Button */}
-                <motion.button
-                  onClick={closeMenu}
-                  variants={buttonVariants}
-                  whileHover="hover"
-                  whileTap="tap"
-                  className="self-end px-4 py-2 rounded-full bg-black text-[#D4F57A] text-xs mb-6"
-                >
-                  <span className="font-medium">{t("home.navbar.closeButton")}</span>
-                </motion.button>
+              {/* Close Button */}
+              <motion.button
+                onClick={closeMenu}
+                className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center rounded-full bg-[#293B36] text-[#D4F57A]"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                <span className="text-xl font-bold">×</span>
+              </motion.button>
 
+              <div className="flex-1 flex flex-col">
                 {/* Navigation Items */}
-                <motion.nav className="flex-1 overflow-y-auto overflow-x-hidden">
-                  <motion.ul className="space-y-1 w-full">
+                <motion.nav className="flex-1 mt-16">
+                  <motion.ul className="space-y-6">
                     {menuItems.map((item) => (
-                      <motion.li key={item.name} variants={menuItemVariants} className="w-full">
+                      <motion.li key={item.name} variants={menuItemVariants}>
                         <Link
                           href={item.href}
                           onClick={(e) => handleSmoothScroll(e, item.href)}
-                          className="text-[#293B36] text-lg font-bold font-heading hover:text-[#293B36]/70 transition-colors block w-full py-1"
+                          className="text-[#293B36] text-4xl font-bold font-heading hover:opacity-70 transition-opacity block"
                         >
                           {item.name}
                         </Link>

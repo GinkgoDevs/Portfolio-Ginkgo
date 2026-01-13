@@ -141,8 +141,8 @@ export default function LeadMagnet() {
                                     key={goalKey}
                                     onClick={() => setFormData({ ...formData, goal: goalKey })}
                                     className={`flex items-center gap-3 p-4 rounded-xl border transition-all text-left ${formData.goal === goalKey
-                                            ? "bg-[#D4F57A]/20 border-[#D4F57A] text-white"
-                                            : "bg-[#0F1C18] border-[#D4F57A]/10 text-[#F5F2EB]/60 hover:border-[#D4F57A]/50"
+                                        ? "bg-[#D4F57A]/20 border-[#D4F57A] text-white"
+                                        : "bg-[#0F1C18] border-[#D4F57A]/10 text-[#F5F2EB]/60 hover:border-[#D4F57A]/50"
                                         }`}
                                 >
                                     <Target className={`w-5 h-5 ${formData.goal === goalKey ? "text-[#D4F57A]" : "text-gray-500"}`} />
@@ -179,7 +179,7 @@ export default function LeadMagnet() {
                         <div className="max-w-xl mx-auto w-full">
                             {/* Progress */}
                             <div className="flex items-center justify-between mb-8 text-sm text-[#F5F2EB]/50">
-                                <span>Paso {step} de 3</span>
+                                <span>{t("home.leadMagnet.steps.stepCounter", { current: step.toString(), total: "3" })}</span>
                                 <div className="flex gap-1">
                                     {[1, 2, 3].map(i => (
                                         <div key={i} className={`h-1.5 w-8 rounded-full ${i <= step ? "bg-[#D4F57A]" : "bg-[#293B36]"}`} />

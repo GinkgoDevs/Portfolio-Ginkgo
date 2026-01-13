@@ -11,8 +11,8 @@ export default function StructuredData() {
         "@context": "https://schema.org",
         "@type": "Organization",
         name: "Ginkgo Devs",
-        url: "https://ginkgodevs.com",
-        logo: "https://ginkgodevs.com/Logos/SVG/logo-footer.svg",
+        url: env.siteUrl,
+        logo: `${env.siteUrl}/Logos/SVG/logo-footer.svg`,
         description:
             locale === "es"
                 ? "Desarrollo web profesional en Tucumán, Argentina. Creamos sitios web modernos, rápidos y optimizados para SEO."
@@ -36,7 +36,7 @@ export default function StructuredData() {
         "@context": "https://schema.org",
         "@type": "WebSite",
         name: "Ginkgo Devs",
-        url: "https://ginkgodevs.com",
+        url: env.siteUrl,
         description:
             locale === "es"
                 ? "Soluciones digitales a medida para negocios que buscan impacto y escalabilidad."
@@ -46,7 +46,7 @@ export default function StructuredData() {
             "@type": "SearchAction",
             target: {
                 "@type": "EntryPoint",
-                urlTemplate: "https://ginkgodevs.com/search?q={search_term_string}",
+                urlTemplate: `${env.siteUrl}/search?q={search_term_string}`,
             },
             "query-input": "required name=search_term_string",
         },
@@ -56,9 +56,9 @@ export default function StructuredData() {
         "@context": "https://schema.org",
         "@type": "LocalBusiness",
         name: "Ginkgo Devs",
-        image: "https://ginkgodevs.com/Logos/SVG/logo-footer.svg",
-        "@id": "https://ginkgodevs.com",
-        url: "https://ginkgodevs.com",
+        image: `${env.siteUrl}/Logos/SVG/logo-footer.svg`,
+        "@id": env.siteUrl,
+        url: env.siteUrl,
         telephone: env.contact.phone,
         email: env.contact.email,
         address: {

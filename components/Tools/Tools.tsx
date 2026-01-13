@@ -1,6 +1,7 @@
 "use client"
 import { useRef, useState, useEffect } from "react"
 import { Code2, Database, Cloud, Laptop, Paintbrush, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 import ScrollAnimation from "../ScrollAnimation"
 import { useTranslation } from "@/contexts/TranslationContext"
 
@@ -171,28 +172,43 @@ export default function Tools() {
           </div>
 
           {/* Contenido del carrusel con transición suave */}
-          <div className="relative overflow-hidden">
-            <div
-              className="bg-white/5 backdrop-blur-sm rounded-xl p-6 transition-opacity duration-300"
-              role="tabpanel"
-              id={`category-panel-${activeCategory}`}
-              aria-labelledby={`category-${activeCategory}`}
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 rounded-lg bg-[#D4F57A] text-[#293B36]">{technologies[activeCategory].icon}</div>
-                <h3 className="text-xl font-semibold text-white font-heading">{technologies[activeCategory].category}</h3>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {technologies[activeCategory].items.map((item) => (
-                  <span
-                    key={item}
-                    className="px-3 py-2 bg-white/10 rounded-lg text-white/90 text-sm inline-flex items-center hover:bg-[#D4F57A]/10 hover:text-[#D4F57A] transition-colors"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
+          <div className="relative overflow-hidden min-h-[300px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeCategory}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                onDragEnd={(_, info) => {
+                  if (info.offset.x < -50) handleNext()
+                  if (info.offset.x > 50) handlePrev()
+                }}
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 cursor-grab active:cursor-grabbing"
+                role="tabpanel"
+                id={`category-panel-${activeCategory}`}
+                aria-labelledby={`category-${activeCategory}`}
+              >
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="p-2 rounded-lg bg-[#D4F57A] text-[#293B36]">{technologies[activeCategory].icon}</div>
+                  <h3 className="text-xl font-semibold text-white font-heading">
+                    {technologies[activeCategory].category}
+                  </h3>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {technologies[activeCategory].items.map((item) => (
+                    <span
+                      key={item}
+                      className="px-3 py-2 bg-white/10 rounded-lg text-white/90 text-sm inline-flex items-center hover:bg-[#D4F57A]/10 hover:text-[#D4F57A] transition-colors"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Instrucciones de navegación actualizadas */}

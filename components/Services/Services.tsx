@@ -63,23 +63,30 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
       variants={variants}
       onMouseEnter={() => !isMobile && setIsHovered(true)}
       onMouseLeave={() => !isMobile && setIsHovered(false)}
-      className="relative overflow-hidden rounded-2xl transition-all duration-500 bg-white/10 backdrop-blur-sm text-white hover:bg-[#D4F57A]/10 h-[320px] flex flex-col border border-white/10"
+      className="group relative overflow-hidden rounded-[2rem] transition-all duration-500 bg-white/5 backdrop-blur-md text-white border border-white/10 h-[360px] flex flex-col"
       data-index={index}
       style={{
-        boxShadow: isHighlighted ? "0 10px 25px rgba(212, 245, 122, 0.15)" : "none",
-        transform: isHighlighted ? "translateY(-5px)" : "translateY(0)",
-        transition: "transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease",
-        backgroundColor: isHighlighted ? "rgba(212, 245, 122, 0.1)" : "rgba(255, 255, 255, 0.1)",
+        boxShadow: isHighlighted ? "0 25px 50px -12px rgba(212, 245, 122, 0.25)" : "none",
+        transform: isHighlighted ? "translateY(-12px)" : "translateY(0)",
+        transition: "all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+        backgroundColor: isHighlighted ? "rgba(255, 255, 255, 0.08)" : "rgba(255, 255, 255, 0.04)",
       }}
     >
-      <div className="flex flex-col h-full p-6 md:p-8">
-        <div className="rounded-full w-14 h-14 flex items-center justify-center mb-4 bg-[#D4F57A] text-[#293B36] shrink-0">
+      <div className="flex flex-col h-full p-8 md:p-10 relative z-10">
+        <motion.div
+          animate={isHighlighted ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
+          className="rounded-2xl w-16 h-16 flex items-center justify-center mb-6 bg-[#D4F57A] text-[#293B36] shrink-0 shadow-lg shadow-[#D4F57A]/20"
+        >
           {icon}
-        </div>
+        </motion.div>
 
         <div className="flex flex-col flex-grow">
-          <h3 className="text-xl md:text-2xl font-bold mb-3 min-h-[3.5rem] flex items-start leading-tight font-heading">{title}</h3>
-          <p className="text-[#F5F2EB]/90 mb-6 flex-grow leading-relaxed">{description}</p>
+          <h3 className="text-2xl md:text-3xl font-bold mb-4 leading-tight font-heading group-hover:text-[#D4F57A] transition-colors duration-300">
+            {title}
+          </h3>
+          <p className="text-[#F5F2EB]/80 text-lg mb-8 flex-grow leading-relaxed font-light">
+            {description}
+          </p>
         </div>
 
         <div className="mt-auto">
@@ -88,27 +95,22 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ title, description, icon, ind
               href={generateWhatsAppLink(title)}
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={isMobile ? {} : { scale: 1.05 }}
-              whileTap={isMobile ? {} : { scale: 0.95 }}
-              className="flex items-center gap-2 font-medium text-[#D4F57A] hover:text-white transition-colors duration-300"
+              whileHover={isMobile ? {} : { x: 5 }}
+              whileTap={isMobile ? { scale: 0.95 } : { scale: 0.98 }}
+              className="inline-flex items-center gap-3 font-bold text-[#D4F57A] group/btn transition-all duration-300"
             >
-              <span>{t("home.services.quoteButton")}</span>
-              <ArrowRight className="w-4 h-4" />
+              <span className="border-b border-[#D4F57A]/0 group-hover/btn:border-[#D4F57A]/50 pb-0.5 transition-all">
+                {t("home.services.quoteButton")}
+              </span>
+              <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
             </motion.a>
           </ButtonWrapper>
         </div>
       </div>
 
-      <div className="absolute -bottom-6 -right-6 w-24 h-24 rounded-full bg-gradient-to-br from-transparent to-white/5 pointer-events-none" />
-      <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
-        animate={{
-          scale: isHighlighted ? 1 : 0.8,
-          opacity: isHighlighted ? 1 : 0,
-        }}
-        transition={{ duration: 0.3 }}
-        className="absolute -top-10 -left-10 w-20 h-20 rounded-full bg-[#D4F57A]/10 pointer-events-none"
-      />
+      {/* Subtle decorative elements */}
+      <div className={`absolute top-0 right-0 w-32 h-32 bg-[#D4F57A]/10 blur-[60px] rounded-full -translate-y-1/2 translate-x-1/2 transition-opacity duration-700 ${isHighlighted ? 'opacity-100' : 'opacity-0'}`} />
+      <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/5 blur-[50px] rounded-full" />
     </motion.div>
   )
 }
