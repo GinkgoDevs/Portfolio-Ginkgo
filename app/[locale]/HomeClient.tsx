@@ -8,6 +8,7 @@ import Hero from "@/components/Hero/Hero"
 import Services from "@/components/Services/Services"
 import AboutUs from "@/components/AboutUs/AboutUs"
 import Footer from "@/components/Footer"
+import AIServicesBanner from "@/components/AIServicesBanner"
 import DynamicScrollWrapper from "./DynamicScrollWrapper"
 import { MenuContext } from "@/components/Hero/Navbar"
 import StructuredData from "@/components/StructuredData"
@@ -28,49 +29,21 @@ export default function HomeClient() {
 
         <FeaturedProjectBanner />
 
-        <section aria-labelledby="servicios-heading">
-          <h2 id="servicios-heading" className="sr-only">
-            Nuestros servicios
-          </h2>
-          <Services />
-        </section>
+        <Services />
 
-        <section aria-labelledby="proyectos-heading">
-          <h2 id="proyectos-heading" className="sr-only">
-            Nuestros proyectos
-          </h2>
-          <Projects />
-        </section>
+        <AIServicesBanner />
 
-        <section aria-labelledby="nosotros-heading">
-          <h2 id="nosotros-heading" className="sr-only">
-            Sobre nosotros
-          </h2>
-          <AboutUs />
-        </section>
+        <Projects />
 
-        <section aria-labelledby="herramientas-heading">
-          <h2 id="herramientas-heading" className="sr-only">
-            Nuestras herramientas
-          </h2>
-          <Tools />
-        </section>
+        <AboutUs />
 
-        <section aria-labelledby="testimonios-heading">
-          <h2 id="testimonios-heading" className="sr-only">
-            Testimonios
-          </h2>
-          <Testimonials />
-        </section>
+        <Tools />
+
+        <Testimonials />
 
         <LeadMagnet />
 
-        <section aria-labelledby="contacto-heading">
-          <h2 id="contacto-heading" className="sr-only">
-            Contacto
-          </h2>
-          <Contact />
-        </section>
+        <Contact />
       </main>
 
       <Footer />

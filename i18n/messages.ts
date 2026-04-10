@@ -11,6 +11,7 @@ export const messages = {
     home: {
       navbar: {
         services: "Services",
+        ai: "AI",
         about: "About",
         tools: "Tools",
         projects: "Projects",
@@ -87,6 +88,37 @@ export const messages = {
         success: "Message sent!",
         successDesc: "We'll get back to you as soon as possible.",
       },
+      aiAgents: {
+        badge: "New Service",
+        title: "Custom AI Agents",
+        subtitle: "We automate processes, serve customers, and boost your business with artificial intelligence designed exclusively for you.",
+        cardTitle: "AI that works for your business",
+        cardDescription: "We design intelligent agents that integrate into your daily operations: answering queries, managing appointments, analyzing data, and executing repetitive tasks.",
+        benefit1: "Integration with WhatsApp, web, and existing systems",
+        benefit2: "Training with your own business data",
+        benefit3: "Ongoing support and iterative agent improvement",
+        cta: "Schedule a Meeting",
+        whatsappMessage: "Hello! I'm interested in the Custom AI Agents service.",
+        steps: {
+          meeting: { title: "Meeting", description: "We sit down with you to understand your business and identify AI opportunities." },
+          planning: { title: "Planning", description: "We define scope, integrations, and the technical roadmap." },
+          proposal: { title: "Proposal", description: "Clear proposal with timelines, costs, and concrete value." },
+          development: { title: "Development", description: "We build, train, and test the agent with real data." },
+          solution: { title: "Production Solution", description: "We deploy, monitor, and continuously improve the agent." },
+        },
+      },
+      upcoming: {
+        badge: "Coming Soon",
+        title: "What's Next",
+        subtitle: "We're preparing new services to boost your digital business.",
+        comingSoon: "Coming Soon",
+        cta: "Be the first to know",
+        whatsappMessage: "Hello! I'd like to stay updated on your upcoming services.",
+        items: {
+          booking: { title: "Smart Appointment Booking", description: "Web or chatbot booking system with AI-managed availability and reminders." },
+          chatbot: { title: "AI Customer Service Chatbot", description: "Conversational assistant trained on your business data for 24/7 support." },
+        },
+      },
     },
     footer: {
       description: "Transforming ideas into functional and attractive web solutions",
@@ -117,6 +149,7 @@ export const messages = {
     home: {
       navbar: {
         services: "Servicios",
+        ai: "IA",
         about: "Nosotros",
         tools: "Herramientas",
         projects: "Proyectos",
@@ -193,6 +226,37 @@ export const messages = {
         sending: "Enviando...",
         success: "¡Mensaje enviado!",
         successDesc: "Nos pondremos en contacto contigo lo antes posible.",
+      },
+      aiAgents: {
+        badge: "Nuevo Servicio",
+        title: "Agentes de IA a Medida",
+        subtitle: "Automatizamos procesos, atendemos clientes y potenciamos tu negocio con inteligencia artificial diseñada exclusivamente para vos.",
+        cardTitle: "IA que trabaja para tu negocio",
+        cardDescription: "Diseñamos agentes inteligentes que se integran a tu operación diaria: responden consultas, gestionan turnos, analizan datos y ejecutan tareas repetitivas.",
+        benefit1: "Integración con WhatsApp, web y sistemas existentes",
+        benefit2: "Entrenamiento con datos propios de tu negocio",
+        benefit3: "Soporte continuo y mejora iterativa del agente",
+        cta: "Agendar Reunión",
+        whatsappMessage: "Hola! Me interesa el servicio de Agentes de IA a medida.",
+        steps: {
+          meeting: { title: "Reunión", description: "Nos sentamos con vos para entender tu negocio y detectar oportunidades de automatización con IA." },
+          planning: { title: "Planificación", description: "Definimos el alcance, las integraciones necesarias y el roadmap técnico." },
+          proposal: { title: "Propuesta", description: "Propuesta clara con tiempos, costos y valor concreto." },
+          development: { title: "Desarrollo", description: "Construimos, entrenamos y testeamos el agente con datos reales." },
+          solution: { title: "Solución en Producción", description: "Desplegamos el agente, monitoreamos y mejoramos continuamente." },
+        },
+      },
+      upcoming: {
+        badge: "Próximamente",
+        title: "Lo que viene",
+        subtitle: "Estamos preparando nuevos servicios para potenciar tu negocio digital.",
+        comingSoon: "Próximamente",
+        cta: "Quiero ser el primero en enterarme",
+        whatsappMessage: "Hola! Quiero estar al tanto de los próximos servicios que van a lanzar.",
+        items: {
+          booking: { title: "Reserva de Turnos Inteligente", description: "Sistema de reservas por web o chatbot con IA que gestiona disponibilidad y recordatorios." },
+          chatbot: { title: "Chatbot IA para Atención al Cliente", description: "Asistente conversacional entrenado con tus datos para responder consultas 24/7." },
+        },
       },
     },
     footer: {

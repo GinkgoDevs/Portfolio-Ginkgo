@@ -154,11 +154,11 @@
 
 @keyframes slide {
   0% {
-    left: -100%;
+    transform: translateX(-200%);
   }
 
   100% {
-    left: 100%;
+    transform: translateX(200%);
   }
 }
 
@@ -277,11 +277,23 @@ html.text-size-150 {
   /* Override the contrast filter for images */
 }
 
-/* Reducir movimiento */
+/* Reducir movimiento - clase manual */
 .reduce-motion * {
   animation: none !important;
   transition: none !important;
   transform: none !important;
+}
+
+/* Respetar preferencia del sistema operativo */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Mejorar visibilidad de enlaces */
@@ -306,19 +318,6 @@ a:focus {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* Mejorar contraste de textos con opacidad */
-/* Modificar al final del archivo, después de las clases existentes */
-
-/* Mejorar contraste de texto */
-.text-white\/80 {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.text-white\/70,
-.text-white\/60,
-.text-white\/50 {
-  color: rgba(255, 255, 255, 0.8);
-}
 
 /* Mejorar espaciado en móviles */
 @media (max-width: 640px) {

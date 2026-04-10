@@ -10,6 +10,7 @@
   "home": {
     "navbar": {
       "services": "Services",
+      "ai": "AI",
       "about": "About",
       "tools": "Tools",
       "projects": "Projects",
@@ -29,6 +30,62 @@
       "quoteButton": "Quote your project",
       "portfolioButton": "View portfolio",
       "whatsappMessage": "Hello, I'm interested in your {service} service. Could you provide me with more information?"
+    },
+    "aiAgents": {
+      "badge": "New Service",
+      "title": "Custom AI Agents",
+      "subtitle": "We automate processes, serve customers, and boost your business with artificial intelligence designed exclusively for you.",
+      "cardTitle": "AI that works for your business",
+      "cardDescription": "We design intelligent agents that integrate into your daily operations: answering queries, managing appointments, analyzing data, and executing repetitive tasks. All customized to your industry.",
+      "benefit1": "Integration with WhatsApp, web, and existing systems",
+      "benefit2": "Training with your own business data",
+      "benefit3": "Ongoing support and iterative agent improvement",
+      "cta": "Schedule a Meeting",
+      "whatsappMessage": "Hello! I'm interested in the Custom AI Agents service. I'd like to schedule a meeting.",
+      "steps": {
+        "meeting": {
+          "title": "Meeting",
+          "description": "We sit down with you to understand your business, processes, and identify AI automation opportunities."
+        },
+        "planning": {
+          "title": "Planning",
+          "description": "We define the scope, required integrations, and the technical roadmap for the agent."
+        },
+        "proposal": {
+          "title": "Proposal",
+          "description": "We present a clear proposal with timelines, costs, and the concrete value it will generate."
+        },
+        "development": {
+          "title": "Development",
+          "description": "We build, train, and test the agent with real data from your operations."
+        },
+        "solution": {
+          "title": "Production Solution",
+          "description": "We deploy the agent in your environment, monitor performance, and continuously improve it."
+        }
+      }
+    },
+    "upcoming": {
+      "badge": "Coming Soon",
+      "title": "What's Next",
+      "subtitle": "We're preparing new services to boost your digital business.",
+      "comingSoon": "Coming Soon",
+      "cta": "Be the first to know",
+      "whatsappMessage": "Hello! I'd like to stay updated on your upcoming services.",
+      "items": {
+        "booking": {
+          "title": "Smart Appointment Booking",
+          "description": "Web or chatbot booking system with AI that manages availability, confirmations, and automatic reminders."
+        },
+        "chatbot": {
+          "title": "AI Customer Service Chatbot",
+          "description": "Conversational assistant trained on your business data to answer queries 24/7 naturally."
+        }
+      }
+    },
+    "aiBanner": {
+      "description": "We automate processes and serve customers with custom AI for your business.",
+      "cta": "Learn more"
     },
     "testimonials": {
       "title": "What Our Clients Say"
@@ -161,5 +218,33 @@
     "heading": "Page not found",
     "description": "Sorry, the page you are looking for doesn't exist or has been moved.",
     "backHome": "Back to home"
+  },
+  "serviciosIA": {
+    "capabilities": {
+      "conversations": {
+        "title": "Natural Conversations",
+        "description": "Agents that understand context, respond naturally, and maintain fluid conversations with your customers."
+      },
+      "scheduling": {
+        "title": "Appointment Management",
+        "description": "Automatic booking, confirmation, and reminders integrated with your calendar."
+      },
+      "analytics": {
+        "title": "Data Analytics",
+        "description": "Extract insights from your conversations and operations to make better decisions."
+      },
+      "integrations": {
+        "title": "Integrations",
+        "description": "Connects with WhatsApp, your website, CRMs, ERPs, and any API in your ecosystem."
+      },
+      "security": {
+        "title": "Security & Privacy",
+        "description": "Your data is protected. We follow security best practices."
+      },
+      "automation": {
+        "title": "Task Automation",
+        "description": "Eliminate repetitive tasks: FAQs, classification, follow-ups, and more."
+      }
+    }
   }
 }

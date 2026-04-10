@@ -100,12 +100,13 @@ export default function LeadMagnet() {
             case 1:
                 return (
                     <div className="space-y-4">
-                        <label className="text-xl font-bold text-white font-heading block">{t("home.leadMagnet.steps.url_label")}</label>
+                        <label htmlFor="lead-url" className="text-xl font-bold text-white font-heading block">{t("home.leadMagnet.steps.url_label")}</label>
                         <div className="relative">
-                            <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#D4F57A]" />
+                            <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#D4F57A]" aria-hidden="true" />
                             <input
-                                type="text"
-                                className="w-full bg-[#0F1C18] border border-[#D4F57A]/30 rounded-xl py-4 pl-12 pr-4 text-white focus:outline-none focus:border-[#D4F57A]"
+                                id="lead-url"
+                                type="url"
+                                className="w-full bg-[#0F1C18] border border-[#D4F57A]/30 rounded-xl py-4 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:border-[#D4F57A]"
                                 placeholder={t("home.leadMagnet.steps.url_placeholder")}
                                 value={formData.url}
                                 onChange={(e) => setFormData({ ...formData, url: e.target.value })}
@@ -117,12 +118,13 @@ export default function LeadMagnet() {
             case 2:
                 return (
                     <div className="space-y-4">
-                        <label className="text-xl font-bold text-white font-heading block">{t("home.leadMagnet.steps.email_label")}</label>
+                        <label htmlFor="lead-email" className="text-xl font-bold text-white font-heading block">{t("home.leadMagnet.steps.email_label")}</label>
                         <div className="relative">
-                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#D4F57A]" />
+                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#D4F57A]" aria-hidden="true" />
                             <input
+                                id="lead-email"
                                 type="email"
-                                className="w-full bg-[#0F1C18] border border-[#D4F57A]/30 rounded-xl py-4 pl-12 pr-4 text-white focus:outline-none focus:border-[#D4F57A]"
+                                className="w-full bg-[#0F1C18] border border-[#D4F57A]/30 rounded-xl py-4 pl-12 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-[#D4F57A] focus:border-[#D4F57A]"
                                 placeholder={t("home.leadMagnet.steps.email_placeholder")}
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -133,19 +135,21 @@ export default function LeadMagnet() {
                 )
             case 3:
                 return (
-                    <div className="space-y-4">
-                        <label className="text-xl font-bold text-white font-heading block">{t("home.leadMagnet.steps.goal_label")}</label>
+                    <div className="space-y-4" role="radiogroup" aria-label={t("home.leadMagnet.steps.goal_label")}>
+                        <p className="text-xl font-bold text-white font-heading block">{t("home.leadMagnet.steps.goal_label")}</p>
                         <div className="grid gap-3">
                             {['sales', 'leads', 'brand'].map((goalKey) => (
                                 <button
                                     key={goalKey}
                                     onClick={() => setFormData({ ...formData, goal: goalKey })}
-                                    className={`flex items-center gap-3 p-4 rounded-xl border transition-all text-left ${formData.goal === goalKey
+                                    role="radio"
+                                    aria-checked={formData.goal === goalKey}
+                                    className={`flex items-center gap-3 p-4 rounded-xl border transition-all text-left cursor-pointer min-h-[44px] ${formData.goal === goalKey
                                         ? "bg-[#D4F57A]/20 border-[#D4F57A] text-white"
-                                        : "bg-[#0F1C18] border-[#D4F57A]/10 text-[#F5F2EB]/60 hover:border-[#D4F57A]/50"
+                                        : "bg-[#0F1C18] border-[#D4F57A]/10 text-[#F5F2EB]/80 hover:border-[#D4F57A]/50"
                                         }`}
                                 >
-                                    <Target className={`w-5 h-5 ${formData.goal === goalKey ? "text-[#D4F57A]" : "text-gray-500"}`} />
+                                    <Target className={`w-5 h-5 ${formData.goal === goalKey ? "text-[#D4F57A]" : "text-gray-500"}`} aria-hidden="true" />
                                     <span className="font-bold">{t(`home.leadMagnet.steps.goals.${goalKey}` as any)}</span>
                                 </button>
                             ))}
@@ -178,7 +182,7 @@ export default function LeadMagnet() {
                     ) : (
                         <div className="max-w-xl mx-auto w-full">
                             {/* Progress */}
-                            <div className="flex items-center justify-between mb-8 text-sm text-[#F5F2EB]/50">
+                            <div className="flex items-center justify-between mb-8 text-sm text-[#F5F2EB]/80">
                                 <span>{t("home.leadMagnet.steps.stepCounter", { current: step.toString(), total: "3" })}</span>
                                 <div className="flex gap-1">
                                     {[1, 2, 3].map(i => (
@@ -202,7 +206,7 @@ export default function LeadMagnet() {
                             <div className="flex items-center justify-between mt-8 pt-8 border-t border-white/10">
                                 <button
                                     onClick={handleBack}
-                                    className="text-[#F5F2EB]/60 hover:text-white flex items-center gap-2 px-4 py-2"
+                                    className="text-[#F5F2EB]/80 hover:text-white flex items-center gap-2 px-4 py-3 min-h-[44px] cursor-pointer"
                                 >
                                     <ChevronLeft className="w-4 h-4" />
                                     {t("home.leadMagnet.steps.back")}

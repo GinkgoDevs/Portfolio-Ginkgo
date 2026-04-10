@@ -594,15 +594,14 @@ export default function ProjectClient({ project }: { project: any }) {
                 </p>
                 <div className="space-y-3">
                   <Link
-                    href="/"
-                    className="flex items-center justify-center gap-2 w-full py-3 bg-[#D4F57A] text-[#293B36] rounded-lg font-medium hover:bg-[#D4F57A]/90 transition-colors"
+                    href={`/${locale}/#projects`}
+                    className="flex items-center justify-center gap-2 w-full py-3 bg-[#D4F57A] text-[#293B36] rounded-lg font-medium hover:bg-[#D4F57A]/90 transition-colors cursor-pointer"
                   >
                     {locale === "en" ? "View More Projects" : "Ver Más Proyectos"}
                   </Link>
                   <Link
-                    href="/#contact"
-                    onClick={(e) => handleSmoothScroll(e, "/#contact")}
-                    className="flex items-center justify-center gap-2 w-full py-3 bg-white/10 text-white rounded-lg font-medium hover:bg-white/20 transition-colors"
+                    href={`/${locale}/#contact`}
+                    className="flex items-center justify-center gap-2 w-full py-3 bg-white/10 text-white rounded-lg font-medium hover:bg-white/20 transition-colors cursor-pointer"
                   >
                     {locale === "en" ? "Contact Us" : "Contactar"}
                   </Link>
