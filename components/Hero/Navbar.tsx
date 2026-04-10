@@ -30,6 +30,7 @@ export default function Navbar() {
   // Define menu items with translations
   const menuItems = [
     { name: t("home.navbar.services"), href: `/${locale}/#services` },
+    { name: t("home.navbar.ai"), href: `/${locale}/servicios-ia` },
     { name: t("home.navbar.projects"), href: `/${locale}/#projects` },
     { name: t("home.navbar.about"), href: `/${locale}/#about-us` },
     { name: t("home.navbar.tools"), href: `/${locale}/#tools` },
@@ -51,10 +52,18 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Handle body scroll lock
+  // Handle body scroll lock + Escape key
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden"
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") closeMenu()
+      }
+      document.addEventListener("keydown", handleKeyDown)
+      return () => {
+        document.body.style.overflow = "unset"
+        document.removeEventListener("keydown", handleKeyDown)
+      }
     } else {
       document.body.style.overflow = "unset"
     }
@@ -233,6 +242,10 @@ export default function Navbar() {
               transition={{ duration: 0.2 }}
               className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
               onClick={closeMenu}
+              role="button"
+              tabIndex={0}
+              aria-label={locale === "en" ? "Close menu" : "Cerrar menú"}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") closeMenu() }}
             />
 
             {/* Menu Panel */}
@@ -246,11 +259,12 @@ export default function Navbar() {
               {/* Close Button */}
               <motion.button
                 onClick={closeMenu}
-                className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center rounded-full bg-[#293B36] text-[#D4F57A]"
+                className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center rounded-full bg-[#293B36] text-[#D4F57A] cursor-pointer"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
+                aria-label={locale === "en" ? "Close menu" : "Cerrar menú"}
               >
-                <span className="text-xl font-bold">×</span>
+                <span className="text-xl font-bold" aria-hidden="true">×</span>
               </motion.button>
 
               <div className="flex-1 flex flex-col">
@@ -281,14 +295,16 @@ export default function Navbar() {
                       <span className="text-[#293B36] text-sm">{t("accessibility.highContrast")}</span>
                       <button
                         onClick={toggleHighContrast}
-                        className={`relative w-10 h-5 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#293B36] ${highContrast ? "bg-[#293B36]" : "bg-[#293B36]/20"
+                        className={`relative w-12 h-7 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#293B36] cursor-pointer ${highContrast ? "bg-[#293B36]" : "bg-[#293B36]/20"
                           }`}
-                        aria-label={highContrast ? "Desactivar alto contraste" : "Activar alto contraste"}
+                        aria-label={locale === "en"
+                          ? (highContrast ? "Disable high contrast" : "Enable high contrast")
+                          : (highContrast ? "Desactivar alto contraste" : "Activar alto contraste")}
                         aria-pressed={highContrast}
                         role="switch"
                       >
                         <span
-                          className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-[#D4F57A] transition-transform ${highContrast ? "translate-x-5" : "translate-x-0"
+                          className={`absolute top-1 left-1 w-5 h-5 rounded-full bg-[#D4F57A] transition-transform ${highContrast ? "translate-x-5" : "translate-x-0"
                             }`}
                         />
                       </button>
@@ -302,10 +318,10 @@ export default function Navbar() {
                         </span>
                         <button
                           onClick={resetFontSize}
-                          className="p-1 rounded-lg bg-[#293B36]/10 hover:bg-[#293B36]/20 text-[#293B36] transition-colors focus:outline-none focus:ring-2 focus:ring-[#293B36]"
-                          aria-label="Restablecer tamaño de texto"
+                          className="p-2 rounded-lg bg-[#293B36]/10 hover:bg-[#293B36]/20 text-[#293B36] transition-colors focus:outline-none focus:ring-2 focus:ring-[#293B36] cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center"
+                          aria-label={locale === "en" ? "Reset text size" : "Restablecer tamaño de texto"}
                         >
-                          <RotateCcw className="w-3 h-3" />
+                          <RotateCcw className="w-4 h-4" />
                         </button>
                       </div>
                       <div className="flex items-center gap-2">

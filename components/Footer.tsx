@@ -159,10 +159,10 @@ export default function Footer() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-[#F5F2EB]/60 hover:text-[#D4F57A] hover:bg-[#D4F57A]/10 transition-all focus:outline-none focus:ring-2 focus:ring-[#D4F57A] group"
-                    aria-label={`Visitar ${social.label}`}
+                    className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center text-[#F5F2EB]/70 hover:text-[#D4F57A] hover:bg-[#D4F57A]/10 transition-colors focus:outline-none focus:ring-2 focus:ring-[#D4F57A] group"
+                    aria-label={locale === "en" ? `Visit ${social.label}` : `Visitar ${social.label}`}
                   >
-                    <social.icon className="w-5 h-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
+                    <social.icon className="w-5 h-5" aria-hidden="true" />
                   </Link>
                 </Magnet>
               ))}
@@ -230,17 +230,17 @@ export default function Footer() {
                 ? "We transform ideas into innovative and scalable digital solutions."
                 : "Transformando ideas en soluciones web innovadoras y escalables."}
             </p>
-            <div className="flex space-x-5 mb-2">
+            <div className="flex space-x-4 mb-2">
               {socialLinks.map((social) => (
                 <Link
                   key={social.label}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[#F5F2EB]/60 hover:text-[#D4F57A] transition-colors"
-                  aria-label={social.label}
+                  className="w-11 h-11 rounded-full bg-white/5 flex items-center justify-center text-[#F5F2EB]/70 hover:text-[#D4F57A] hover:bg-[#D4F57A]/10 transition-colors"
+                  aria-label={locale === "en" ? `Visit ${social.label}` : `Visitar ${social.label}`}
                 >
-                  <social.icon className="w-5 h-5" />
+                  <social.icon className="w-5 h-5" aria-hidden="true" />
                 </Link>
               ))}
             </div>

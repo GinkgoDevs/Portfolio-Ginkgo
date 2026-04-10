@@ -123,7 +123,7 @@ export default function Projects() {
                       <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 leading-tight">
                         {locale === 'en' ? project.title : (project.titleEs || project.title)}
                       </h3>
-                      <p className="text-white/70 line-clamp-2 text-sm font-light leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                      <p className="text-white/80 line-clamp-2 text-sm font-light leading-relaxed opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-500 delay-100 sm:opacity-100 sm:mt-1 md:opacity-0 md:mt-0">
                         {locale === 'en' ? project.description : (project.descriptionEs || project.description)}
                       </p>
                     </div>

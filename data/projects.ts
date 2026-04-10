@@ -1,11 +1,171 @@
 export const projects = [
   {
+    id: 10,
+    title: "Noticias del Interior - Editorial Platform",
+    titleEs: "Noticias del Interior - Plataforma Editorial",
+    description:
+      "A full-stack digital news platform with a public portal and role-based editorial CMS.",
+    descriptionEs:
+      "Plataforma full stack de noticias digitales con portal público y CMS editorial basado en roles.",
+    image: "/Projects/NoticiasDelInterior.png",
+    images: [
+      "/Projects/gallery/noticias-del-interior-1.png",
+      "/Projects/gallery/noticias-del-interior-2.png",
+      "/Projects/gallery/noticias-del-interior-3.png",
+      "/Projects/gallery/noticias-del-interior-4.png",
+    ],
+    category: "next",
+    url: "https://noticiasdelinterior.site",
+    overview:
+      "Noticias del Interior centraliza la operación editorial en una arquitectura moderna: frontend en Next.js para consumo rápido de contenido y backend en NestJS con APIs públicas y privadas, seguridad JWT/RBAC y base de datos PostgreSQL.",
+    overviewEn:
+      "Noticias del Interior centralizes editorial operations in a modern architecture: a Next.js frontend for fast content consumption and a NestJS backend with public/private APIs, JWT/RBAC security, and PostgreSQL data storage.",
+    process: {
+      planning:
+        "Definimos una arquitectura modular para separar área pública, panel de administración y servicios editoriales, priorizando mantenibilidad y escalabilidad.",
+      planningEn:
+        "We defined a modular architecture to separate the public site, admin panel, and editorial services, prioritizing maintainability and scalability.",
+      design:
+        "Se diseñó una experiencia enfocada en lectura rápida, navegación por categorías/tags y flujo editorial eficiente para administradores y editores.",
+      designEn:
+        "The UX was designed for fast reading, category/tag navigation, and efficient editorial workflows for admins and editors.",
+      development:
+        "Implementación full stack con Next.js y NestJS, incluyendo CMS de noticias, autenticación JWT con RBAC, métricas de vistas, cache de endpoints públicos y documentación Swagger.",
+      developmentEn:
+        "Full-stack implementation with Next.js and NestJS, including a news CMS, JWT authentication with RBAC, view metrics, cached public endpoints, and Swagger documentation.",
+      deployment:
+        "Despliegue de la plataforma pública en dominio productivo y backend preparado para operación estable con validación de entorno, health checks y mejoras futuras de observabilidad.",
+      deploymentEn:
+        "Deployment of the public platform in production domain and backend prepared for stable operation with environment validation, health checks, and future observability improvements.",
+    },
+    technologies: [
+      "Next.js",
+      "React",
+      "NestJS 11",
+      "TypeScript",
+      "PostgreSQL",
+      "TypeORM",
+      "JWT",
+      "Tailwind CSS",
+      "Swagger",
+      "Cloudinary",
+    ],
+    keyFeatures: [
+      "Portal público de noticias con detalle por slug y SEO metadata",
+      "CMS editorial con autenticación y permisos por rol (ADMIN / EDITOR / AUTHOR)",
+      "Gestión de noticias, categorías y etiquetas desde panel administrativo",
+      "API pública optimizada con cache y paginación estandarizada",
+      "Métricas editoriales con contador de vistas y sección de noticias en tendencia",
+    ],
+    keyFeaturesEn: [
+      "Public news portal with slug-based pages and SEO metadata",
+      "Editorial CMS with role-based permissions (ADMIN / EDITOR / AUTHOR)",
+      "News, category, and tag management from an admin panel",
+      "Optimized public API with caching and standardized pagination",
+      "Editorial analytics with view counters and trending news section",
+    ],
+    challenges: [
+      {
+        title: "Seguridad Editorial y Control de Acceso",
+        titleEn: "Editorial Security and Access Control",
+        description:
+          "El sistema requería separar claramente las capacidades de administradores, editores y autores sin comprometer la velocidad del flujo editorial.",
+        descriptionEn:
+          "The system required clearly separated capabilities for admins, editors, and authors without slowing editorial workflows.",
+        solution:
+          "Se implementó autenticación JWT con guards y decorators de roles en NestJS, validación global de DTOs y serialización segura para proteger datos sensibles.",
+        solutionEn:
+          "JWT authentication was implemented with role guards/decorators in NestJS, global DTO validation, and safe serialization to protect sensitive data.",
+      },
+      {
+        title: "Rendimiento en Lectura Pública",
+        titleEn: "Public Read Performance",
+        description:
+          "La plataforma necesitaba responder rápido en listados y detalle de noticias con tráfico variable.",
+        descriptionEn:
+          "The platform needed fast responses for listing and detail endpoints under variable traffic.",
+        solution:
+          "Aplicamos estrategia Cache-Aside en endpoints públicos, paginación consistente y optimización de consultas para mantener baja latencia.",
+        solutionEn:
+          "We applied a Cache-Aside strategy on public endpoints, consistent pagination, and query optimizations to keep latency low.",
+      },
+      {
+        title: "Migración de 4058 noticias desde WordPress",
+        titleEn: "Migration of 4,058 posts from WordPress",
+        description:
+          "El cliente tenía 4058 noticias en un WordPress con MySQL y necesitaba migrarlas al nuevo backend sin perder estructura editorial, slugs, categorías ni fechas de publicación.",
+        descriptionEn:
+          "The client had 4,058 news posts in a WordPress + MySQL setup and needed them migrated to the new backend without losing editorial structure, slugs, categories, or publication dates.",
+        solution:
+          "Diseñé una estrategia de migración consumiendo `/wp-json` para aprovechar la exposición de datos de WordPress, transformando los payloads al modelo nuevo y persistiendo en PostgreSQL mediante scripts de importación controlados.",
+        solutionEn:
+          "I designed a migration strategy using `/wp-json` to leverage WordPress exposed data, transforming payloads into the new domain model and persisting them in PostgreSQL through controlled import scripts.",
+      },
+      {
+        title: "Metadatos de enlaces para compartir contenido",
+        titleEn: "Rich link metadata for content sharing",
+        description:
+          "Era necesario que cada enlace de noticia mostrara correctamente título, imagen y descripción en buscadores y redes sociales.",
+        descriptionEn:
+          "Each news URL had to render proper title, image, and description metadata for search engines and social sharing.",
+        solution:
+          "Implementé metadatos dinámicos por noticia (SEO y Open Graph) desde el frontend para garantizar previsualizaciones consistentes al compartir links.",
+        solutionEn:
+          "I implemented per-article dynamic metadata (SEO and Open Graph) on the frontend to ensure consistent previews when sharing links.",
+      },
+      {
+        title: "Escalabilidad de Arquitectura",
+        titleEn: "Architecture Scalability",
+        description:
+          "El objetivo era construir un MVP sólido, pero con base técnica preparada para crecer sin reescrituras completas.",
+        descriptionEn:
+          "The goal was to build a solid MVP with a technical base ready to scale without full rewrites.",
+        solution:
+          "Se utilizó un modular monolith con módulos por dominio, migraciones versionadas y health checks, dejando abierta una evolución natural hacia Redis y observabilidad avanzada.",
+        solutionEn:
+          "A domain-based modular monolith was used with versioned migrations and health checks, keeping a clear path toward Redis and advanced observability.",
+      },
+    ],
+    duration: "1 mes",
+    durationEn: "1 month",
+    team: "1 desarrollador",
+    teamEn: "1 developer",
+    role: "Full Stack Developer",
+    roleEn: "Full Stack Developer",
+    year: "2026",
+    strategies: [
+      {
+        title: "Arquitectura Modular",
+        titleEn: "Modular Architecture",
+        description:
+          "Separación de dominios (auth, news, users, taxonomías) para mantener código claro y facilitar evolución del producto.",
+        descriptionEn:
+          "Domain separation (auth, news, users, taxonomy) to keep code clear and support product evolution.",
+      },
+      {
+        title: "API First para Frontend",
+        titleEn: "API-First for Frontend",
+        description:
+          "Diseño de DTOs y respuestas estandarizadas para acelerar la integración del frontend y mejorar mantenibilidad.",
+        descriptionEn:
+          "Standardized DTOs and response contracts to speed frontend integration and improve maintainability.",
+      },
+    ],
+    developmentTools: ["VS Code", "Swagger", "Postman", "Docker", "GitHub"],
+  },
+  {
     id: 8,
     title: "Ale Ducca Cristales - Campus",
     titleEs: "Ale Ducca Cristales - Campus",
     description: "A next-generation Full Stack educational platform using NestJS and Next.js 15.",
     descriptionEs: "Plataforma educativa Full Stack de última generación con NestJS y Next.js 15.",
     image: "/Projects/aleducca.png",
+    images: [
+      "/Projects/gallery/aleducca-1.png",
+      "/Projects/gallery/aleducca-2.png",
+      "/Projects/gallery/aleducca-3.png",
+      "/Projects/gallery/aleducca-4.png",
+    ],
     category: "next",
     url: "https://alejandraduccacristales.com",
     overview:
@@ -110,136 +270,6 @@ export const projects = [
     developmentTools: ["VS Code", "Insomnia", "Docker", "Figma", "GitHub Actions"]
   },
   {
-    id: 9,
-    title: "Shok360 - Media Platform",
-    titleEs: "Shok360 - Plataforma Multimedia",
-    description:
-      "A Headless WordPress media platform powered by GraphQL for high-performance content delivery.",
-    descriptionEs:
-      "Plataforma multimedia basada en WordPress Headless con GraphQL para entrega de contenido de alto rendimiento.",
-    image: "/Projects/shok360.jpg",
-    category: ["next", "wordpress"],
-    url: "https://www.shok360.com",
-
-    overview:
-      "A digital media platform built with a Headless WordPress architecture, decoupling content management from the frontend to enable scalability, performance and multi-channel distribution.",
-    overviewEs:
-      "Plataforma de medios digitales construida con una arquitectura WordPress Headless, desacoplando la gestión de contenidos del frontend para permitir escalabilidad, rendimiento y distribución multicanal.",
-
-    process: {
-      planning:
-        "Definición de una arquitectura desacoplada para permitir consumo de contenido desde múltiples canales.",
-      planningEn:
-        "Definition of a decoupled architecture to enable content consumption across multiple channels.",
-
-      design:
-        "Diseño enfocado en consumo rápido de contenido, programas y streaming en tiempo real.",
-      designEn:
-        "Design focused on fast content consumption, shows and real-time streaming.",
-
-      development:
-        "Configuración de WordPress como CMS Headless utilizando WPGraphQL y consumo de datos desde el frontend.",
-      developmentEn:
-        "Configured WordPress as a Headless CMS using WPGraphQL and frontend data consumption.",
-
-      deployment:
-        "Infraestructura preparada para alto tráfico y consumo intensivo de contenido multimedia.",
-      deploymentEn:
-        "Infrastructure prepared for high traffic and intensive multimedia consumption.",
-    },
-
-    technologies: [
-      "WordPress Headless",
-      "WPGraphQL",
-      "GraphQL",
-      "JavaScript",
-      "Streaming Audio",
-      "REST / GraphQL APIs"
-    ],
-
-    keyFeatures: [
-      "WordPress desacoplado como CMS",
-      "Consumo de contenido vía GraphQL",
-      "Radio en Vivo",
-      "Programas y Shows Dinámicos",
-      "Sección de Noticias Administrable",
-      "Arquitectura preparada para multicanal"
-    ],
-    keyFeaturesEn: [
-      "Decoupled WordPress CMS",
-      "Content consumption via GraphQL",
-      "Live Radio Streaming",
-      "Dynamic Shows and Programs",
-      "Admin-managed News Section",
-      "Multi-channel Ready Architecture"
-    ],
-
-    challenges: [
-      {
-        title: "Desacople Total del CMS",
-        titleEn: "Full CMS Decoupling",
-        description:
-          "Separar completamente WordPress del frontend sin perder flexibilidad editorial.",
-        descriptionEn:
-          "Fully decoupling WordPress from the frontend without losing editorial flexibility.",
-        solution:
-          "Uso de WPGraphQL para exponer el contenido de forma estructurada y tipada.",
-        solutionEn:
-          "Used WPGraphQL to expose content in a structured and typed manner.",
-      },
-      {
-        title: "Performance en Contenido Multimedia",
-        titleEn: "Multimedia Performance",
-        description:
-          "Servir contenido dinámico y streaming sin afectar tiempos de carga.",
-        descriptionEn:
-          "Serving dynamic content and streaming without impacting load times.",
-        solution:
-          "Optimización de queries GraphQL y cacheo a nivel de infraestructura.",
-        solutionEn:
-          "Optimized GraphQL queries and infrastructure-level caching.",
-      },
-    ],
-
-    duration: "2 meses",
-    durationEn: "2 months",
-
-    team: "3 desarrolladores",
-    teamEn: "3 developers",
-
-    role: "Full Stack Developer",
-    roleEn: "Full Stack Developer",
-
-    year: "2025",
-
-    strategies: [
-      {
-        title: "Arquitectura Headless",
-        titleEn: "Headless Architecture",
-        description:
-          "Separación total entre CMS y frontend para mayor escalabilidad y mantenimiento.",
-        descriptionEn:
-          "Complete separation between CMS and frontend for scalability and maintainability.",
-      },
-      {
-        title: "GraphQL First",
-        titleEn: "GraphQL First",
-        description:
-          "Uso de GraphQL como contrato único de datos entre WordPress y el frontend.",
-        descriptionEn:
-          "Using GraphQL as the single data contract between WordPress and frontend.",
-      },
-    ],
-
-    developmentTools: [
-      "WordPress",
-      "WPGraphQL",
-      "GraphiQL",
-      "Docker",
-      "VS Code"
-    ]
-  },
-  {
     id: 7,
     title: "Hormigón Conecta - Quoting Platform",
     titleEs: "Hormigón Conecta - Plataforma de Cotizaciones",
@@ -247,7 +277,13 @@ export const projects = [
     descriptionEs:
       "Plataforma B2B para la cotización y gestión de pedidos de hormigón, desarrollada con Next.js para un rendimiento y experiencia de usuario óptimos.",
     image: "/Projects/HormigonConecta.png",
-    category: "next", // Cambiado de 'shopify' a 'next'
+    images: [
+      "/Projects/gallery/hormigon-conecta-1.png",
+      "/Projects/gallery/hormigon-conecta-2.png",
+      "/Projects/gallery/hormigon-conecta-3.png",
+      "/Projects/gallery/hormigon-conecta-4.png",
+    ],
+    category: "next",
     url: "https://www.hormigonconecta.com", // Actualizado desde HormigonConecta.csv
     overview: "Una aplicación de alto rendimiento para conectar proveedores y compradores de hormigón, utilizando el ecosistema moderno de React y Next.js.",
     overviewEn: "A high-performance application to connect concrete suppliers and buyers, utilizing the modern React and Next.js ecosystem.",
@@ -317,6 +353,12 @@ export const projects = [
     description: "Innovative AI digital cloning platform for automated content generation.",
     descriptionEs: "Una solución moderna de clonacion digital para generar contenido.",
     image: "/Projects/Bauketing.png",
+    images: [
+      "/Projects/gallery/bauketing-1.png",
+      "/Projects/gallery/bauketing-2.png",
+      "/Projects/gallery/bauketing-3.png",
+      "/Projects/gallery/bauketing-4.png",
+    ],
     category: "next",
     url: "https://bauketing-ia-ginkgo-devs-projects.vercel.app/",
     overview:
@@ -408,6 +450,12 @@ export const projects = [
     description: "A responsive corporate website with a custom theme for a multinational company.",
     descriptionEs: "Un sitio web corporativo responsive con un tema personalizado para una empresa multinacional.",
     image: "/Projects/Retiro-Uno.png",
+    images: [
+      "/Projects/gallery/retiro-uno-1.png",
+      "/Projects/gallery/retiro-uno-2.png",
+      "/Projects/gallery/retiro-uno-3.png",
+      "/Projects/gallery/retiro-uno-4.png",
+    ],
     category: "wordpress",
     url: "https://www.bodylinenqn.com/retiro-uno",
     overview: "Un sitio web corporativo responsive con un tema personalizado para una empresa multinacional.",
@@ -476,7 +524,10 @@ export const projects = [
     descriptionEs:
       "Una robusta tienda de comercio electrónico construida con WordPress y WooCommerce, destacando un diseño personalizado y optimización de rendimiento.",
     image: "/Projects/NasFit.png",
-    category: "wordpress", // Cambiado de 'shopify' a 'wordpress'
+    images: [
+      "/Projects/NasFit.png",
+    ],
+    category: "wordpress",
     url: "https://julinas.com", // Actualizado desde nasfit.csv
     overview: "Implementación de una solución completa de e-commerce sobre WordPress, integrando WooCommerce para la gestión de productos y pagos.",
     overviewEn: "Implementation of a complete e-commerce solution on WordPress, integrating WooCommerce for product and payment management.",
@@ -548,6 +599,12 @@ export const projects = [
     descriptionEs:
       "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos, con énfasis en la velocidad a través de Cloudflare.",
     image: "/Projects/SitioSport.png",
+    images: [
+      "/Projects/gallery/sitio-sport-1.png",
+      "/Projects/gallery/sitio-sport-2.png",
+      "/Projects/gallery/sitio-sport-3.png",
+      "/Projects/gallery/sitio-sport-4.png",
+    ],
     category: "shopify",
     url: "https://www.sitiosports.com", // Actualizado desde sitiosport.csv
     overview: "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
@@ -620,6 +677,12 @@ export const projects = [
     descriptionEs:
       "Una tienda Shopify personalizada con capacidades PWA y una interfaz de usuario moderna usando Tailwind CSS para una experiencia premium.",
     image: "/Projects/Galindo.png",
+    images: [
+      "/Projects/gallery/galindo-1.png",
+      "/Projects/gallery/galindo-2.png",
+      "/Projects/gallery/galindo-3.png",
+      "/Projects/gallery/galindo-4.png",
+    ],
     category: "shopify",
     url: "https://www.galindosa.com.ar", // Actualizado desde Galindo.csv
     overview: "Una tienda Shopify personalizada para una marca de moda de alta gama con requisitos de diseño únicos.",
@@ -693,7 +756,13 @@ export const projects = [
     descriptionEs:
       "Sitio web de e-commerce de alto rendimiento construido con Next.js y React, ofreciendo una experiencia de usuario superior con un diseño moderno.",
     image: "/Projects/ChicoZossi.png",
-    category: "next", // Cambiado de 'shopify' a 'next'
+    images: [
+      "/Projects/gallery/chico-zossi-1.png",
+      "/Projects/gallery/chico-zossi-2.png",
+      "/Projects/gallery/chico-zossi-3.png",
+      "/Projects/gallery/chico-zossi-4.png",
+    ],
+    category: "next",
     url: "https://www.chicozossi.com.ar", // Actualizado desde ChicoZossi.csv
     overview: "Desarrollo de un front-end de comercio electrónico desacoplado (Headless) usando Next.js, con un enfoque en la velocidad y escalabilidad.",
     overviewEn: "Development of a decoupled e-commerce front-end (Headless) using Next.js, with a focus on speed and scalability.",

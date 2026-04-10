@@ -6,7 +6,7 @@ import ScrollAnimation from "../ScrollAnimation"
 import { useTranslation } from "@/contexts/TranslationContext"
 
 export default function Tools() {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation()
   const sectionRef = useRef<HTMLDivElement>(null)
   const carouselRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
@@ -119,7 +119,7 @@ export default function Tools() {
           className="md:hidden"
           ref={carouselRef}
           role="region"
-          aria-label={t("home.tools.categories.frontend")}
+          aria-label={t("home.tools.title")}
           tabIndex={0}
           onKeyDown={(e) => {
             if (e.key === "ArrowLeft") {
@@ -131,39 +131,38 @@ export default function Tools() {
             }
           }}
         >
-          {/* Navegación de categorías */}
           <div className="flex justify-center mb-4">
             <button
               onClick={handlePrev}
-              className="p-2 rounded-full bg-white/10 text-white mr-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D4F57A]"
-              aria-label="Categoría anterior"
+              className="p-3 rounded-full bg-white/10 text-white mr-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D4F57A] min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
+              aria-label={locale === "en" ? "Previous category" : "Categoría anterior"}
             >
               <ChevronLeft className="w-5 h-5" aria-hidden="true" />
             </button>
             <div className="flex items-center px-4 py-2 bg-white/5 rounded-full">
-              <span className="text-white" id="current-category">
+              <span className="text-white" id={`category-tab-${activeCategory}`}>
                 {technologies[activeCategory].category}
               </span>
             </div>
             <button
               onClick={handleNext}
-              className="p-2 rounded-full bg-white/10 text-white ml-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D4F57A]"
-              aria-label="Siguiente categoría"
+              className="p-3 rounded-full bg-white/10 text-white ml-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#D4F57A] min-w-[44px] min-h-[44px] flex items-center justify-center cursor-pointer"
+              aria-label={locale === "en" ? "Next category" : "Siguiente categoría"}
             >
               <ChevronRight className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
 
-          {/* Indicadores de página */}
-          <div className="flex justify-center mb-6" role="tablist" aria-label="Categorías de tecnologías">
-            {technologies.map((_, index) => (
+          <div className="flex justify-center mb-6" role="tablist" aria-label={locale === "en" ? "Technology categories" : "Categorías de tecnologías"}>
+            {technologies.map((tech, index) => (
               <button
                 key={index}
+                id={`category-tab-${index}`}
                 onClick={() => {
                   setActiveCategory(index)
                 }}
-                className={`w-2 h-2 mx-1 rounded-full ${index === activeCategory ? "bg-[#D4F57A]" : "bg-white/20"}`}
-                aria-label={`Ir a categoría ${technologies[index].category}`}
+                className={`w-3 h-3 mx-1.5 rounded-full cursor-pointer p-0 min-w-[12px] ${index === activeCategory ? "bg-[#D4F57A]" : "bg-white/20"}`}
+                aria-label={locale === "en" ? `Go to category ${tech.category}` : `Ir a categoría ${tech.category}`}
                 aria-selected={index === activeCategory}
                 role="tab"
                 aria-controls={`category-panel-${index}`}
@@ -189,7 +188,7 @@ export default function Tools() {
                 className="bg-white/5 backdrop-blur-sm rounded-xl p-6 cursor-grab active:cursor-grabbing"
                 role="tabpanel"
                 id={`category-panel-${activeCategory}`}
-                aria-labelledby={`category-${activeCategory}`}
+                aria-labelledby={`category-tab-${activeCategory}`}
               >
                 <div className="flex items-center gap-3 mb-6">
                   <div className="p-2 rounded-lg bg-[#D4F57A] text-[#293B36]">{technologies[activeCategory].icon}</div>
@@ -211,11 +210,10 @@ export default function Tools() {
             </AnimatePresence>
           </div>
 
-          {/* Instrucciones de navegación actualizadas */}
           <div className="text-center mt-4 text-white/80 text-sm flex items-center justify-center">
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            <span>Usa las flechas para navegar entre categorías</span>
-            <ChevronRight className="w-4 h-4 ml-1" />
+            <ChevronLeft className="w-4 h-4 mr-1" aria-hidden="true" />
+            <span>{locale === "en" ? "Use arrows to navigate categories" : "Usa las flechas para navegar entre categorías"}</span>
+            <ChevronRight className="w-4 h-4 ml-1" aria-hidden="true" />
           </div>
         </div>
       </div>

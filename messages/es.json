@@ -10,6 +10,7 @@
   "home": {
     "navbar": {
       "services": "Servicios",
+      "ai": "IA",
       "about": "Nosotros",
       "tools": "Herramientas",
       "projects": "Proyectos",
@@ -28,6 +29,62 @@
       "strategiesDesc": "Consultoría basada en datos para maximizar tu alcance.",
       "whatsappMessage": "Hola! Me interesa su servicio de: {service}",
       "quoteButton": "Cotizar"
+    },
+    "aiAgents": {
+      "badge": "Nuevo Servicio",
+      "title": "Agentes de IA a Medida",
+      "subtitle": "Automatizamos procesos, atendemos clientes y potenciamos tu negocio con inteligencia artificial diseñada exclusivamente para vos.",
+      "cardTitle": "IA que trabaja para tu negocio",
+      "cardDescription": "Diseñamos agentes inteligentes que se integran a tu operación diaria: responden consultas, gestionan turnos, analizan datos y ejecutan tareas repetitivas. Todo personalizado a tu industria.",
+      "benefit1": "Integración con WhatsApp, web y sistemas existentes",
+      "benefit2": "Entrenamiento con datos propios de tu negocio",
+      "benefit3": "Soporte continuo y mejora iterativa del agente",
+      "cta": "Agendar Reunión",
+      "whatsappMessage": "Hola! Me interesa el servicio de Agentes de IA a medida. Quiero agendar una reunión.",
+      "steps": {
+        "meeting": {
+          "title": "Reunión",
+          "description": "Nos sentamos con vos para entender tu negocio, tus procesos y detectar oportunidades de automatización con IA."
+        },
+        "planning": {
+          "title": "Planificación",
+          "description": "Definimos el alcance, las integraciones necesarias y el roadmap técnico del agente."
+        },
+        "proposal": {
+          "title": "Propuesta",
+          "description": "Te presentamos una propuesta clara con tiempos, costos y el valor concreto que va a generar."
+        },
+        "development": {
+          "title": "Desarrollo",
+          "description": "Construimos, entrenamos y testeamos el agente con datos reales de tu operación."
+        },
+        "solution": {
+          "title": "Solución en Producción",
+          "description": "Desplegamos el agente en tu entorno, monitoreamos su rendimiento y lo mejoramos continuamente."
+        }
+      }
+    },
+    "upcoming": {
+      "badge": "Próximamente",
+      "title": "Lo que viene",
+      "subtitle": "Estamos preparando nuevos servicios para potenciar tu negocio digital.",
+      "comingSoon": "Próximamente",
+      "cta": "Quiero ser el primero en enterarme",
+      "whatsappMessage": "Hola! Quiero estar al tanto de los próximos servicios que van a lanzar.",
+      "items": {
+        "booking": {
+          "title": "Reserva de Turnos Inteligente",
+          "description": "Sistema de reservas por web o chatbot con IA que gestiona disponibilidad, confirmaciones y recordatorios automáticos."
+        },
+        "chatbot": {
+          "title": "Chatbot IA para Atención al Cliente",
+          "description": "Asistente conversacional entrenado con los datos de tu negocio para responder consultas 24/7 de forma natural."
+        }
+      }
+    },
+    "aiBanner": {
+      "description": "Automatizamos procesos y atendemos clientes con IA personalizada para tu negocio.",
+      "cta": "Conocer m\u00e1s"
     },
     "testimonials": {
       "title": "Lo que dicen nuestros clientes"
@@ -160,5 +217,33 @@
     "heading": "Página no encontrada",
     "description": "Lo sentimos, la página que estás buscando no existe o ha sido movida.",
     "backHome": "Volver al inicio"
+  },
+  "serviciosIA": {
+    "capabilities": {
+      "conversations": {
+        "title": "Conversaciones Naturales",
+        "description": "Agentes que entienden contexto, responden con naturalidad y mantienen conversaciones fluidas con tus clientes."
+      },
+      "scheduling": {
+        "title": "Gestión de Turnos",
+        "description": "Reserva, confirmación y recordatorios automáticos integrados con tu calendario."
+      },
+      "analytics": {
+        "title": "Análisis de Datos",
+        "description": "Extrae insights de tus conversaciones y operaciones para tomar mejores decisiones."
+      },
+      "integrations": {
+        "title": "Integraciones",
+        "description": "Se conecta con WhatsApp, tu web, CRMs, ERPs y cualquier API de tu ecosistema."
+      },
+      "security": {
+        "title": "Seguridad y Privacidad",
+        "description": "Tus datos están protegidos. Cumplimos con las mejores prácticas de seguridad."
+      },
+      "automation": {
+        "title": "Automatización de Tareas",
+        "description": "Elimina tareas repetitivas: respuestas frecuentes, clasificación, seguimiento y más."
+      }
+    }
   }
 }
